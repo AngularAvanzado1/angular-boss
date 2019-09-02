@@ -197,7 +197,7 @@ yarn start
 ```
 
 ```
-ng generate @nrwl/schematics:application warehouse --inlineStyle --routing
+ng generate @nrwl/schematics:application warehouse --inlineStyle --routing --directory=apps
 ./apps/warehouse
 ./apps/warehouse-e2e
 ng serve warehouse --port=4201 -o
