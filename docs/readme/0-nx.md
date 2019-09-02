@@ -49,39 +49,47 @@ class: impact
 
 > Angular es una plataforma de desarrollo dogmática y llave en mano.
 
-> Nrwl Extensions es un conjunto de mejoras para el desarrollo empresarial moderno.
+> Nrwl eXtensions es un conjunto de mejoras para el desarrollo empresarial moderno.
 
 ```terminal
 yarn add global @angular/cli
 yarn add global @nrwl/schematics
 ```
 
+[Nx.dev](https://nx.dev/angular)
+
 ---
 
 ## 1.2 Crear y configurar un workspace
 
-```terminal
-yarn create nx-workspace angular-business
+```bash
+yarn create nx-workspace angular-boss
+
+empty # para no crear aplicaciones previas
+
+angular CLI # pero listo para trabajar con angular
+
 ```
+---
 
-ts-lint
+### Recomendaciones
 
-```json
-  "plugins": ["@getify/proper-arrows"],
-  "no-magic-numbers": [true, 0, 1],
-  "cyclomatic-complexity": [true, 8],
-  "max-file-line-count": [true, 256]
+Extensiones de Visual Studio Code
+
 ```
-
-prettier
-
-```js
 {
-  "singleQuote": true,
-  "printWidth": 128
+  "recommendations": [
+    "nrwl.angular-console",
+    "angular.ng-template",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "esbenp.prettier-vscode",
+    "pkief.material-icon-theme",
+    "christian-kohler.path-intellisense",
+    "ban.spellright",
+    "johnpapa.angular-essentials"
+  ]
 }
 ```
-
 ---
 
 > Recap:
