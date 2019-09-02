@@ -190,7 +190,7 @@ class: impact
 ## 3.1 Frontend webs
 
 ```
-ng generate @nrwl/schematics:application shop --inlineStyle --routing
+ng g app shop --enableIvy --inlineStyle --routing --prefix=ab-shop
 ./apps/shop
 ./apps/shop-e2e
 yarn start
