@@ -121,9 +121,9 @@ class: impact
 ### Cosas distintas
 
 - nx.json
-- /tools
-- /apps
-- /libs
+  - /tools
+  - /apps
+  - /libs
 
 ---
 
@@ -139,6 +139,12 @@ As a: seller,
   so that: I can take control
 ```
 
+### Aplicaciones
+
+- shop
+- warehouse
+
+
 ---
 
 ## 2.2 Libs
@@ -152,6 +158,12 @@ As a: seller,
   I want: to be greeted
   so that: I feel at home
 ```
+
+### Librerías
+
+- models
+
+- views
 
 ---
 
