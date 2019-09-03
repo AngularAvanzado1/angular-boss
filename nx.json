@@ -19,6 +19,9 @@
     },
     "warehouse": {
       "tags": []
+    },
+    "api": {
+      "tags": []
     }
   }
 }

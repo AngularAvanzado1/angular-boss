@@ -21,8 +21,13 @@
             "polyfills": "apps/shop/src/polyfills.ts",
             "tsConfig": "apps/shop/tsconfig.app.json",
             "aot": false,
-            "assets": ["apps/shop/src/favicon.ico", "apps/shop/src/assets"],
-            "styles": ["apps/shop/src/styles.css"],
+            "assets": [
+              "apps/shop/src/favicon.ico",
+              "apps/shop/src/assets"
+            ],
+            "styles": [
+              "apps/shop/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -81,7 +86,10 @@
               "apps/shop/tsconfig.app.json",
               "apps/shop/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/shop/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/shop/**"
+            ]
           }
         },
         "test": {
@@ -115,8 +123,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/shop-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/shop-e2e/**"]
+            "tsConfig": [
+              "apps/shop-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/shop-e2e/**"
+            ]
           }
         }
       }
@@ -145,7 +158,9 @@
               "apps/warehouse/src/favicon.ico",
               "apps/warehouse/src/assets"
             ],
-            "styles": ["apps/warehouse/src/styles.css"],
+            "styles": [
+              "apps/warehouse/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -204,7 +219,10 @@
               "apps/warehouse/tsconfig.app.json",
               "apps/warehouse/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/warehouse/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/warehouse/**"
+            ]
           }
         },
         "test": {
@@ -238,8 +256,72 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/warehouse-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/warehouse-e2e/**"]
+            "tsConfig": [
+              "apps/warehouse-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/warehouse-e2e/**"
+            ]
+          }
+        }
+      }
+    },
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps/api/src",
+      "projectType": "application",
+      "prefix": "api",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/api",
+            "main": "apps/api/src/main.ts",
+            "tsConfig": "apps/api/tsconfig.app.json",
+            "assets": [
+              "apps/api/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/api/tsconfig.app.json",
+              "apps/api/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/api/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/api/jest.config.js",
+            "tsConfig": "apps/api/tsconfig.spec.json"
           }
         }
       }
