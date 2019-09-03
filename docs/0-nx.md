@@ -292,6 +292,8 @@ export interface Greetings {
 
 ## 4.2 Librerías de Angular
 
+### Componentes
+
 ```
 ng g @nrwl/angular:library ui --directory=shared --prefix=ab-ui --simpleModuleName --no-interactive
 ng g @schematics/angular:component greetings --project=shared-ui --module=ui.module.ts --export --inlineStyle --inlineTemplate
@@ -367,6 +369,85 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'shop';
 }
+```
+
+---
+
+### Servicios
+
+
+```bash
+ng g @nrwl/angular:library data --directory=shared --prefix=ab-data --simpleModuleName
+ng g service greetings --project=shared-data --no-flat
+```
+
+`libs\shared\data\src\lib\greetings\greetings.service.ts`
+
+```typescript
+import { Greetings } from '@a-boss/domain';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+@Injectable({
+  providedIn: 'root'
+})
+export class GreetingsService {
+  private apiUrl = 'http://localhost:3333/api';
+  constructor(private httpClient: HttpClient) {}
+  public getGrettings$(): Observable<Greetings> {
+    return this.httpClient.get<Greetings>(this.apiUrl);
+  }
+}
+```
+
+`libs\shared\data\src\index.ts`
+
+```typescript
+export * from './lib/data.module';
+export * from './lib/greetings/greetings.service';
+```
+Y cambiamos `libs\shared\ui\src\lib\greetings\greetings.component.ts`
+
+```typescript
+import { GreetingsService } from '@a-boss/data';
+import { Greetings } from '@a-boss/domain';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'ab-ui-greetings',
+  template: `
+    <p>
+      {{ theGreeting.message }}
+    </p>
+  `,
+  styles: []
+})
+export class GreetingsComponent implements OnInit {
+  public theGreeting: Greetings = { message: 'Hello world' };
+  constructor(private greetingsService: GreetingsService) {}
+  public ngOnInit() {
+    this.greetingsService.getGrettings$().subscribe(this.appendApiMessage);
+  }
+  private appendApiMessage = (apiGreetings: Greetings) =>
+    (this.theGreeting.message += ' and ' + apiGreetings.message);
+}
+```
+Importando el `DataMdule` en
+
+`libs\shared\ui\src\lib\ui.module.ts`
+
+```typescript
+import { DataModule } from '@a-boss/data';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { GreetingsComponent } from './greetings/greetings.component';
+
+@NgModule({
+  imports: [CommonModule, DataModule],
+  declarations: [GreetingsComponent],
+  exports: [GreetingsComponent]
+})
+export class UiModule {}
 ```
 
 ---
