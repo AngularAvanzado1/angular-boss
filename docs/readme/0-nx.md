@@ -190,14 +190,14 @@ class: impact
 ## 3.1 Frontend webs
 
 ```
-ng g app shop --enableIvy --inlineStyle --routing --prefix=ab-shop
+ng generate @nrwl/schematics:application shop --inlineStyle --routing --directory= -p ab-shop  --no-interactive
 ./apps/shop
 ./apps/shop-e2e
 yarn start
 ```
 
 ```
-ng generate @nrwl/schematics:application warehouse --inlineStyle --routing --directory=apps
+ng generate @nrwl/schematics:application warehouse --inlineStyle --routing --directory= -p ab-warehouse  --no-interactive
 ./apps/warehouse
 ./apps/warehouse-e2e
 ng serve warehouse --port=4201 -o
