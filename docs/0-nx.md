@@ -273,7 +273,7 @@ class: impact
 ng generate @nrwl/workspace:library domain --directory=shared --no-interactive
 ```
 
-`libs\shared\domain\src\lib\shared-domain.ts`
+`libs\shared\domain\src\lib\models\greetings.interface.ts`
 
 ```typescript
 export interface Greetings {
