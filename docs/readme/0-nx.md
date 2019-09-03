@@ -270,39 +270,104 @@ class: impact
 ## 4.1 Librerías en TypeScript
 
 ```terminal
-ng generate @nrwl/schematics:library models
-libs\shared\src\lib\greetings.interface.ts
+ng generate @nrwl/workspace:library domain --directory=shared --no-interactive
 ```
+
+`libs\shared\domain\src\lib\shared-domain.ts`
 
 ```typescript
 export interface Greetings {
   message: string;
 }
-this.httpClient.get<Greetings>('/api/').subscribe((data: Greetings) => (this.title += ' and ' + data.message));
 ```
 
+`tsconfig.json`
+
+```json
+"paths": {
+  "@a-boss/domain": ["libs/shared/domain/src/index.ts"]
+}
+```
 ---
 
 ## 4.2 Librerías de Angular
 
 ```
-ng generate @nrwl/schematics:library views --inlineStyle
-./lis/views
-ng generate @schematics/angular:component product --project=views --export --inlineStyle
+ng g @nrwl/angular:library ui --directory=shared --prefix=ab-ui --simpleModuleName --no-interactive
+ng g @schematics/angular:component greetings --project=shared-ui --module=ui.module.ts --export --inlineStyle --inlineTemplate
 ```
 
+---
+
+`libs\shared\ui\src\lib\greetings\greetings.component.ts`
+
 ```typescript
-import { ViewsModule } from '@angular-business/views';
+import { Greetings } from '@a-boss/domain';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'ab-ui-greetings',
+  template: `
+    <p>
+      {{ theGreeting.message }}
+    </p>
+  `,
+  styles: []
+})
+export class GreetingsComponent implements OnInit {
+  public theGreeting: Greetings = { message: 'Hello world' };
+  constructor() {}
+
+  ngOnInit() {}
+}
+```
+---
+
+`apps\shop\src\app\app.module.ts`
+
+```typescript
+import { UiModule } from '@a-boss/ui';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+
 @NgModule({
-  imports: [ ViewsModule],
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    UiModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
 
-```html
-<angular-business-product></angular-business-product>
-```
 ---
+
+`apps\shop\src\app\app.component.html`
+
+```html
+<ab-ui-greetings></ab-ui-greetings>
+<router-outlet></router-outlet>
+```
+
+`apps\shop\src\app\app.component.ts`
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'ab-shop-root',
+  templateUrl: './app.component.html',
+  styles: []
+})
+export class AppComponent {
+  title = 'shop';
+}
+```
 
 ---
 > Recap:
