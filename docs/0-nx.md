@@ -411,6 +411,13 @@ export * from './lib/data.module';
 export * from './lib/greetings/greetings.service';
 ```
 
+`tsconfig.json`
+
+```json
+"paths": {
+  "@a-boss/domain": ["libs/shared/domain/src/index.ts"]
+}
+```
 ---
 
 Y cambiamos `libs\shared\ui\src\lib\greetings\greetings.component.ts`
@@ -458,6 +465,27 @@ import { GreetingsComponent } from './greetings/greetings.component';
   exports: [GreetingsComponent]
 })
 export class UiModule {}
+```
+---
+
+Ya puestos podemos adecentar el API
+
+`apps\api\src\app\app.controller.ts`
+
+```typescript
+import { Greetings } from '@a-boss/domain';
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getData(): Greetings {
+    return this.appService.getData();
+  }
+}
 ```
 
 ---
