@@ -292,7 +292,7 @@ export interface Greetings {
 
 ## 4.2 Librerías de Angular
 
-### Componentes
+### 4.2.1 Componentes
 
 ```
 ng g @nrwl/angular:library ui --directory=shared --prefix=ab-ui --simpleModuleName --no-interactive
@@ -373,13 +373,15 @@ export class AppComponent {
 
 ---
 
-### Servicios
+### 4.2.2 Servicios
 
 
 ```bash
 ng g @nrwl/angular:library data --directory=shared --prefix=ab-data --simpleModuleName
 ng g service greetings --project=shared-data --no-flat
 ```
+
+---
 
 `libs\shared\data\src\lib\greetings\greetings.service.ts`
 
@@ -400,12 +402,17 @@ export class GreetingsService {
 }
 ```
 
+---
+
 `libs\shared\data\src\index.ts`
 
 ```typescript
 export * from './lib/data.module';
 export * from './lib/greetings/greetings.service';
 ```
+
+---
+
 Y cambiamos `libs\shared\ui\src\lib\greetings\greetings.component.ts`
 
 ```typescript
@@ -432,6 +439,9 @@ export class GreetingsComponent implements OnInit {
     (this.theGreeting.message += ' and ' + apiGreetings.message);
 }
 ```
+
+---
+
 Importando el `DataMdule` en
 
 `libs\shared\ui\src\lib\ui.module.ts`
