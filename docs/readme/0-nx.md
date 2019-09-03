@@ -51,7 +51,7 @@ class: impact
 
 > Nrwl eXtensions es un conjunto de mejoras para el desarrollo empresarial moderno.
 
-```terminal
+```bash
 yarn add global @angular/cli
 yarn add global @nrwl/schematics
 ```
@@ -189,18 +189,18 @@ class: impact
 
 ## 3.1 Frontend webs
 
-```
+```bash
 yarn add --dev @nrwl/angular
 ```
 
-```
+```bash
 ng generate @nrwl/schematics:application shop --inlineStyle --routing --directory= -p ab-shop  --no-interactive
 ./apps/shop
 ./apps/shop-e2e
 yarn start
 ```
 
-```
+```bash
 ng generate @nrwl/schematics:application warehouse --inlineStyle --routing --directory= -p ab-warehouse  --no-interactive
 ./apps/warehouse
 ./apps/warehouse-e2e
@@ -212,7 +212,7 @@ ng serve warehouse --port=4202 -o
   "start:warehouse": "ng serve warehouse --port=4202 -o",
 ```
 
-```
+```bash
 yarn start:store
 yarn start:warehouse
 ```
@@ -222,19 +222,13 @@ yarn start:warehouse
 
 ## 3.2 Backend Apis
 
-```
+```bash
 yarn add --dev @nrwl/nest
 ng generate @nrwl/nest:application api --no-interactive
 ng serve api
 "start:api": "ng serve api",
-"warehouse.serve.proxyConfig": "apps/warehouse//proxy.conf.json"
 ```
 
-```typescript
-  constructor(private httpClient: HttpClient) {
-    this.httpClient.get<any>('/api/').subscribe(data => (this.title += ' and ' + data.message));
-  }
-```
 ---
 
 ```json
