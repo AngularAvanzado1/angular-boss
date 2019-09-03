@@ -1,16 +1,4 @@
-title: 0-Nx
-class: animation-fade
-layout: true
-
-.bottom-bar[
-{{title}}
-]
-
----
-
-class: impact
-
-# {{title}}
+# 0-Nx
 
 ## Repositorios profesionales con Nx
 
@@ -35,13 +23,9 @@ class: impact
 
 ---
 
-class: impact
 
 # 1 Nx y el CLI
 
-## Instalación de Nx y CLI
-
-## Crear y configurar un workspace
 
 ---
 
@@ -90,25 +74,11 @@ Extensiones de Visual Studio Code
   ]
 }
 ```
----
-
-> Recap:
-
-# 1 Nx y el CLI
-
-## Instalación de Nx y CLI
-
-## Crear y configurar un workspace
 
 ---
 
-class: impact
 
 # 2 Estructura de un workspace
-
-## Apps
-
-## Libs
 
 ---
 
@@ -167,23 +137,8 @@ As a: seller,
 
 ---
 
-> Recap:
-
-# 2 Estructura de un workspace
-
-## Apps
-
-## Libs
-
----
-
-class: impact
 
 # 3 Aplicaciones
-
-## Frontend webs
-
-## Backend Apis
 
 ---
 
@@ -247,23 +202,7 @@ ng serve api
 
 ---
 
-> Recap:
-
-# 3 Aplicaciones
-
-## Frontend webs
-
-## Backend Apis
-
----
-
-class: impact
-
 # 4 Librerías
-
-## 4.1 Librerías en TypeScript
-
-## 4.2 Librerías de Angular
 
 ---
 
@@ -488,17 +427,13 @@ export class AppController {
 }
 ```
 
----
-> Recap:
-
-# 4 Librerías
-
-## Librerías en TypeScript
-
-## Librerías de Angular
-
 
 ---
+
+
+> **Blog de apoyo:** [Nx, mono repositorios en Angular](https://academia-binaria.com/nx-mono-repositorios-en-Angular/)
+
+> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
 > Next:
 
@@ -507,8 +442,3 @@ export class AppController {
 ## Jest para tests unitarios
 
 ## Cypress para test de integración
-
-
-> **Blog de apoyo:** [Nx, mono repositorios en Angular](https://academia-binaria.com/nx-mono-repositorios-en-Angular/)
-
-> > By [Alberto Basalo](https://twitter.com/albertobasalo)
