@@ -6,32 +6,19 @@ Empiezo este **tutorial de Angular Avanzado** con la frase con la que acabé un 
 
 Las empresas de desarrollo y los clientes finales que escogen **Angular**, suelen ser de tamaño medio o grande. Cuanto mayor sea el problema más destaca este _framework_. Y tarde o temprano esos grandes proyectos necesitarán compartir o reutilizar código. La herramienta [Nx de Nrwl](https://nx.dev/angular) ayuda en esa tarea facilitando la creación de espacios de trabajo multi proyecto: **los mono repositorios.**
 
+
 Partiendo de cero y usando las herramientas de [Nrwl.io/](https://nrwl.io/) crearemos un _blueprint_ para desarrollar grandes aplicaciones. Al finalizar tendrás, en el mismo repositorio, un par de aplicaciones y varias librerías reutilizables creadas con los _Nx power-ups_.
 
-> Código asociado a este tutorial en _GitHub_: [angular.builders/angular-blueprint/](https://github.com/angularbuilders/angular-blueprint)
+> Código asociado a este tutorial en _GitHub_: [AcademiaBinaria/angular-boss](https://github.com/AcademiaBinaria/angular-boss)
 
-
-## Tabla de Contenido:
-
-[1. Crear el repositorio.](./#1-Crear-el-repositorio)
-
-[2. Generar varias aplicaciones con Angular.](./#2-Generar-una-SPA-con-Angular)
-
-[3. Tener una biblioteca Angular con componentes propios.](./#3-Tener-una-biblioteca-Angular-con-componentes-propios)
-
-[4. Tener una biblioteca TypeScript con lógica de instrumentación.](./#4-Tener-una-biblioteca-TypeScript-con-logica-de-instrumentacion)
-
-[5. Tener una biblioteca Angular con lógica de instrumentación.](./#5-Tener-una-biblioteca-Angular-con-logica-de-instrumentacion)
-
-[Diagramas](./#Diagramas)
-
-[Resumen](./#Resumen)
-
----
 
 # 1. Crear el repositorio
 
-> Como arquitecto de software quiero disponer de un espacio de trabajo único para crear aplicaciones y librerías.
+```yaml
+ Como: arquitecto de software
+ quiero: disponer de un espacio de trabajo único
+ para: crear aplicaciones y librerías.
+ ```
 
 Lo primero será preparar las herramientas. **Nx** es un complemento del **CLI** así que debemos tener este último disponible. Voy a emplear [yarn](https://yarnpkg.com/lang/en/) para la instalación de paquetes y la ejecución de comandos. Pero se muestran las instrucciones alternativas con `npm`. El repositorio siempre lo creo vacío y después agrego las capacidades específicas para **Angular**.
 
@@ -40,85 +27,100 @@ Lo primero será preparar las herramientas. **Nx** es un complemento del **CLI**
 yarn global add @angular/cli
 # Sets yarn as default packager for cli
 ng config -g cli.packageManager yarn
+
 # Creates empty repository
 yarn create nx-workspace angular-blueprint
 
 # also with NPM...
 npm i -g @angular/cli
 npx create-nx-workspace@latest angular-blueprint
-
-# Adds Angular capabilities
-ng add --dev @nrwl/angular
 ```
 
 ---
 
 # 2. Generar una SPA con Angular
 
-> Como desarrollador Angular quiero tener una aplicación SPA y otra sin enrutado configuradas para empezar con una base sólida.
+```yaml
+As a: customer,
+  I want: to see a shop
+  so that: I can buy products
+
+ As a: seller,
+  I want: to see a warehouse
+  so that: I can take control
+```
 
 Los próximos comandos te sonarán a los mismo del **angular-cli**. Es normal, pues **Nx** utiliza y mejora las capacidades de la herramienta original. La diferencia está en que la recién creada aplicación, en lugar de nacer en la raíz del _workspace_, va la carpeta específica `/apps`.
 
 ```bash
+# Add Angular capabilities
+yarn add --dev @nrwl/angular
+
 # Generate an Angular application with nx power-ups
-ng g application spa --routing=true --style=css --enableIvy=true --prefix=ab-spa --directory=
+ng g @nrwl/schematics:application shop --inlineStyle --routing --directory= -p ab-shop
 # Start default !!!
 yarn start
 # Generate an Angular application with nx power-ups
-ng g application web --routing=false --style=css --enableIvy=true --prefix=ab-web --directory=
+ng g @nrwl/schematics:application warehouse --inlineStyle --routing --directory= -p ab-warehouse
 # Start especific !!!
-yarn start:web
+ng serve warehouse --port=4202 -o
 ```
 
 Ambas aplicaciones comparten la configuración del `angular.json` y las demás herramientas de ayuda como **tslint** y **prettier**. Destaca mucho que también que compartan `/node_modules`, lo cual se agradece en el tiempo y en el espacio.
 
----
-
-# 3. Tener una biblioteca Angular con componentes propios
-
-> Como desarrollador quiero tener una biblioteca con componentes exportados para que los pueda usar en varias aplicaciones.
-
-Si eres una empresa consultora es posible que te encuentres repitiendo funciones o pantallas una y otra vez para distintos clientes. Por supuesto que una gran empresa seguro que se hacen muchas aplicaciones similares, a las que les vendría de maravilla **compartir una biblioteca de componentes**.
-
-Pues ahora crear librerías es igual de sencillo que crear aplicaciones. **Nx** las depositará en la carpeta `/libs` y se ocupará de apuntarlas en el `tsconfig.json` para que la importación desde el resto del proyecto use alias cortos y evidentes.
-
-Crear componentes en un entorno multi proyecto requiere especificar a qué proyecto se asociarán. Para empezar vamos a crear los componentes básicos para cualquier _layout_ lo más sencillos posible.
+Con nx puedes crear también aplicaciones de Backend. Por ejemplo un API REST hecha con [NestJS](https://nestjs.com/). Para acceder a los generadores específico tienes que instalarlos antes. por ejemplo:
 
 ```bash
-# Generate an Angular library with nx power-ups
-ng g library layout --routing=false --style=css --prefix=ab-layout --directory=
-# Generate Header Component
-ng g c components/header --project=layout --export=true
-# Generate Nav Component
-ng g c components/nav --project=layout --export=true
-# Generate Footer Component
-ng g c components/footer --project=layout --export=true
+yarn add --dev @nrwl/nest
+ng g @nrwl/nest:application api
+ng serve api
 ```
 
-Puedes usarlos como cualquier otro componente y en cualquier aplicación del repositorio. Simplemente importando el módulo en el que se declaran: el `LayoutModule`. NX se encarga de referenciar cada proyecto en el fichero `tsconfig.json`. De esa forma se facilita su importación en cualquier otra aplicación del repositorio.
+Al tener varias aplicaciones es conveniente disponer de scripts específicos para cada una. Por ejemplo yo en el `package.json` tendía algo así.
 
-```TypeScript
-import { LayoutModule } from '@angular-blueprint/layout';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
+```json
+{
+  "start:shop": "ng serve shop --port=4201 -o",
+  "build:shop": "ng build shop --prod",
+  "test:shop": "ng test shop",
+  "start:warehouse": "ng serve warehouse --port=4202 -o",
+  "build:warehouse": "ng build warehouse --prod",
+  "test:warehouse": "ng test warehouse",
+  "start:api": "ng serve api",
+  "build:api": "ng build api --prod",
+  "test:api": "ng test api",
+}
+```
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, LayoutModule],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
+Por supuesto que todos estos comando se pueden lanzar visualmente mediante la extensión [Angular Console para VSCode](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console). Te recomiendo además estas otras extensiones:
+
+```json
+{
+  "recommendations": [
+    "nrwl.angular-console",
+    "angular.ng-template",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "esbenp.prettier-vscode",
+    "pkief.material-icon-theme",
+    "christian-kohler.path-intellisense",
+    "ban.spellright",
+    "johnpapa.angular-essentials"
+  ]
+}
 ```
 
 ---
 
-# 4. Tener una biblioteca TypeScript con lógica de instrumentación.
 
-> Como arquitecto quiero tener una biblioteca en TypeScript con lógica de instrumentación de modo que pueda usarla con varios frameworks o incluso en puro JavaScript.
+# 3. Tener una biblioteca TypeScript con lógica de dominio.
 
-Más temprano que tarde aparecerán funcionalidades comunes a distintas aplicaciones. Validadores genéricos, utilidades o casos concretos de un cliente pero que se usan en todos sus desarrollos. En este ejemplo voy a suponer la necesidad común de un logger. Inicialmente trabajará con la consola en modo desarrollo y no hará nada en producción. Pero lo haremos de forma que en el futuro lo pueda escribir en otros servicios.
+```yaml
+ Como: arquitecto
+ quiero: tener una biblioteca en TypeScript con lógica de dominio
+ de modo que: pueda usarla con varios frameworks o incluso en puro JavaScript.
+ ```
+
+Más temprano que tarde aparecerán funcionalidades comunes a distintas aplicaciones. Validadores genéricos, utilidades o casos concretos de un cliente pero que se usan en todos sus desarrollos. En este ejemplo partimos de la necesidad común de un sistema de saludos (un mensaje, vaya). Y para ello empezamos por definir una `interface` pública reutilizable.
 
 Un poco de arquitectura de software. Todo lo que podamos programar y que no dependa de un _framework_ debemos encapsularlo en librerías independientes. De esa forma puede reutilizarse con otras tecnologías o sobrevivir dignamente a la evolución o desaparición de Angular.
 
@@ -126,7 +128,7 @@ Lo primero será crear la librería. Pero esta vez no usaremos los _schematics_ 
 
 ```bash
 # Generate a Type Script library with nx power-ups
-ng g @nrwl/workspace:library tracer-domain --directory=
+ng generate @nrwl/workspace:library domain --directory=shared
 ```
 Por ahora no te preocupes de la implementación. La muestro para destacar las dos cosas que considero más importantes:
 
@@ -134,185 +136,247 @@ Por ahora no te preocupes de la implementación. La muestro para destacar las do
 
 - Lo que quieras exportar debe indicarse en el fichero `index.ts`.
 
-Por lo demás es puro _TypeScript_; en dos carpetas con intenciones bien claras: `models/` y `services/` creo de forma manual los siguientes ficheros:
+Por lo demás es puro _TypeScript_; en una carpeta con intenciones bien claras: `models/` creo de forma manual el siguiente fichero:
 
-`models/trace.interface.js`
+`libs\shared\domain\src\lib\models\greetings.interface.ts`
 
 ```typescript
-import { traceLevels } from './trace-levels.type';
-import { traceOrigins } from './trace-origins.type';
-
-export interface Trace {
-  origin: traceOrigins;
-  level: traceLevels;
+export interface Greetings {
   message: string;
-  error?: any;
-  parameter?: {
-    label: string;
-    value: number;
-  };
+}
+```
+al no disponer del sistema de módulos de angular tengo que exportarlo en el índice de la librería.
+
+`libs\shared\domain\src\index.ts`
+
+```typescript
+export * from './lib/models/greetings.interface';
+```
+
+Para localizarlo, Nx crea un alias en el `tsconfig.json`, que puedes retocar a voluntad
+
+```json
+"paths": {
+  "@a-boss/domain": ["libs/shared/domain/src/index.ts"]
 }
 ```
 
-`services/console-tracer.driver.js`
-
-```typescript
-import { Trace } from '../models/trace.interface';
-import { Tracer } from '../models/tracer.interface';
-
-export class ConsoleTracerDriver implements Tracer {
-  public writeTrace(trace: Trace) {
-    switch (trace.level) {
-      case 'system':
-        return this.writeSystem(trace);
-      case 'error':
-        return this.writeError(trace);
-      default:
-        return '';
-    }
-  }
-  public writeSystem(trace: Trace) {
-    const origin = this.getOriginPart(trace);
-    const consoleMessage = `${origin}${trace.message}`;
-    console.log(consoleMessage);
-    return consoleMessage;
-  }
-  public writeError(trace: Trace) {
-    const origin = this.getOriginPart(trace);
-    const consoleMessage = `${origin}Error`;
-    console.group(consoleMessage);
-    console.log(trace.message);
-    if (trace.error) {
-      console.warn(trace.error.message);
-      console.log(trace.error.stack || 'no stack');
-    }
-    console.groupEnd();
-    return consoleMessage;
-  }
-
-  private getOriginPart = (trace: Trace): string =>
-    `[${trace.origin.toLocaleUpperCase()}]: `;
-}
-```
-
-Y ahora lo exportamos. Como no hay módulos ni artificios de Angular, todo acaba siendo ficheros puros y duros.
-
-`index.ts`
-
-```typescript
-export * from './lib/models/trace.interface';
-export * from './lib/models/tracer.interface';
-export * from './lib/services/console-tracer.driver';
-```
+Ya está listo para seer consumido desde distintos proyectos (Lo haré después en el API y ya mismo en la próxima librería de componentes).
 
 ---
 
+# 4. Tener una biblioteca Angular con componentes de interfaz
 
-# 5. Tener una biblioteca Angular con lógica de instrumentación.
+```yaml
+As a: customer,
+  I want: to be greeted
+  so that: I feel at home
 
-> Como desarrollador quiero tener una biblioteca Angular con servicios de instrumentación para que cualquiera pueda inyectarlos en varias aplicaciones Angular.
+As a: seller,
+  I want: to be greeted
+  so that: I feel at home
+```
 
-La anterior librería es directamente utilizable por cualquier aplicación web, por supuesto incluido **Angular**. Pero, una vez que tengamos la lógica encapsulada en algo reutilizable entre _frameworks_, podemos preparar un módulo específico con servicios para facilitar la inyección de dependencias tradicional de **Angular**.
+Si eres una empresa consultora es posible que te encuentres repitiendo funciones o pantallas una y otra vez para distintos clientes. Por supuesto que una gran empresa seguro que se hacen muchas aplicaciones similares, a las que les vendría de maravilla **compartir una biblioteca de componentes**.
+
+Pues ahora crear librerías es igual de sencillo que crear aplicaciones. **Nx** las depositará en la carpeta `/libs` y se ocupará de apuntarlas en el `tsconfig.json` para que la importación desde el resto del proyecto use alias cortos y evidentes.
+
+Crear componentes en un entorno multi proyecto requiere especificar a qué proyecto se asociarán. Para empezar vamos a crear los componentes básicos para esta funcionalidad en una librería compartida de para interfaz de usuario.
 
 ```bash
 # Generate an Angular library with nx power-ups
-ng g library tracer --routing=false --style=css --prefix=ab-tracer --directory=
-# Generate a Tracer Service
-ng g s services/tracer --project=tracer
-# Generate an Error Handler Service
-ng g s services/error-handler --project=tracer
+ng g @nrwl/angular:library ui --directory=shared --prefix=ab-ui --simpleModuleName
+# Generate Greetings Component
+ng g component greetings --project=shared-ui --module=ui.module.ts --export --inlineStyle --inlineTemplate
 ```
 
-Ya que estamos en ambiente **Angular** podemos hacer uso de los productos su ecosistema, como por ejemplo _@Inject()_. De esta forma no comprometemos los servicios de la librería con su configuración; la cual vendrá desde la aplicación. Incluso queda preparado para que las clases de dominio o los _drivers_ y repositorios puedan ser inyectados.
+Y le damos contenido al componente. Fíjate en la importación de la interfaz `Greetings`.
 
-La configuración del servicio la haremos mediante un _TOKEN_ inyectable. En esta caso empezaremos con un objeto con un mísero _Boolean_ para indicarnos si estamos o no en producción pues usaremos la consola para _tracear_ sólo en desarrollo y por ahora no haremos nada en producción.
 
-`servicers/tracer-service.ts`
+`libs\shared\ui\src\lib\greetings\greetings.component.ts`
 
 ```typescript
-import { ConsoleTracerDriver, Trace, Tracer } from '@angular-blueprint/tracer-domain';
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Greetings } from '@a-boss/domain';
+import { Component, OnInit } from '@angular/core';
 
-export interface TracerConfig {
-  production: boolean;
-}
-
-export const TRACER_CONFIG = new InjectionToken<TracerConfig>('tracer-config');
-
-class NoTrace implements Tracer {
-  writeTrace = (trace: Trace) => '';
-}
-
-@Injectable({
-  providedIn: 'root'
+@Component({
+  selector: 'ab-ui-greetings',
+  template: `
+    <p>
+      {{ theGreeting.message }}
+    </p>
+  `,
+  styles: []
 })
-export class TracerService implements Tracer {
-  private tracer: Tracer;
+export class GreetingsComponent implements OnInit {
+  public theGreeting: Greetings = { message: 'Hello world' };
+  constructor() {}
 
-  constructor(@Inject(TRACER_CONFIG) tracerConfig?: TracerConfig) {
-    if (tracerConfig.production) this.tracer = new NoTrace();
-    else this.tracer = new ConsoleTracerDriver();
-  }
-
-  public writeTrace(trace: Trace): string {
-    return this.tracer.writeTrace(trace);
-  }
+  ngOnInit() {}
 }
 ```
+---
 
-Y ahora ya se pueden importar y declarar en cualquier aplicación. Como si fuesen servicios del sistema. La magia de la inversión del control se produce con `useValue` mediante el cual inyectamos un valor de configuración concreto al _TOKEN_.
+Puedes usarlos como cualquier otro componente y en cualquier aplicación del repositorio. Simplemente importando el módulo en el que se declaran: el `UiModule`. NX se encarga de referenciar cada proyecto en el fichero `tsconfig.json`. De esa forma se facilita su importación en cualquier otra aplicación del repositorio.
 
-`spa/app.module.ts`
+Primero importamos el módulo.
+
+`apps\shop\src\app\app.module.ts`
 
 ```typescript
+import { UiModule } from '@a-boss/ui';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabled' }),
-    LayoutModule,
-    TracerModule
+    RouterModule.forRoot([], { initialNavigation: 'enabled' }),
+    UiModule
   ],
-  providers: [
-    {
-      provide: TRACER_CONFIG,
-      useValue: { production: environment.production }
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(tracerService: TracerService) {
-    const startMessage: Trace = {
-      origin: 'system',
-      level: 'system',
-      message: 'App Module Started for SPA'
-    };
-    tracerService.writeTrace(startMessage);
-  }
+export class AppModule {}
+```
+
+Y ya podemos incrustar sus componentes públicos.
+
+`apps\shop\src\app\app.component.html`
+
+```html
+<ab-ui-greetings></ab-ui-greetings>
+<router-outlet></router-outlet>
+```
+
+`apps\shop\src\app\app.component.ts`
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'ab-shop-root',
+  templateUrl: './app.component.html',
+  styles: []
+})
+export class AppComponent {
+  title = 'shop';
 }
 ```
-Y ya tenemos un germen de arquitectura flexible (controlada por la inyección de dependencias) y reutilizable (entre aplicaciones Angular) con un dominio estable e independiente de _frameworks_.
-
-## Diagramas
-
-El siguiente diagrama nos muestra a vista de pájaro las distintas librerías y aplicaciones que tenemos en este momento. Fíjate en la jerarquía de dependencias : Aplicaciones -> Librerías Angular -> Librerías del Dominio.
-
-![Dependencias entre proyectos](/images/10-projects-dependency.png)
 
 ---
 
-Tienes más ejemplos en el repositorio como [la implementación un _ErrorHandler_](https://github.com/angularbuilders/angular-blueprint/blob/master/libs/tracer/src/lib/services/error-handler.service.ts). Es un servicio que una vez proveído hace uso del servicio de trazas.
+# 5. Tener una biblioteca Angular con servicios de datos
 
-Dispones de un _journal_ con indicaciones paso a paso de este tutorial. Consulta directamente la [documentación](https://angularbuilders.github.io/angular-blueprint/0-mono_repo) del proyecto en GitHub.
+```yaml
+As a: customer,
+  I want: to be greeted by the API :-)
+  so that: I know I am not alone.
 
-Las tareas relativas a este tutorial están resueltas en el [proyecto 0 - monorepo](https://github.com/angularbuilders/angular-blueprint/projects/1)
+As a: seller,
+  I want: to be greeted by the API :-)
+  so that: I know I am not alone.
+```
 
-![Angular.Builders](/css/images/angular.builders.png)
+Además de componentes visuales, podemos tener librerías con servicios de lógica o de acceso a datos. Por ejemplo un servicio para comunicarnos con el API podría ser utilizado en diversos proyectos (aplicaciones o librerías).
 
-La iniciativa [Angular.Builders](https://angular.builders) nace para ayudar a desarrolladores y arquitectos de software como tú. Ofrecemos formación y productos de ayuda y ejemplo como [angular.blueprint](https://angularbuilders.github.io/angular-blueprint/).
+Con lo ya sabido vamos a crear una librería compartida para acceso a datos.
 
-Para más información sobre servicios de consultoría [ponte en contacto conmigo](https://www.linkedin.com/in/albertobasalo/).
+
+```bash
+ng g @nrwl/angular:library data --directory=shared --prefix=ab-data --simpleModuleName
+ng g service greetings --project=shared-data --no-flat
+```
+
+El servicio realiza la llamada http y devuelve un observable.
+
+`libs\shared\data\src\lib\greetings\greetings.service.ts`
+
+```typescript
+import { Greetings } from '@a-boss/domain';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+@Injectable({
+  providedIn: 'root'
+})
+export class GreetingsService {
+  private apiUrl = 'http://localhost:3333/api';
+  constructor(private httpClient: HttpClient) {}
+  public getGrettings$(): Observable<Greetings> {
+    return this.httpClient.get<Greetings>(this.apiUrl);
+  }
+}
+```
+
+Para consumir el servicio no hay que hacer nada más. Pero, para importarlo en TypeScript, necesitmaos que nos lo exporten adecuadamente.
+
+`libs\shared\data\src\index.ts`
+
+```typescript
+export * from './lib/data.module';
+export * from './lib/greetings/greetings.service';
+```
+
+`tsconfig.json`
+
+```json
+"paths": {
+  "@a-boss/domain": ["libs/shared/domain/src/index.ts"]
+}
+```
+
+Y ahora consumirlo ya no es un problema. Por ejemplo directamente en el componente.
+
+`libs\shared\ui\src\lib\greetings\greetings.component.ts`
+
+```typescript
+import { GreetingsService } from '@a-boss/data';
+import { Greetings } from '@a-boss/domain';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'ab-ui-greetings',
+  template: `
+    <p>
+      {{ theGreeting.message }}
+    </p>
+  `,
+  styles: []
+})
+export class GreetingsComponent implements OnInit {
+  public theGreeting: Greetings = { message: 'Hello world' };
+  constructor(private greetingsService: GreetingsService) {}
+  public ngOnInit() {
+    this.greetingsService.getGrettings$().subscribe(this.appendApiMessage);
+  }
+  private appendApiMessage = (apiGreetings: Greetings) =>
+    (this.theGreeting.message += ' and ' + apiGreetings.message);
+}
+```
+
+Ya que estamos accediendo al API, podemos aprovechar para adecuar sus tipos a la interfaz declarada en el dominio. Fíjate lo familiar que resulta este código **NodeJS** gracias al framework [nest](https://nestjs.com/).
+
+`apps\api\src\app\app.controller.ts`
+
+```typescript
+import { Greetings } from '@a-boss/domain';
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+
+  @Get()
+  getData(): Greetings {
+    return this.appService.getData();
+  }
+}
+```
 
 ---
 
