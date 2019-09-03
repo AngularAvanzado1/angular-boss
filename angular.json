@@ -120,6 +120,129 @@
           }
         }
       }
+    },
+    "warehouse": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "inlineStyle": true
+        }
+      },
+      "root": "apps/warehouse",
+      "sourceRoot": "apps/warehouse/src",
+      "prefix": "ab-warehouse",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/warehouse",
+            "index": "apps/warehouse/src/index.html",
+            "main": "apps/warehouse/src/main.ts",
+            "polyfills": "apps/warehouse/src/polyfills.ts",
+            "tsConfig": "apps/warehouse/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/warehouse/src/favicon.ico",
+              "apps/warehouse/src/assets"
+            ],
+            "styles": ["apps/warehouse/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/warehouse/src/environments/environment.ts",
+                  "with": "apps/warehouse/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "warehouse:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "warehouse:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "warehouse:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/warehouse/tsconfig.app.json",
+              "apps/warehouse/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/warehouse/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/warehouse/jest.config.js",
+            "tsConfig": "apps/warehouse/tsconfig.spec.json",
+            "setupFile": "apps/warehouse/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "warehouse-e2e": {
+      "root": "apps/warehouse-e2e",
+      "sourceRoot": "apps/warehouse-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/warehouse-e2e/cypress.json",
+            "tsConfig": "apps/warehouse-e2e/tsconfig.e2e.json",
+            "devServerTarget": "warehouse:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "warehouse:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/warehouse-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/warehouse-e2e/**"]
+          }
+        }
+      }
     }
   },
   "cli": {
