@@ -76,7 +76,7 @@ angular CLI # pero listo para trabajar con angular
 
 Extensiones de Visual Studio Code
 
-```
+```json
 {
   "recommendations": [
     "nrwl.angular-console",
@@ -204,12 +204,12 @@ yarn start
 ng generate @nrwl/schematics:application warehouse --inlineStyle --routing --directory= -p ab-warehouse  --no-interactive
 ./apps/warehouse
 ./apps/warehouse-e2e
-ng serve warehouse --port=4201 -o
+ng serve warehouse --port=4202 -o
 ```
 
 ```json
-  "start:shop": "ng serve shop --port=4200 -o",
-  "start:warehouse": "ng serve warehouse --port=4201 -o",
+  "start:shop": "ng serve shop --port=4201 -o",
+  "start:warehouse": "ng serve warehouse --port=4202 -o",
 ```
 
 ```
@@ -224,7 +224,7 @@ yarn start:warehouse
 
 ```
 yarn add --dev @nrwl/nest
-ng generate @nrwl/schematics:node-application api --frontendProject=shop
+ng generate @nrwl/nest:application api --no-interactive
 ng serve api
 "start:api": "ng serve api",
 "warehouse.serve.proxyConfig": "apps/warehouse//proxy.conf.json"
@@ -234,6 +234,21 @@ ng serve api
   constructor(private httpClient: HttpClient) {
     this.httpClient.get<any>('/api/').subscribe(data => (this.title += ' and ' + data.message));
   }
+```
+---
+
+```json
+{
+  "start:shop": "ng serve shop --port=4201 -o",
+  "build:shop": "ng build shop --prod",
+  "test:shop": "ng test shop",
+  "start:warehouse": "ng serve warehouse --port=4202 -o",
+  "build:warehouse": "ng build warehouse --prod",
+  "test:warehouse": "ng test warehouse",
+  "start:api": "ng serve api",
+  "build:api": "ng build api --prod",
+  "test:api": "ng test api",
+}
 ```
 
 ---
