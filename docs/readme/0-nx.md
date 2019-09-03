@@ -190,6 +190,10 @@ class: impact
 ## 3.1 Frontend webs
 
 ```
+yarn add --dev @nrwl/angular
+```
+
+```
 ng generate @nrwl/schematics:application shop --inlineStyle --routing --directory= -p ab-shop  --no-interactive
 ./apps/shop
 ./apps/shop-e2e
@@ -219,6 +223,7 @@ yarn start:warehouse
 ## 3.2 Backend Apis
 
 ```
+yarn add --dev @nrwl/nest
 ng generate @nrwl/schematics:node-application api --frontendProject=shop
 ng serve api
 "start:api": "ng serve api",
