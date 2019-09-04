@@ -35,43 +35,10 @@ As a: developer,
 ```
 
 ---
-class: impact
-
-# 1 Tipos de tests
-
-## Integración o e2e
-
-## Unitarios
-
----
-
-## 1.1 Integración o e2e
-
-[Cypress](https://www.cypress.io/)
-
-
-
----
-
-## 1.2 Unitarios
-
-[Jest](https://jestjs.io/)
-
----
-
-> Recap:
-
-# 1 Nx y el CLI
-
-## Integración o e2e
-
-## Unitarios
-
----
 
 class: impact
 
-# 2 Test de Integración con Cypress
+# 1 Test de Integración con Cypress
 
 ## Cypress
 
@@ -80,18 +47,9 @@ class: impact
 
 ---
 
+## 1.1 Cypress
 
-```yaml
-
-As a: customer,
-  I want: to see a greetings message
-  so that: I feel confident with the page
-```
-
----
-
-## 2.1 Cypress
-
+[Cypress](https://www.cypress.io/)
 
 ```json
   "e2e:shop": "ng e2e shop-e2e --watch",
@@ -105,7 +63,7 @@ yarn e2e:warehouse
 
 ---
 
-## 2.2 Test e2e
+## 1.2 Test e2e
 
 ```yaml
 GIVEN: the shop web app
@@ -141,7 +99,7 @@ describe('GIVEN: the shop web app', () => {
 
 > Recap:
 
-# 2 Test de Integración con Cypress
+# 1 Test de Integración con Cypress
 
 ## Cypress
 
@@ -151,7 +109,7 @@ describe('GIVEN: the shop web app', () => {
 
 class: impact
 
-# 3 Test Unitarios con Jest
+# 2 Test Unitarios con Jest
 
 ## Jest
 
@@ -159,12 +117,14 @@ class: impact
 
 ---
 
-## 3.1 Jest
+## 23.1 Jest
+
+[Jest](https://jestjs.io/)
 
 ```json
-  "test:shop": "ng test shop --watch",
-  "test:warehouse": "ng test warehouse --watch",
-  "test:api": "ng test api --watch",
+  "test:shop": "ng test shop --watch --verbose",
+  "test:warehouse": "ng test warehouse --watch --verbose",
+  "test:api": "ng test api --watch --verbose",
 ```
 
 ```terminal
@@ -175,7 +135,10 @@ yarn test:api
 
 ---
 
-## 3.2 Tests unitarios
+## 2.2 Tests unitarios
+
+
+### 2.2.1 Componentes
 
 ```yaml
 GIVEN: an AppComponent declared in AppModule
@@ -224,12 +187,17 @@ describe('GIVEN: an AppComponent declared in AppModule', () => {
   });
 });
 ```
+---
+
+### 2.2.2 Servicios
+
+_To Do_
 
 ---
 
 > Recap:
 
-# 3 Aplicaciones
+# 2 Aplicaciones
 
 ## Jest
 
