@@ -72,9 +72,12 @@ GIVEN: the shop web app
     THEN: should display welcome message from the API
 ```
 
+`apps\shop-e2e\src\support\app.po.ts`
+
 ```typescript
 export const getGreeting = () => cy.get('h1');
 ```
+---
 
 `apps\shop-e2e\src\integration\app.spec.ts`
 
@@ -148,6 +151,7 @@ GIVEN: an AppComponent declared in AppModule
     THEN: should render 'Hello world' in a H1 tag
 ```
 
+---
 
 shop: `apps\shop\src\app\app.component.spec.ts`
 
