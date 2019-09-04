@@ -120,7 +120,7 @@ class: impact
 
 ---
 
-## 23.1 Jest
+## 2.1 Jest
 
 [Jest](https://jestjs.io/)
 
