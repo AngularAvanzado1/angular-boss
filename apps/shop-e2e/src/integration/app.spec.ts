@@ -1,9 +1,9 @@
-import { getGreeting } from '../support/app.po';
-
-describe('shop', () => {
-  beforeEach(() => cy.visit('/'));
-
-  it('should display welcome message', () => {
-    getGreeting().contains('Welcome to shop!');
+import { getGreeting, visitHome } from '../support/app.po';
+describe('GIVEN: the shop web app', () => {
+  beforeEach(() => visitHome());
+  context('WHEN: user visits home page', () => {
+    it('THEN: should display welcome message', () => {
+      getGreeting().contains('Hello world');
+    });
   });
 });
