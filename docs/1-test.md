@@ -193,10 +193,6 @@ describe('GIVEN: an AppComponent declared in AppModule', () => {
 ```
 ---
 
-### 2.2.2 Servicios
-
-_To Do_
-
 ---
 
 > Recap:
