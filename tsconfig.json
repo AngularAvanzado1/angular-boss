@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@a-boss/domain": ["libs/shared/domain/src/index.ts"],
-      "@a-boss/ui": ["libs/shared/ui/src/index.ts"]
+      "@a-boss/ui": ["libs/shared/ui/src/index.ts"],
+      "@a-boss/data": ["libs/shared/data/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
