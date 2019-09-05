@@ -1,16 +1,4 @@
-title: 1-Test
-class: animation-fade
-layout: true
-
-.bottom-bar[
-{{title}}
-]
-
----
-
-class: impact
-
-# {{title}}
+# 1-Test
 
 ## Test de integración y unitarios
 
@@ -36,14 +24,8 @@ As a: developer,
 
 ---
 
-class: impact
 
 # 1 Test de Integración con Cypress
-
-## Cypress
-
-## Test e2e
-
 
 ---
 
@@ -101,23 +83,8 @@ describe('GIVEN: the shop web app', () => {
 
 ---
 
-> Recap:
-
-# 1 Test de Integración con Cypress
-
-## Cypress
-
-## Test e2e
-
----
-
-class: impact
 
 # 2 Test Unitarios con Jest
-
-## Jest
-
-## Tests unitarios
 
 ---
 
@@ -255,27 +222,20 @@ describe('GIVEN: a GreetingsService', () => {
 
 ---
 
-> Recap:
+> **Blog de apoyo:** [Tests unitarios con Jest y e2e con Cypress en Angular](https://academia-binaria.com/tests-unitarios-con-jest-y-e2e-con-cypress-en-Angular/)
 
-# 2 Aplicaciones
-
-## Jest
-
-## Tests unitarios
-
----
-
+> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
 > Next:
 
 # Detección del cambio en Angular
 
 ## Estrategias de detección del cambio
+
 ## Técnicas OnPush
+
 ## Optimización
 
 
-> **Blog de apoyo:** [Tests unitarios con Jest y e2e con Cypress en Angular](https://academia-binaria.com/tests-unitarios-con-jest-y-e2e-con-cypress-en-Angular/)
 
-> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
