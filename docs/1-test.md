@@ -16,11 +16,9 @@ class: impact
 
 ---
 
-    # 1. Tipos de tests
+    # 1. Test de Integración con Cypress
 
-    # 2. Test de Integración con Cypress
-
-    # 3. Test Unitarios con Jest
+    # 2. Test Unitarios con Jest
 
 ---
 
