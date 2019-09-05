@@ -236,6 +236,7 @@ describe('GIVEN: a GreetingsService', () => {
       expect(greetings$).toBeInstanceOf(Observable);
     });
 
+    // Ojo al async para ejectuar las llamadas asíncronas
     it(`THEN: should return 'Welcome to api!' when call 'getGrettings()'`, async(() => {
       const service: GreetingsService = TestBed.get(GreetingsService);
       service
@@ -243,10 +244,10 @@ describe('GIVEN: a GreetingsService', () => {
         .subscribe(result =>
           expect(result).toEqual({ message: 'Welcome to api!' })
         );
-      const httpMock = TestBed.get(HttpTestingController);
-      const req = httpMock.expectOne('http://localhost:3333/api');
-      req.flush({ message: 'Welcome to api!' });
-      httpMock.verify();
+      const httpMock = TestBed.get(HttpTestingController); // mock del backend para no depender del servidor
+      const req = httpMock.expectOne('http://localhost:3333/api'); // esperar a que se llame a esta ruta
+      req.flush({ message: 'Welcome to api!' }); // responder con esto
+      httpMock.verify(); // comprobar que no hay más llmadas
     }));
   });
 });
