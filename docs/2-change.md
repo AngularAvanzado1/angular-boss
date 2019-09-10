@@ -88,6 +88,8 @@ Con las estrategias por defecto
 
 > Las cosas funcionan como se espera.
 
+---
+
 Se actualiza la vista con:
 
 1 - Datos asíncronos recibidos desde el API
