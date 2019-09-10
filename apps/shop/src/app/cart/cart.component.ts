@@ -17,7 +17,14 @@ export class CartComponent implements OnInit {
   ngOnInit() {}
 
   public onAddItem(item: BasketItem) {
-    this.basket.push(item);
+    const currentProduct = this.basket.find(
+      basketItem => basketItem.product._id === item.product._id
+    );
+    if (currentProduct) {
+      currentProduct.units += item.units;
+    } else {
+      this.basket.push(item);
+    }
     this.onBasketChange();
   }
   public onRemoveItem(item: BasketItem) {

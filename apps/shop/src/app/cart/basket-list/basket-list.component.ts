@@ -1,10 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { BasketItem } from '../database/products.data';
 
 @Component({
   selector: 'ab-shop-basket-list',
   templateUrl: './basket-list.component.html',
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class BasketListComponent implements OnInit {
   @Input() public basket: Array<BasketItem> = [];
