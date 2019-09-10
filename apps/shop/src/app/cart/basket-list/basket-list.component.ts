@@ -22,7 +22,7 @@ export class BasketListComponent implements OnInit {
   ngOnInit() {}
 
   public getAmount(item: BasketItem) {
-    console.count('getAmount calls');
+    console.count('get AMOUNT calls');
     return item.units * item.product.price;
   }
 }

@@ -19,8 +19,8 @@ export class AppComponent {
       next: basket => (this.basket = basket)
     });
   }
-  public getUnits() {
-    console.count('getUnits calls');
+  public getNumItems() {
+    console.count('get NUM_ITEMS calls');
     return this.basket.length;
   }
 }

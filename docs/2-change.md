@@ -29,18 +29,18 @@ class: impact
 ```yaml
 As a: customer,
   I want: to see a shopping cart page
-  so that: i can browse my list of products
+  so that: i can browse the list of products in my basket
 
 As a: customer,
   I want: to pick a product
-  so that: I can add units to the shopping cart
+  so that: I can add units to my basket
 
 As a: customer,
-  I want: to remove a product from the shopping cart
+  I want: to remove a product from my basket
   so that: I can take less units
 
 As a: customer,
-  I want: to see the current units
+  I want: to see every time the current units and number of products in my basket
   so that: I can know what I'm buying
 ```
 
@@ -72,10 +72,8 @@ ng g m cart --project=shop --module=app.module.ts --routing --route=cart
 ```terminal
 ng g c cart/item-picker --project=shop
 ng g c cart/basket-list --project=shop
+ng g s basket --project=shop
 ```
-
-
-
 
 ## 1.1 Default
 
@@ -94,6 +92,11 @@ Se actualiza la vista con:
 2 - Procesos en Background
 3 - Interacción del usuario
 
+---
+
+> Aunque demasiadas veces
+
+> Y con demasiado coste
 ---
 
 ## 1.2 OnPush
