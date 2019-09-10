@@ -10,6 +10,10 @@ export interface Product {
   price: number;
   stock: number;
 }
+export interface BasketItem {
+  product: Product;
+  units: number;
+}
 export const PRODUCTS: Product[] = [
   {
     _id: 'A-1',

@@ -1,1 +1,4 @@
-<p>cart works!</p>
+<ab-shop-item-picker [products]="products"
+                     (addItem)="onAddItem($event)"></ab-shop-item-picker>
+<ab-shop-basket-list [basket]="basket"
+                     (removeItem)="onRemoveItem($event)"></ab-shop-basket-list>

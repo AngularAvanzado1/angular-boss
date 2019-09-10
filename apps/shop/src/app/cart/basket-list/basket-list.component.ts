@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BasketItem } from '../database/products.data';
 
 @Component({
   selector: 'ab-shop-basket-list',
@@ -6,10 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class BasketListComponent implements OnInit {
+  @Input() public basket: Array<BasketItem> = [];
+  @Output() public removeItem = new EventEmitter<BasketItem>();
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

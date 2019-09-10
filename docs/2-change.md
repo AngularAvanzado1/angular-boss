@@ -72,8 +72,10 @@ ng g m cart --project=shop --module=app.module.ts --routing --route=cart
 ```terminal
 ng g c cart/item-picker --project=shop
 ng g c cart/basket-list --project=shop
-ng g c shopping-cart\total-units --project=shop --module=shopping-cart\shopping-cart.module.ts
 ```
+
+
+
 
 ## 1.1 Default
 
