@@ -40,20 +40,9 @@ As a: customer,
   so that: I can take less units
 
 As a: customer,
-  I want: to see every time the current units and number of products in my basket
+  I want: to see always counters of my basket
   so that: I can know what I'm buying
 ```
-
-
----
-
-class: impact
-
-# 1 Estrategias de detección del cambio
-
-## Default
-
-## OnPush
 
 ---
 
@@ -75,6 +64,19 @@ ng g c cart/basket-list --project=shop
 ng g s basket --project=shop
 ```
 
+---
+
+class: impact
+
+# 1 Estrategias de detección del cambio
+
+## Default
+
+## OnPush
+
+---
+
+
 ## 1.1 Default
 
 ```typescript
@@ -89,14 +91,21 @@ Con las estrategias por defecto
 Se actualiza la vista con:
 
 1 - Datos asíncronos recibidos desde el API
+
 2 - Procesos en Background
+
 3 - Interacción del usuario
+
+Los cambios se detectan siempre por comparación de valores.
 
 ---
 
 > Aunque demasiadas veces
 
-> Y con demasiado coste
+--
+
+> Y con demasiado coste cada vez
+
 ---
 
 ## 1.2 OnPush
@@ -111,11 +120,16 @@ Al usar la detección OnPush en el contenedor:
 
 > Las datos muestran incoherencias o no se muestran
 
+---
+
 Se actualiza la vista con:
 
 1 - Los recepción de datos no se muestra en pantalla
+
 2.1 - El proceso en Background de creación en el picker no ocurre al iniciar porque no llega a crearse. Hay que forzarlo con un click.
+
 2.2 - El proceso en Background de borrado en el container (si llega a tiempo)  ya no desencadena la orden de pintado
+
 3 - La interacción del usuario sí que obliga al repintado, pero no actualiza la hora de actualización tras guardar en servidor
 
 ---
