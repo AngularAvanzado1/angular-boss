@@ -6,13 +6,13 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { BasketItem } from '../database/products.data';
+import { BasketItem } from '../model/products.interface';
 
 @Component({
   selector: 'ab-shop-basket-list',
   templateUrl: './basket-list.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BasketListComponent implements OnInit {
   @Input() public basket: Array<BasketItem> = [];

@@ -7,20 +7,20 @@ import {
   Output
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BasketItem, Product } from '../database/products.data';
+import { BasketItem, Product } from '../model/products.interface';
 
 @Component({
   selector: 'ab-shop-item-picker',
   templateUrl: './item-picker.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemPickerComponent implements OnInit {
   @Input() public products: Product[];
   @Output() public addItem = new EventEmitter<BasketItem>();
   public pickerFormGroup: FormGroup;
   private configuration = {
-    timeoutBackground: 0,
+    timeoutBackground: 3000,
     useCDR: false
   };
   constructor() {}

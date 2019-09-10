@@ -118,11 +118,13 @@ changeDetection: ChangeDetectionStrategy.OnPush
 
 Al usar la detección OnPush en el contenedor:
 
+> Las llamadas se reducen pero...
+--
 > Las datos muestran incoherencias o no se muestran
 
 ---
 
-Se actualiza la vista con:
+<!-- Se actualiza la vista con:
 
 1 - Los recepción de datos no se muestra en pantalla
 
@@ -130,7 +132,7 @@ Se actualiza la vista con:
 
 2.2 - El proceso en Background de borrado en el container (si llega a tiempo)  ya no desencadena la orden de pintado
 
-3 - La interacción del usuario sí que obliga al repintado, pero no actualiza la hora de actualización tras guardar en servidor
+3 - La interacción del usuario sí que obliga al repintado, pero no actualiza la hora de actualización tras guardar en servidor -->
 
 ---
 
