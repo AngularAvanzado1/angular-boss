@@ -1,12 +1,6 @@
 {
-    "spellright.language": [
-        "en",
-        "es"
-    ],
-    "spellright.documentTypes": [
-        "markdown",
-        "latex",
-        "plaintext"
-    ],
-    "workbench.colorTheme": "Eva Dark"
+  "spellright.language": ["en", "es"],
+  "spellright.documentTypes": ["markdown", "latex", "plaintext"],
+  "workbench.colorTheme": "Eva Light Bold",
+  "editor.fontSize": 16
 }
