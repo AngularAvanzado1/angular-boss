@@ -5,7 +5,7 @@ import { BasketService } from './basket.service';
   selector: 'ab-shop-root',
   templateUrl: './app.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AppComponent {
   public title = 'shop';

@@ -13,14 +13,14 @@ import { BasketItem, Product } from '../model/products.interface';
   selector: 'ab-shop-item-picker',
   templateUrl: './item-picker.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ItemPickerComponent implements OnInit {
   @Input() public products: Product[];
   @Output() public addItem = new EventEmitter<BasketItem>();
   public pickerFormGroup: FormGroup;
   private configuration = {
-    timeoutBackground: 3000,
+    timeoutBackground: 0 * 1000,
     useCDR: false
   };
   constructor() {}

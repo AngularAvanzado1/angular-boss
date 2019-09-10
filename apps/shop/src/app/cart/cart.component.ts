@@ -7,7 +7,7 @@ import { BasketItem, Product } from './model/products.interface';
   selector: 'ab-shop-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class CartComponent implements OnInit {
   public products: Product[];
