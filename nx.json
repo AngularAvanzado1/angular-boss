@@ -7,5 +7,30 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "shop-e2e": {
+      "tags": []
+    },
+    "shop": {
+      "tags": []
+    },
+    "warehouse-e2e": {
+      "tags": []
+    },
+    "warehouse": {
+      "tags": []
+    },
+    "api": {
+      "tags": []
+    },
+    "shared-domain": {
+      "tags": []
+    },
+    "shared-ui": {
+      "tags": []
+    },
+    "shared-data": {
+      "tags": []
+    }
+  }
 }
