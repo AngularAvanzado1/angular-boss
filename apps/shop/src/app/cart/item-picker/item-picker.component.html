@@ -1,0 +1,14 @@
+<form [formGroup]="pickerFormGroup">
+  <label>Product: </label>
+  <select formControlName="product">
+    <option *ngFor="let product of products"
+            [ngValue]="product">{{ product.description }}</option>
+  </select>
+  <label>Units: </label>
+  <input formControlName="units"
+         type="number" />
+  <input value="Add"
+         type="button"
+         [disabled]="pickerFormGroup.invalid"
+         (click)="onAddItem()">
+</form>
