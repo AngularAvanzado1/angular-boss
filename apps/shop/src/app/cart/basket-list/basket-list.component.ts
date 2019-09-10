@@ -12,4 +12,9 @@ export class BasketListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  public getAmount(item: BasketItem) {
+    console.count('getAmount calls');
+    return item.units * item.product.price;
+  }
 }

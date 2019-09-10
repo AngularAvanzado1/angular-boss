@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BasketService } from './basket.service';
 
 @Component({
   selector: 'ab-shop-root',
   templateUrl: './app.component.html',
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AppComponent {
   public title = 'shop';
@@ -17,5 +18,9 @@ export class AppComponent {
     basketService.basket$.subscribe({
       next: basket => (this.basket = basket)
     });
+  }
+  public getUnits() {
+    console.count('getUnits calls');
+    return this.basket.length;
   }
 }

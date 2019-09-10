@@ -3,6 +3,7 @@
     <tr>
       <td>Product</td>
       <td>Units</td>
+      <td>Amount</td>
       <td>Remove</td>
     </tr>
   </thead>
@@ -10,6 +11,7 @@
     <tr *ngFor="let item of basket">
       <td>{{ item.product.description }}</td>
       <td>{{ item.units }}</td>
+      <td>{{ getAmount(item) }}</td>
       <td><button (click)="removeItem.emit(item)">X</button> </td>
     </tr>
   </tbody>

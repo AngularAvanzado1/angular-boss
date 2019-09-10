@@ -1,5 +1,5 @@
 <ab-ui-greetings></ab-ui-greetings>
 <nav>
-  <a [routerLink]="['/cart']">Basket: {{ basketUnits }} units in {{ basket?.length }} products</a>
+  <a [routerLink]="['/cart']">Basket: {{ basketUnits }} units in {{ getUnits() }} products</a>
 </nav>
 <router-outlet></router-outlet>

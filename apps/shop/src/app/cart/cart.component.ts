@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BasketService } from '../basket.service';
 import { BasketItem, Product, PRODUCTS } from './database/products.data';
 
 @Component({
   selector: 'ab-shop-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css']
+  styleUrls: ['./cart.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class CartComponent implements OnInit {
   public products: Product[] = PRODUCTS;
@@ -30,7 +31,5 @@ export class CartComponent implements OnInit {
     );
     this.basketService.units$.next(totalUnits);
     this.basketService.basket$.next(this.basket);
-    console.log({ basket: this.basket });
-    console.log({ totalUnits });
   }
 }
