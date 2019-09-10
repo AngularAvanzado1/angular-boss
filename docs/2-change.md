@@ -58,8 +58,15 @@ class: impact
 ---
 
 ```terminal
-ng g m shopping-cart --project=shop --routing
-ng g c shopping-cart --project=shop --module=shopping-cart\shopping-cart.module.ts
+ng g m cart --project=shop --module=app.module.ts --routing --route=cart
+```
+
+`apps\shop\src\app\app.component.html`
+
+```html
+<nav>
+  <a [routerLink]="['/cart']">Basket: {{ 0 }} items</a>
+</nav>
 ```
 
 ```terminal
