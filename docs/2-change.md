@@ -197,6 +197,7 @@ export class CartComponent implements OnInit {
 > Las vistas siguen mostrando incoherencias
 
 1 - Los recepción de productos funciona pues el `pipe async` llama por su cuenta al _cdr_
+
 2 - Pero la lista de productos no se muestra porque no se detectan sus cambios, aunque ocurren.
 
 ---
@@ -204,13 +205,22 @@ export class CartComponent implements OnInit {
 ## 2.2 Inmutable
 
 > ¿Qué le ocurre al array?
+
+
 --
+
 > Que aunque su contenido cambia
+
 --
+
 > Su referencia es siempre la misma
+
 --
+
 > Tenemos que evitar eso...
+
 --
+
 > El problema es que el componente `CartComponent` con la estrategia _OnPush_ ya no detecta cambios internos en un array. Sólo se refresca ante cambios en las referencias. Para forzarlos debemos clonar los objetos.
 
 ---
@@ -244,12 +254,19 @@ export class CartComponent implements OnInit {
 
 > ¿Qué le ocurre al contador de la barra de navegación?
 --
+
 > Que aunque su contenido cambia
+
 --
+
 > La detección no se lanza porque nada lo provoca
+
 --
+
 > No hay evento de usuario, ni @Output()
+
 --
+
 > El problema es que el componente `AppComponent` con la estrategia _OnPush_ sigue sin detectar cambios asíncronos.O usamos el ``pipe async` o en situaciones límite, tendremos que lanzar el proceso de detección de cambios de forma manual.
 
 ---
@@ -287,6 +304,7 @@ Nadie mejor que quien lo desarrolla para saber cuando algo cambia.
 Pero ojo...
 
 > Forzar la detección de cambios, no implica detección
+
 > Hay que usarlo en combinación con el clonado.
 
 ---
