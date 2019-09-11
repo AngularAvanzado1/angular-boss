@@ -27,7 +27,7 @@ export class ItemPickerComponent implements OnInit {
 
   ngOnInit() {
     this.pickerFormGroup = new FormGroup({
-      product: new FormControl(this.products[0]),
+      product: new FormControl(),
       units: new FormControl(0, [Validators.min(1)])
     });
     if (this.configuration.timeoutBackground > 0) {
@@ -40,6 +40,7 @@ export class ItemPickerComponent implements OnInit {
     basketItem.product = this.pickerFormGroup.value.product;
     basketItem.units = this.pickerFormGroup.value.units;
     this.addItem.next(basketItem);
+    this.pickerFormGroup.reset({});
   }
 
   private autoBackGroundPicker() {
