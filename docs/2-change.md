@@ -343,19 +343,26 @@ class: impact
 ## Async, CDR y clone detectan los cambios
 
 ---
+## Change Detection
 
+![ChangeDetection](./assets/ChangeDetection.jpg)
+
+---
 ## 3.1 OnPush es más ligero
 
 - Se lanza menos veces
+
 - Sólo comprueba referencias, no valores
 
 ---
 
 ## 3.2 Async, CDR y clone detectan los cambios
 
-- Async para que las respuestas desde observables sean limpias
-- CDR cuando el cambio venga de procesos asíncronos pero no observables
-- Clonado para que los componentes presentadores detecten cambios en las referencias
+- **`Async`:** para que las respuestas desde observables sean limpias
+
+- **_CDR_:** cuando el cambio venga de procesos asíncronos pero no observables
+
+- **_Clonado_:** para que los componentes presentadores detecten cambios en las referencias
 
 ---
 
