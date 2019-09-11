@@ -26,9 +26,7 @@ export class ItemPickerComponent implements OnInit {
       product: new FormControl(),
       units: new FormControl(0, [Validators.min(1)])
     });
-    if (this.configuration.timeoutBackground > 0) {
-      this.autoBackGroundPicker();
-    }
+    this.autoBackGroundPicker();
   }
 
   public onAddItem() {
