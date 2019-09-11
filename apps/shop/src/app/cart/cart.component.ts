@@ -35,20 +35,27 @@ export class CartComponent implements OnInit {
   }
 
   public onAddItem(item: BasketItem) {
-    const currentProduct = this.basket.find(
-      basketItem => basketItem.product._id === item.product._id
-    );
-    if (currentProduct) {
-      currentProduct.units += item.units;
+    const itemIndex = this.getIndexofItem(item);
+    if (itemIndex !== -1) {
+      this.basket[itemIndex].units += item.units;
     } else {
       this.basket.push(item);
     }
     this.onBasketChange();
   }
   public onRemoveItem(item: BasketItem) {
-    this.basket = this.basket.filter(i => i.product._id !== item.product._id);
+    const itemIndex = this.getIndexofItem(item);
+    if (itemIndex !== -1) {
+      this.basket.splice(itemIndex, 1);
+    }
     this.onBasketChange();
   }
+  private getIndexofItem(item: BasketItem) {
+    return this.basket.findIndex(
+      basketItem => basketItem.product._id === item.product._id
+    );
+  }
+
   private onBasketChange() {
     const totalUnits = this.basket.reduce(
       (total, item) => total + item.units,
