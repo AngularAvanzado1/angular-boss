@@ -68,6 +68,6 @@ export class CartComponent implements OnInit {
   private autoBackGroundRemover() {
     setTimeout(() => {
       this.onRemoveItem(this.basket[0]);
-    }, 2000);
+    }, 5000);
   }
 }
