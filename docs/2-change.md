@@ -252,10 +252,10 @@ export class CartComponent implements OnInit {
 
 ## 2.3 DetectChanges
 
-> ¿Qué le ocurre al contador de la barra de navegación?
+> ¿Qué le ocurre al contador de la barra de navegación? ¿Porqué al borrar en _background_ la lista no lo refleja?
 --
 
-> Que aunque su contenido cambia
+> Que aunque su contenido cambia.
 
 --
 
@@ -267,7 +267,20 @@ export class CartComponent implements OnInit {
 
 --
 
-> El problema es que el componente `AppComponent` con la estrategia _OnPush_ sigue sin detectar cambios asíncronos.O usamos el ``pipe async` o en situaciones límite, tendremos que lanzar el proceso de detección de cambios de forma manual.
+> El problema es que un componente con la estrategia _OnPush_ sigue sin detectar cambios asíncronos. O usamos el `pipe async` o en situaciones límite, tendremos que lanzar el proceso de detección de cambios de forma manual.
+
+---
+
+`apps\shop\src\app\cart\cart.component.ts`
+
+```typescript
+  private autoBackGroundRemover() {
+    setTimeout(() => {
+      this.onRemoveItem(this.basket[0]);
+      this.cdr.detectChanges();
+    }, 1000);
+  }
+```
 
 ---
 
