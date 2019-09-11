@@ -19,10 +19,6 @@ export class ItemPickerComponent implements OnInit {
   @Input() public products: Product[];
   @Output() public addItem = new EventEmitter<BasketItem>();
   public pickerFormGroup: FormGroup;
-  private configuration = {
-    timeoutBackground: 0 * 1000,
-    useCDR: false
-  };
   constructor() {}
 
   ngOnInit() {
@@ -44,16 +40,13 @@ export class ItemPickerComponent implements OnInit {
   }
 
   private autoBackGroundPicker() {
-    setInterval(() => {
+    setTimeout(() => {
       const randomItem = Math.round(Math.random() * this.products.length);
       const randomUnits = Math.round(Math.random() * 5) + 1;
       const item = { product: this.products[randomItem], units: randomUnits };
       console.log(`Auto pick item ${JSON.stringify(item)} `);
       this.pickerFormGroup.setValue(item);
       this.onAddItem();
-      if (this.configuration.useCDR) {
-        //  this.cdr.detectChanges();
-      }
-    }, this.configuration.timeoutBackground);
+    }, 1000);
   }
 }

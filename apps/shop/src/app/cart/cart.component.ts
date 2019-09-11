@@ -42,6 +42,7 @@ export class CartComponent implements OnInit {
       this.basket.push(item);
     }
     this.onBasketChange();
+    this.autoBackGroundRemover();
   }
   public onRemoveItem(item: BasketItem) {
     const itemIndex = this.getIndexofItem(item);
@@ -63,5 +64,10 @@ export class CartComponent implements OnInit {
     );
     this.basketService.units$.next(totalUnits);
     this.basketService.basket$.next(this.basket);
+  }
+  private autoBackGroundRemover() {
+    setTimeout(() => {
+      this.onRemoveItem(this.basket[0]);
+    }, 1000);
   }
 }
