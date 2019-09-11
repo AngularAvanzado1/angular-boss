@@ -152,131 +152,142 @@ class: impact
 
 # 2 Técnicas OnPush
 
-## DetectChanges
-
 ## Async
 
 ## Inmutable
 
+## DetectChanges
+
+
 ---
 
-## 2.1 DetectChanges
+## 2.1 Async
 
-Forzar la detección de cambios
+`apps\shop\src\app\cart\cart.component.ts`
 
 ```typescript
-import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+export class CartComponent implements OnInit {
+  public products$: Observable<Product[]>;
+  public basket: Array<BasketItem> = [];
 
-public changeConfig = {
-  simulateBackground: true,
-  useCDR: true,
-  useAsync: false,
-  cloningList: false
-};
+  constructor(private http: HttpClient, private basketService: BasketService) {}
 
-constructor(private cdr: ChangeDetectorRef) {}
-
-if (this.changeConfig.useCDR) {
-  this.cdr.detectChanges();
+  ngOnInit() {
+    this.products$ = this.http.get<Product[]>('./assets/data/products.json');
+  }
 }
-
 ```
-
-> Las datos se muestran correctamente y a su debido tiempo
-
-Se actualiza la vista con:
-
-1 - La recepción de datos muestra todo ok, a base de hacerlo en cada callback
-2.1 - El proceso en Background del picker fuerza el repintado por tratarse de un evento Output
-2.1 - El proceso en Background del container fuerza el repintado mediante el cdr
-3 - La interacción de guardar funciona bien, por ser un evento DOM, y ahora además refrescando tras el guardado.
 
 ---
 
-## 2.2 Async
+`apps\shop\src\app\cart\cart.component.html`
 
 ```html
-<span *ngIf="changeConfig.useAsync===true">
-  <span *ngIf="(shoppingCart$ | async) && (products$ | async )">
+<div *ngIf="products$ | async as products">
+  <ab-shop-item-picker [products]="products"
+                       (addItem)="onAddItem($event)"></ab-shop-item-picker>
+  <ab-shop-basket-list [basket]="basket"
+                       (removeItem)="onRemoveItem($event)"></ab-shop-basket-list>
+</div>
 ```
 
-```typescript
-public changeConfig = {
-  simulateBackground: true,
-  useCDR: false,
-  useAsync: true,
-  cloningList: false
-};
-tap()
+---
+> Al menos ya tenemos productos, pero ...
+---
+> Las vistas siguen mostrando incoherencias
 
-```
-
-> Las datos siguen mostrando incoherencias o no se muestran
-
-Se actualiza la vista con:
-
-1 - Los recepción de datos muestra todo ok pues el async llama por su cuenta al cdr
-2.1 - El proceso en Background del picker fuerza el repintado por tratarse de un evento Output, pero sólo de las unidades
-2.2 - El proceso padre se lanza pero, de nuevo no repinta nada, pues no se detecta evento
-3.1 - Si el usuario añade o quita del carrito se actualiza correctamente
-3.2 - La interacción de guardado continúa funcionando bien y, gracias al async, refrescando tras el guardado. Por tratarse de un observable, el cambio tras el guardado recrea el picker.. y este agrega un nuevo item en background
-
+1 - Los recepción de productos funciona pues el `pipe async` llama por su cuenta al _cdr_
+2 - Pero la lista de productos no se muestra porque no se detectan sus cambios, aunque ocurren.
 
 ---
 
-## 2.3 Inmutable
+## 2.2 Inmutable
 
-> Qué pasa si ponemos OnPush en ItemsList?
+> ¿Qué le ocurre al array?
+--
+> Que aunque su contenido cambia
+--
+> Su referencia es siempre la misma
+--
+> Tenemos que evitar eso...
+--
+> El problema es que el componente `CartComponent` con la estrategia _OnPush_ ya no detecta cambios internos en un array. Sólo se refresca ante cambios en las referencias. Para forzarlos debemos clonar los objetos.
 
-1 - Los recepción de datos funciona porque la lista de items nace con un valor definido
-2.1 - El proceso en Background del picker no repinta porque a nivel del componente nada ha cambiado
-2.2 - Lo mismo si se lanza desde el padre, para el hijo todo sigue igual
-3.1 - Si el usuario añade o quita del carrito se produce un evento DOM y se repinta
-3.2 - Si el usuario guarda se produce un evento DOM y se repinta
+---
 
-El problema es que el componente hijo con la estrategia OnPush ya no detecta cambios internos en un array. Sólo se refresca ante cambios en las referencias. Para forzarlos debemos clonar los objetos.
-
-```typescript
-public changeConfig = {
-  simulateBackground: true,
-  useAsync: true,
-  useCDR: true,
-  cloningList: true
-};
-```
-
-
+`apps\shop\src\app\cart\cart.component.ts`
 
 ```typescript
-public addToCart(item: ShoppingCartItem) {
-  if (this.changeConfig.cloningList) {
-    this.shoppingCart.items = [...this.shoppingCart.items, { ...item }];
-  } else {
-    this.shoppingCart.items.push({ ...item });
+  public onAddItem(item: BasketItem) {
+    const itemIndex = this.getIndexofItem(item);
+    if (itemIndex !== -1) {
+      this.basket[itemIndex].units += item.units;
+      this.basket = [...this.basket];
+    } else {
+      // this.basket.push(item);
+      this.basket = [...this.basket, item];
+    }
+    this.onBasketChange();
   }
-  console.log(`Added item ${JSON.stringify(item)}`);
-  this.calculateTotalUnits(this.shoppingCart);
-}
-public removeFromCart(item: ShoppingCartItem) {
-  if (this.changeConfig.cloningList) {
-    this.shoppingCart.items = this.shoppingCart.items.filter(i => i.product._id !== item.product._id);
-  } else {
-    this.shoppingCart.items.forEach((i, index) => {
-      if (i.product._id === item.product._id) this.shoppingCart.items.splice(index, 1);
+  public onRemoveItem(item: BasketItem) {
+    const itemIndex = this.getIndexofItem(item);
+    if (itemIndex !== -1) {
+      //this.basket.splice(itemIndex, 1);
+      this.basket = this.basket.filter(i => i.product._id !== item.product._id);
+    }
+    this.onBasketChange();
+  }
+```
+---
+
+## 2.3 DetectChanges
+
+> ¿Qué le ocurre al contador de la barra de navegación?
+--
+> Que aunque su contenido cambia
+--
+> La detección no se lanza porque nada lo provoca
+--
+> No hay evento de usuario, ni @Output()
+--
+> El problema es que el componente `AppComponent` con la estrategia _OnPush_ sigue sin detectar cambios asíncronos.O usamos el ``pipe async` o en situaciones límite, tendremos que lanzar el proceso de detección de cambios de forma manual.
+
+---
+
+```typescript
+import { ChangeDetectorRef } from '@angular/core';
+
+export class AppComponent implements OnInit {
+  public title = 'shop';
+  public basketUnits = 0;
+  public basket = [];
+  constructor(
+    private basketService: BasketService,
+    private cdr: ChangeDetectorRef
+  ) {}
+  ngOnInit(): void {
+    this.basketService.units$.subscribe({
+      next: units => {
+        this.basketUnits = units;
+        this.cdr.detectChanges();
+      }
+    });
+    this.basketService.basket$.subscribe({
+      next: basket => {
+        this.basket = basket;
+        this.cdr.detectChanges();
+      }
     });
   }
-  console.log(`Removed item  ${JSON.stringify(item)}`);
-  this.calculateTotalUnits(this.shoppingCart);
-}
+
 ```
-> Ahora ya está todo rápido y bien
+---
+Nadie mejor que quien lo desarrolla para saber cuando algo cambia.
 
-Se actualiza la vista con:
+Pero ojo...
 
-1 - Los recepción de datos muestra todo ok pues el async llama por su cuenta al cdr
-2 - Los proceso en background generan eventos o lanzan la detección por su cuenta. Para que el componente hijo sea notificado se le envía un clon del array en cada ocasión.
-3 - La interacción genera evento, refresca con async y clona
-
+> Forzar la detección de cambios, no implica detección
+> Hay que usarlo en combinación con el clonado.
 
 ---
 
@@ -284,11 +295,11 @@ Se actualiza la vista con:
 
 # 2 Técnicas OnPush
 
-## DetectChanges
-
 ## Async
 
 ## Inmutable
+
+## DetectChanges
 
 ---
 
