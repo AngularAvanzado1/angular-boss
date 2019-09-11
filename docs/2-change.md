@@ -126,18 +126,6 @@ Al usar la detección OnPush en el contenedor:
 
 ---
 
-<!-- Se actualiza la vista con:
-
-1 - Los recepción de datos no se muestra en pantalla
-
-2.1 - El proceso en Background de creación en el picker no ocurre al iniciar porque no llega a crearse. Hay que forzarlo con un click.
-
-2.2 - El proceso en Background de borrado en el container (si llega a tiempo)  ya no desencadena la orden de pintado
-
-3 - La interacción del usuario sí que obliga al repintado, pero no actualiza la hora de actualización tras guardar en servidor -->
-
----
-
 > Recap:
 
 # 1 Estrategias de detección del cambio
