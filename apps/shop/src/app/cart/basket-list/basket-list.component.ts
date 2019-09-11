@@ -12,7 +12,7 @@ import { BasketItem } from '../model/products.interface';
   selector: 'ab-shop-basket-list',
   templateUrl: './basket-list.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BasketListComponent implements OnInit {
   @Input() public basket: Array<BasketItem> = [];

@@ -13,7 +13,7 @@ import { BasketItem, Product } from '../model/products.interface';
   selector: 'ab-shop-item-picker',
   templateUrl: './item-picker.component.html',
   styles: [],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemPickerComponent implements OnInit {
   @Input() public products: Product[];

@@ -1,4 +1,4 @@
-<div *ngIf="products">
+<div *ngIf="products$ | async as products">
   <ab-shop-item-picker [products]="products"
                        (addItem)="onAddItem($event)"></ab-shop-item-picker>
   <ab-shop-basket-list [basket]="basket"

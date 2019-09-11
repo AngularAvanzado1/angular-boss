@@ -1,5 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
+import { Observable } from 'rxjs';
 import { BasketService } from '../basket.service';
 import { BasketItem, Product } from './model/products.interface';
 
@@ -7,39 +13,30 @@ import { BasketItem, Product } from './model/products.interface';
   selector: 'ab-shop-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent implements OnInit {
-  public products: Product[];
+  public products$: Observable<Product[]>;
   public basket: Array<BasketItem> = [];
 
-  constructor(private http: HttpClient, private basketService: BasketService) {}
+  constructor(
+    private http: HttpClient,
+    private basketService: BasketService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.http.get<Product[]>('./assets/data/products.json').subscribe({
-      next: response => {
-        this.products = response;
-        console.log({ products: this.products });
-      }
-    });
-    // this.products = [
-    //   {
-    //     _id: 'MS-2',
-    //     description: 'Surface',
-    //     category: 'Computer',
-    //     brand: 'Microsoft',
-    //     price: 1500,
-    //     stock: 20
-    //   }
-    // ];
+    this.products$ = this.http.get<Product[]>('./assets/data/products.json');
   }
 
   public onAddItem(item: BasketItem) {
     const itemIndex = this.getIndexofItem(item);
     if (itemIndex !== -1) {
       this.basket[itemIndex].units += item.units;
+      this.basket = [...this.basket];
     } else {
-      this.basket.push(item);
+      // this.basket.push(item);
+      this.basket = [...this.basket, item];
     }
     this.onBasketChange();
     this.autoBackGroundRemover();
@@ -47,7 +44,8 @@ export class CartComponent implements OnInit {
   public onRemoveItem(item: BasketItem) {
     const itemIndex = this.getIndexofItem(item);
     if (itemIndex !== -1) {
-      this.basket.splice(itemIndex, 1);
+      //this.basket.splice(itemIndex, 1);
+      this.basket = this.basket.filter(i => i.product._id !== item.product._id);
     }
     this.onBasketChange();
   }
@@ -68,6 +66,7 @@ export class CartComponent implements OnInit {
   private autoBackGroundRemover() {
     setTimeout(() => {
       this.onRemoveItem(this.basket[0]);
+      this.cdr.detectChanges();
     }, 5000);
   }
 }
