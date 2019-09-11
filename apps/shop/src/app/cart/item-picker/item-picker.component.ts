@@ -45,6 +45,6 @@ export class ItemPickerComponent implements OnInit {
       console.log(`Auto pick item ${JSON.stringify(item)} `);
       this.pickerFormGroup.setValue(item);
       this.onAddItem();
-    }, 1000);
+    }, 2000);
   }
 }
