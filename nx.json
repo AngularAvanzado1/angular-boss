@@ -31,6 +31,9 @@
     },
     "shared-data": {
       "tags": []
+    },
+    "products": {
+      "tags": []
     }
   }
 }

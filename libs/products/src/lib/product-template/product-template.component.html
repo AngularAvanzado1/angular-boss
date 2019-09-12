@@ -1,0 +1,15 @@
+<article style="margin: 5px; padding: 5px; border: 2px; border-style: solid;">
+  <header>
+    <h2>
+      {{ product.description }}
+    </h2>
+  </header>
+  <main>
+    <ng-content select="main">
+    </ng-content>
+  </main>
+  <footer style="margin-top: 5px">
+    <ng-content select=".actions">
+    </ng-content>
+  </footer>
+</article>

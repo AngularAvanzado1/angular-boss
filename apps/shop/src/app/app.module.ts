@@ -14,7 +14,8 @@ import { AppComponent } from './app.component';
           path: 'cart',
           loadChildren: () =>
             import('./cart/cart.module').then(m => m.CartModule)
-        }
+        },
+      { path: 'catalog', loadChildren: () => import('./catalog/catalog.module').then(m => m.CatalogModule) }
       ],
       { initialNavigation: 'enabled' }
     ),

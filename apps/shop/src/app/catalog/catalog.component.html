@@ -1,0 +1,4 @@
+<section *ngIf="catalog$ | async as catalog">
+  <ab-shop-product *ngFor="let product of catalog"
+                   [product]="product"></ab-shop-product>
+</section>

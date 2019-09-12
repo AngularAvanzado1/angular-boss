@@ -1,0 +1,16 @@
+<ab-products-product-template [product]="product">
+  <main>
+    <div>
+      {{ product.brand }} - {{ product.category }}
+    </div>
+    <div>
+      Price: {{ product.price }}
+    </div>
+  </main>
+  <nav class="actions">
+    <button (clic)="buy.next()"
+            style="background-color:coral; padding: 5px">
+      <strong>Buy me!</strong>
+    </button>
+  </nav>
+</ab-products-product-template>
