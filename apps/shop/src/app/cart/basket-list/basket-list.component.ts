@@ -6,7 +6,7 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { BasketItem } from '../model/products.interface';
+import { BasketItem } from '../model/basket.interface';
 
 @Component({
   selector: 'ab-shop-basket-list',

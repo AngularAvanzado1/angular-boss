@@ -1,3 +1,4 @@
+import { Product } from '@a-boss/domain';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BasketItem, Product } from '../model/products.interface';
+import { BasketItem } from '../model/basket.interface';
 
 @Component({
   selector: 'ab-shop-item-picker',
