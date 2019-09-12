@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 export class CatalogComponent implements OnInit {
   public catalog$: Observable<Product[]>;
   constructor(private http: HttpClient) {}
+
   ngOnInit() {
     this.catalog$ = this.http.get<Product[]>('./assets/data/products.json');
   }

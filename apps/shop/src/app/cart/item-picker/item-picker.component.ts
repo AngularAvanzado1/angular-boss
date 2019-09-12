@@ -8,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BasketItem } from '../model/basket.interface';
+import { BasketItem } from '../model/products.interface';
 
 @Component({
   selector: 'ab-shop-item-picker',
@@ -20,6 +20,9 @@ export class ItemPickerComponent implements OnInit {
   @Input() public products: Product[];
   @Output() public addItem = new EventEmitter<BasketItem>();
   public pickerFormGroup: FormGroup;
+  private configuration = {
+    timeoutBackground: 3 * 1000
+  };
   constructor() {}
 
   ngOnInit() {
@@ -27,7 +30,9 @@ export class ItemPickerComponent implements OnInit {
       product: new FormControl(),
       units: new FormControl(0, [Validators.min(1)])
     });
-    this.autoBackGroundPicker();
+    if (this.configuration.timeoutBackground > 0) {
+      this.autoBackGroundPicker();
+    }
   }
 
   public onAddItem() {
@@ -35,7 +40,7 @@ export class ItemPickerComponent implements OnInit {
     basketItem.product = this.pickerFormGroup.value.product;
     basketItem.units = this.pickerFormGroup.value.units;
     this.addItem.next(basketItem);
-    this.pickerFormGroup.reset();
+    this.pickerFormGroup.reset({});
   }
 
   private autoBackGroundPicker() {
@@ -46,6 +51,6 @@ export class ItemPickerComponent implements OnInit {
       console.log(`Auto pick item ${JSON.stringify(item)} `);
       this.pickerFormGroup.setValue(item);
       this.onAddItem();
-    }, 5000);
+    }, this.configuration.timeoutBackground);
   }
 }

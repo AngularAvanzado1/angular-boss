@@ -22,12 +22,12 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('warehouse');
   });
 
-  it('should render title in a h1 tag', () => {
+  it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(
-      'Welcome to warehouse!'
+    expect(compiled.querySelector('.content span').textContent).toContain(
+      'warehouse app is running!'
     );
   });
 });

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasketService } from '../basket.service';
-import { BasketItem } from './model/basket.interface';
+import { BasketItem } from './model/products.interface';
 
 @Component({
   selector: 'ab-shop-cart',
@@ -50,12 +50,12 @@ export class CartComponent implements OnInit {
     }
     this.onBasketChange();
   }
+
   private getIndexofItem(item: BasketItem) {
     return this.basket.findIndex(
       basketItem => basketItem.product._id === item.product._id
     );
   }
-
   private onBasketChange() {
     const totalUnits = this.basket.reduce(
       (total, item) => total + item.units,
@@ -64,10 +64,11 @@ export class CartComponent implements OnInit {
     this.basketService.units$.next(totalUnits);
     this.basketService.basket$.next(this.basket);
   }
+
   private autoBackGroundRemover() {
     setTimeout(() => {
       this.onRemoveItem(this.basket[0]);
       this.cdr.detectChanges();
-    }, 5000);
+    }, 1000);
   }
 }

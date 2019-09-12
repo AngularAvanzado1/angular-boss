@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'ab-shop-product',
   templateUrl: './product.component.html',
-  styles: []
+  styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
   @Input() public product: Product;

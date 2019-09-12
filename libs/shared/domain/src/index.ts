@@ -1,2 +1,3 @@
-export * from './lib/greetings.interface';
-export * from './lib/product.inteface';
+export * from './lib/models/greetings.interface';
+export * from './lib/models/product.interface';
+
