@@ -1,16 +1,4 @@
-title: 3-Template
-class: animation-fade
-layout: true
-
-.bottom-bar[
-{{title}}
-]
-
----
-
-class: impact
-
-# {{title}}
+# 3-Template
 
 ## Componentes dinámicos, directivas y pipes
 
@@ -25,14 +13,9 @@ class: impact
 
 ---
 
-class: impact
 
 # 1 Plantillas de contenido dinámico
 
-## Un componente común
-## Implementaciones distintas
-
----
 
 ```yaml
 As a: customer,
@@ -48,8 +31,6 @@ As a: seller,
 ng g @nrwl/angular:library products --prefix=ab-products
 # "@a-boss/products": ["libs/products/src/index.ts"]
 ```
-
----
 
 ## 1.1 Un componente común
 
@@ -104,7 +85,6 @@ export class CatalogComponent implements OnInit {
 }
 ```
 
----
 
 `apps\shop\src\app\catalog\catalog.component.html`
 
@@ -114,8 +94,6 @@ export class CatalogComponent implements OnInit {
                    [product]="product"></ab-shop-product>
 </section>
 ```
-
----
 
 `apps\shop\src\app\catalog\catalog.component.html`
 
@@ -137,24 +115,8 @@ export class CatalogComponent implements OnInit {
 ```
 ---
 
-> Recap:
-
-# 1 Plantillas de contenido dinámico
-
-## Un componente común
-## Implementaciones distintas
-
----
-
-class: impact
 
 # 2 Atributos custom con Directivas
-
-## Generación de directivas
-## Consumo de directivas
-
-
----
 
 ```yaml
 As a: seller,
@@ -166,8 +128,6 @@ As a: seller,
   so that: I know I need to refill
 
 ```
-
----
 
 ## 2.1 Generación de directivas
 
@@ -215,21 +175,7 @@ export class ProductsModule {}
 
 ---
 
-> Recap:
-
-# 2 Atributos custom con Directivas
-## Generación de directivas
-## Consumo de directivas
----
-
-class: impact
-
 # 3 Funciones de transformación con Pipes
-
-## Generación de pipes
-## Consumo de pipes
-
----
 
 ```yaml
 As a: customer,
@@ -243,7 +189,6 @@ As a: customer,
 ---
 
 ## 3.1 Generación de pipes
-
 
 ```terminal
 ng g pipe exRate --project=products --export
@@ -266,22 +211,17 @@ export class ExRatePipe implements PipeTransform {
       return this.getOnlineRates$(symbol).pipe(map(rate => euros * rate));
     }
   }
+
+  private getOnlineRates$(symbol: string) {
+    const ratesUrl = this.ratesApi + symbol;
+    return this.httpClient.get<any>(ratesUrl).pipe(
+      shareReplay(1),
+      refCount(),
+      map(resp => resp.rates[symbol])
+    );
+  }
 }
 ```
-
----
-
-```typescript
-private getOnlineRates$(symbol: string) {
-  const ratesUrl = this.ratesApi + symbol;
-  return this.httpClient.get<any>(ratesUrl).pipe(
-    shareReplay(1),
-    refCount(),
-    map(resp => resp.rates[symbol])
-  );
-}
-```
-
 
 ---
 
@@ -298,15 +238,11 @@ private getOnlineRates$(symbol: string) {
 
 ---
 
-> Recap:
+> **Blog de apoyo:** [Componentes dinámicos, directivas y pipes con Angular](https://academia-binaria.com/Componentes-dinámicos-directivas-y-pipes-Angular/)
 
-# 3 Funciones de transformación con Pipes
-
-## Generación de pipes
-## Consumo de pipes
+> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
 ---
-
 
 > Next:
 
@@ -316,6 +252,4 @@ private getOnlineRates$(symbol: string) {
 ## Implementación de un Store con RxJs
 
 
-> **Blog de apoyo:** [Componentes dinámicos, directivas y pipes con Angular](https://academia-binaria.com/Componentes-dinámicos-directivas-y-pipes-Angular/)
 
-> > By [Alberto Basalo](https://twitter.com/albertobasalo)
