@@ -85,7 +85,7 @@ Cada *slot* se identifica mediante un `select="css-selector"`.
 
 ```bash
 ng g m catalog --project=shop --module=app.module.ts --routing --route=catalog
-ng g c product --project=shop --module=catalog\catalog.module.ts
+ng g c catalog/product --project=shop
 
 # imports: [ProductsModule]
 # <a [routerLink]="['/catalog']">Catalog</a>
@@ -104,6 +104,8 @@ export class CatalogComponent implements OnInit {
 }
 ```
 
+---
+
 `apps\shop\src\app\catalog\catalog.component.html`
 
 ```html
@@ -112,6 +114,10 @@ export class CatalogComponent implements OnInit {
                    [product]="product"></ab-shop-product>
 </section>
 ```
+
+---
+
+`apps\shop\src\app\catalog\catalog.component.html`
 
 ```html
 <ab-products-product-template [product]="product">
