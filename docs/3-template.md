@@ -266,17 +266,22 @@ export class ExRatePipe implements PipeTransform {
       return this.getOnlineRates$(symbol).pipe(map(rate => euros * rate));
     }
   }
-
-  private getOnlineRates$(symbol: string) {
-    const ratesUrl = this.ratesApi + symbol;
-    return this.httpClient.get<any>(ratesUrl).pipe(
-      shareReplay(1),
-      refCount(),
-      map(resp => resp.rates[symbol])
-    );
-  }
 }
 ```
+
+---
+
+```typescript
+private getOnlineRates$(symbol: string) {
+  const ratesUrl = this.ratesApi + symbol;
+  return this.httpClient.get<any>(ratesUrl).pipe(
+    shareReplay(1),
+    refCount(),
+    map(resp => resp.rates[symbol])
+  );
+}
+```
+
 
 ---
 
@@ -286,7 +291,7 @@ export class ExRatePipe implements PipeTransform {
 
 ```html
   <div>
-    Also ${{ product.price | exRate | number:'1.0-0'}} or
+    ${{ product.price | exRate | number:'1.0-0'}}
     {{ product.price | exRate:'GBP' | async | number:'1.0-0'}} £
   </div>
 ```
