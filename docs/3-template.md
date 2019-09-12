@@ -172,20 +172,22 @@ As a: seller,
 ## 2.1 Generación de directivas
 
 ```terminal
-ng g directive shared/out-of-stock --project=warehouse --export
+ng g directive out-of-stock --project=products --export
 ```
 
 ```typescript
 @Directive({
-  selector: '[angularBusinessOutOfStock]'
+  selector: '[abProductsOutOfStock]'
 })
 export class OutOfStockDirective {
   private minimalStock = 10;
+
   @Input()
-  set angularBusinessOutOfStock(stock: number) {
-    const color = stock <= this.minimalStock ? 'Red' : 'Green';
+  set abProductsOutOfStock(stock: number) {
+    const color = stock <= this.minimalStock ? 'MistyRose' : 'Aquamarine';
     this.el.nativeElement.style.backgroundColor = color;
   }
+
   constructor(private el: ElementRef) {}
 }
 ```
@@ -196,18 +198,19 @@ export class OutOfStockDirective {
 
 ```typescript
 @NgModule({
-  declarations: [OutOfStockDirective],
-  imports: [CommonModule, ViewsModule],
-  exports: [ViewsModule, OutOfStockDirective]
+  imports: [CommonModule],
+  declarations: [ProductTemplateComponent, OutOfStockDirective],
+  exports: [ProductTemplateComponent, OutOfStockDirective]
 })
-export class SharedModule {}
+export class ProductsModule {}
 ```
 
+`apps\shop\src\app\catalog\product\product.component.html`
+
 ```html
-<div [angularBusinessOutOfStock]="card.item.stock"
-  data-cy="product-stock">
-  Remains {{ card.item.stock }} <span>units</span>
-</div>
+  <div [abProductsOutOfStock]="product.stock">
+    Stock: {{ product.stock }}
+  </div>
 ```
 
 ---

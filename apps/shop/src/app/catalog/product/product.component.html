@@ -6,6 +6,9 @@
     <div>
       Price: {{ product.price }}
     </div>
+    <div [abProductsOutOfStock]="product.stock">
+      Stock: {{ product.stock }}
+    </div>
   </main>
   <nav class="actions">
     <button (clic)="buy.next()"
