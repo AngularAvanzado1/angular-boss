@@ -46,6 +46,7 @@ As a: seller,
 
 ```bash
 ng g @nrwl/angular:library products --prefix=ab-products
+# "@a-boss/products": ["libs/products/src/index.ts"]
 ```
 
 ---
@@ -81,9 +82,35 @@ Cada *slot* se identifica mediante un `select="css-selector"`.
 ---
 
 ## 1.2 Implementaciones distintas
+
 ```bash
 ng g m catalog --project=shop --module=app.module.ts --routing --route=catalog
 ng g c product --project=shop --module=catalog\catalog.module.ts
+
+# imports: [ProductsModule]
+# <a [routerLink]="['/catalog']">Catalog</a>
+```
+
+`apps\shop\src\app\catalog\catalog.component.ts`
+
+```typescript
+export class CatalogComponent implements OnInit {
+  public catalog$: Observable<Product[]>;
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.catalog$ = this.http.get<Product[]>('./assets/data/products.json');
+  }
+}
+```
+
+`apps\shop\src\app\catalog\catalog.component.html`
+
+```html
+<section *ngIf="catalog$ | async as catalog">
+  <ab-shop-product *ngFor="let product of catalog"
+                   [product]="product"></ab-shop-product>
+</section>
 ```
 
 ```html
