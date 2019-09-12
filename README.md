@@ -1,4 +1,5 @@
 # AngularBoss
+[Curso online de desarrollo avanzado con Angular](https://www.trainingit.es/curso-angular-avanzado/?promo=angular.builders)
 
 This project was generated using [Nx](https://nx.dev).
 
