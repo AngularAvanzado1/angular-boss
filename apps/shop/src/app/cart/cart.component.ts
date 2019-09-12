@@ -1,3 +1,4 @@
+import { Product } from '@a-boss/domain';
 import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
@@ -7,7 +8,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasketService } from '../basket.service';
-import { BasketItem, Product } from './model/products.interface';
+import { BasketItem } from './model/products.interface';
 
 @Component({
   selector: 'ab-shop-cart',

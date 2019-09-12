@@ -60,21 +60,19 @@ ng g c product-template --project=products --module=products.module.ts --export
 > La visión del comprador y del vendedor es parecida. Mantenemos estructura, inyectamos contenido.
 
 ```html
-<mat-card class="dashboard-card">
-  <mat-card-header>
-    <mat-card-title> {{card.title}} </mat-card-title>
-    <mat-card-subtitle> {{card.subtitle}} </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content class="dashboard-card-content">
-*   <ng-content select="content"></ng-content>
-    <mat-card-actions>
-      <ng-content select=".actions"></ng-content>
-    </mat-card-actions>
-  </mat-card-content>
-  <mat-card-footer class="mat-caption">
-*   <ng-content select="footer"></ng-content>
-  </mat-card-footer>
-</mat-card>
+<article style="margin: 5px; padding: 5px; border: 2px; border-style: solid;">
+  <header>
+    <h2>
+      {{ product.description }}
+    </h2>
+  </header>
+  <main>
+    <ng-content select="main"></ng-content>
+  </main>
+  <footer style="margin-top: 5px">
+    <ng-content select=".actions"></ng-content>
+  </footer>
+</article>
 ```
 
 La directiva `ngContent` permite crear *slots* para incrustar contenido a voluntad del consumidor.
@@ -83,43 +81,27 @@ Cada *slot* se identifica mediante un `select="css-selector"`.
 ---
 
 ## 1.2 Implementaciones distintas
-
-```html
-<angular-business-product [card]="card"
-                          data-cy="product-card">
-* <content>
-    <div data-cy="product-price">
-      Only {{ card.item.price | number:'1.0-0' }} €
-    </div>
-*   <section class="actions">
-      <button (click)="buyProduct(card.item)"
-              mat-raised-button
-              color="primary">Buy</button>
-    </section>
-  </content>
-* <footer>Stock: {{ card.item.stock }} units</footer>
-</angular-business-product>
+```bash
+ng g m catalog --project=shop --module=app.module.ts --routing --route=catalog
+ng g c product --project=shop --module=catalog\catalog.module.ts
 ```
 
----
-
 ```html
- <angular-business-product [card]="card"
-                          data-cy="product-card">
-* <content>
-    <div data-cy="product-stock">
-      Remains {{ card.item.stock }} <span>units</span>
+<ab-products-product-template [product]="product">
+  <main>
+    <div>
+      {{ product.brand }} - {{ product.category }}
     </div>
-*   <section class="actions">
-      <button (click)="refillProduct(card.item)"
-              mat-raised-button
-              color="primary">Refill</button>
-    </section>
-  </content>
-* <footer>Price: {{ card.item.price }} Euros</footer>
-</angular-business-product>
+    <div>
+      Price: {{ product.price }}
+    </div>
+  </main>
+  <nav class="actions">
+    <button (clic)="buy.next()"
+            style="background-color:coral; padding: 5px"><strong>Buy me!</strong></button>
+  </nav>
+</ab-products-product-template>
 ```
-
 ---
 
 > Recap:
