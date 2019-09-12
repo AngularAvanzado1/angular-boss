@@ -246,7 +246,7 @@ As a: customer,
 
 
 ```terminal
-ng g pipe shared/exRate --project=shop --export
+ng g pipe exRate --project=products --export
 ```
 
 ```typescript
@@ -254,15 +254,26 @@ ng g pipe shared/exRate --project=shop --export
   name: 'exRate'
 })
 export class ExRatePipe implements PipeTransform {
-  private euroDollars = 1.13;
+  private readonly euroDollars = 1.13;
+  private readonly ratesApi = 'https://api.exchangeratesapi.io/latest?symbols=';
+
   constructor(private httpClient: HttpClient) {}
+
   public transform(euros: number, symbol: string): number | Observable<number> {
     if (!symbol) {
       return euros * this.euroDollars;
     } else {
-      const ratesApi = 'https://api.exchangeratesapi.io/latest?symbols=' + symbol;
-      return this.httpClient.get<any>(ratesApi).pipe(map(resp => euros * resp.rates[symbol]));
+      return this.getOnlineRates$(symbol).pipe(map(rate => euros * rate));
     }
+  }
+
+  private getOnlineRates$(symbol: string) {
+    const ratesUrl = this.ratesApi + symbol;
+    return this.httpClient.get<any>(ratesUrl).pipe(
+      shareReplay(1),
+      refCount(),
+      map(resp => resp.rates[symbol])
+    );
   }
 }
 ```
@@ -271,20 +282,13 @@ export class ExRatePipe implements PipeTransform {
 
 ## 3.2 Consumo de pipes
 
-```typescript
-@NgModule({
-  declarations: [ExRatePipe],
-  imports: [CommonModule, FormsModule, ViewsModule, HttpClientModule],
-  exports: [ViewsModule, ExRatePipe]
-})
-export class SharedModule {}
-```
+`apps\shop\src\app\catalog\product\product.component.html`
 
 ```html
-<div class="mat-caption">
-  Also ${{ card.item.price | exRate | number:'1.0-0'}} or
-  {{ card.item.price | exRate:'GBP' | async | number:'1.0-0'}} £
-</div>
+  <div>
+    Also ${{ product.price | exRate | number:'1.0-0'}} or
+    {{ product.price | exRate:'GBP' | async | number:'1.0-0'}} £
+  </div>
 ```
 
 ---

@@ -5,6 +5,10 @@
     </div>
     <div>
       Price: {{ product.price }}
+      <div>
+        Also ${{ product.price | exRate | number:'1.0-0'}} or
+        {{ product.price | exRate:'GBP' | async | number:'1.0-0'}} £
+      </div>
     </div>
     <div [abProductsOutOfStock]="product.stock">
       Stock: {{ product.stock }}
