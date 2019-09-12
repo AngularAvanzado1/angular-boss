@@ -44,9 +44,18 @@ As a: seller,
   so that: I can ask for more or not
 ```
 
+```bash
+ng g @nrwl/angular:library products --prefix=ab-products
+```
+
 ---
 
 ## 1.1 Un componente común
+
+```bash
+ng g c product-template --project=products --module=products.module.ts --export
+```
+
 
 > La visión del comprador y del vendedor es parecida. Mantenemos estructura, inyectamos contenido.
 
