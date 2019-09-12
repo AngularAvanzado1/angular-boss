@@ -1,11 +1,5 @@
-export interface Product {
-  _id: string;
-  description: string;
-  category: 'Computer' | 'Printer';
-  brand: string;
-  price: number;
-  stock: number;
-}
+import { Product } from '@a-boss/domain';
+
 export interface IBasketItem {
   product: Product;
   units: number;
