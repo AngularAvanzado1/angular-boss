@@ -4,7 +4,11 @@
       {{ product.brand }} - {{ product.category }}
     </div>
     <div>
-      Price: {{ product.price }}
+      Price: {{ product.price }} €
+      <div>
+        ${{ product.price | exRate | number:'1.0-0'}}
+        {{ product.price | exRate:'GBP' | async | number:'1.0-0'}} £
+      </div>
     </div>
     <div [abProductsOutOfStock]="product.stock">
       Stock: {{ product.stock }}
