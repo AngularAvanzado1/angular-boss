@@ -1,25 +1,25 @@
 import { Action, reducerFunction, RxStore } from './rx-store';
 
-describe('GIVEN: a basic mini-store of a thermometer', () => {
-  interface ThermoMetric {
-    temperature: number;
+describe('GIVEN: a rx-store of product stocks', () => {
+  interface ProductStock {
+    stock: number;
   }
 
-  const initial: ThermoMetric = {
-    temperature: 25
+  const initial: ProductStock = {
+    stock: 25
   };
 
-  const thermoReducer: reducerFunction<ThermoMetric> = function(
-    state: ThermoMetric,
+  const stockReducer: reducerFunction<ProductStock> = function(
+    state: ProductStock,
     action: Action
-  ): ThermoMetric {
+  ): ProductStock {
     const clonedState = { ...state };
     switch (action.type) {
       case 'set':
-        clonedState.temperature = action.payload;
+        clonedState.stock = action.payload;
         break;
       case 'increment':
-        clonedState.temperature += action.payload;
+        clonedState.stock += action.payload;
         break;
       default:
         break;
@@ -28,32 +28,32 @@ describe('GIVEN: a basic mini-store of a thermometer', () => {
   };
 
   describe('WHEN: I start one ', () => {
-    const thermoRxStore = new RxStore<ThermoMetric>(initial, thermoReducer);
+    const stockRxStore = new RxStore<ProductStock>(initial, stockReducer);
     it('THEN: it should have the inital value', done => {
-      thermoRxStore.select$().subscribe(res => {
+      stockRxStore.select$().subscribe(res => {
         expect(res).toEqual(initial);
         done();
       });
     });
   });
   describe('WHEN: I start and set a new value ', () => {
-    const thermoRxMiniStore = new RxStore<ThermoMetric>(initial, thermoReducer);
+    const stockRxStore = new RxStore<ProductStock>(initial, stockReducer);
     const metricAction: Action = { type: 'set', payload: 40 };
-    thermoRxMiniStore.dispatch(metricAction);
+    stockRxStore.dispatch(metricAction);
     it('THEN: it should emit the same value', done => {
-      thermoRxMiniStore.select$().subscribe(res => {
-        expect(res).toEqual({ temperature: 40 });
+      stockRxStore.select$().subscribe(res => {
+        expect(res).toEqual({ stock: 40 });
         done();
       });
     });
   });
   describe('WHEN: I get an increment ', () => {
-    const thermoRxMiniStore = new RxStore<ThermoMetric>(initial, thermoReducer);
-    const metricAction: Action = { type: 'increment', payload: 5 };
-    thermoRxMiniStore.dispatch(metricAction);
-    it('THEN: it should raise the temperature', done => {
-      thermoRxMiniStore.select$().subscribe(res => {
-        expect(res).toEqual({ temperature: 30 });
+    const stockRxStore = new RxStore<ProductStock>(initial, stockReducer);
+    const incrementAction: Action = { type: 'increment', payload: 5 };
+    stockRxStore.dispatch(incrementAction);
+    it('THEN: it should raise the stock', done => {
+      stockRxStore.select$().subscribe(res => {
+        expect(res).toEqual({ stock: 30 });
         done();
       });
     });

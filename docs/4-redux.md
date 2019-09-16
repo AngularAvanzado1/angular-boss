@@ -97,10 +97,9 @@ class: impact
 
 # 2 Implementación de un Store con RxJs
 
-## El Store observable
+## El Store observable mínimo
 ## El envío de acciones
 ## La función reductora de estado
-## La selección de suscripciones
 
 ---
 
