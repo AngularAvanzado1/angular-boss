@@ -2,22 +2,22 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export class MiniStore<T> {
   private state: T;
-  private select$ = new BehaviorSubject(this.Get());
+  private _select$ = new BehaviorSubject(this.get());
 
   constructor(initialState: T) {
-    this.Set(initialState);
+    this.set(initialState);
   }
 
-  public Set(newSate: T) {
+  public set(newSate: T) {
     this.state = { ...newSate };
-    this.select$.next(this.Get());
+    this._select$.next(this.get());
   }
 
-  public Get(): T {
+  public get(): T {
     return { ...this.state };
   }
 
-  public Select$(): Observable<T> {
-    return this.select$.asObservable();
+  public select$(): Observable<T> {
+    return this._select$.asObservable();
   }
 }
