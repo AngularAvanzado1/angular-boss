@@ -71,7 +71,7 @@ As a: developer,
 
 - **Selectors** : Métodos para consulta del estado. Devuelven un observable al que suscribirse para obtener notificaciones de cambio o una instantánea. En cualquier caso siempre emitirá o devolverá un clon del estado.
 
---
+---
 
 ### Mutaciones del estado
 
