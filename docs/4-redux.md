@@ -116,109 +116,75 @@ ng g @nrwl/workspace:library rx-store
 
 ---
 
+## 2.1 El Store observable mínimo
+
+`libs\rx-store\src\lib\mini-store.ts`
+
 ```typescript
-export class ApiProductsService {
-  private readonly url = 'api/products';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-  constructor(private httpClient: HttpClient) {}
+export class MiniStore<T> {
+  private state: T;
+  private subject$ = new BehaviorSubject(this.get());
 
-  public getProducts$() {
-    return this.httpClient.get<Product[]>(this.url);
+  constructor(initialState: T) {
+    this.set(initialState);
   }
-
-  public putProduct$(product: Product) {
-    return this.httpClient.put(this.url, product);
+  public set(newSate: T) {
+    this.state = { ...newSate };
+    this.subject$.next(this.get());
   }
-}
-```
-
----
-
-## 2.1 El Store observable
-
-Single-file Redux store
-```
-ng g s core/out-of-stock-store --project=warehouse
-
-```
-
-```typescript
-export interface OutOfStock {
-  products: Product[];
-}
-export const OutOfStock_Initial_State: OutOfStock = { products: [] };
-```
-
----
-
-```typescript
-export class OutOfStockStoreService {
-  private state: OutOfStock = OutOfStock_Initial_State;
-  private state$: BehaviorSubject<OutOfStock> = new BehaviorSubject(this.snapShot());
-
-  constructor() {}
-
-  public snapShot(): OutOfStock {
+  public select$(): Observable<T> {
+    return this.subject$.asObservable();
+  }
+  private get(): T {
     return { ...this.state };
   }
-  public select$(): Observable<OutOfStock> {
-    return this.state$.asObservable();
-  }
-  public dispatch(action: ImAction) {
-    this.state = reducer(this.state, action);
-    this.state$.next(this.snapShot());
-  }
 }
 ```
-
 
 ---
 
 ## 2.2 El envío de acciones
 
+`libs\rx-store\src\lib\rx-store.ts`
+
 
 ```typescript
-export interface ImAction {
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export interface Action {
   type: string;
   payload: any;
 }
-export class AddOoSProduct implements ImAction {
-  public readonly type = 'Add Out of Stock Product';
-  constructor(public readonly payload: Product) {}
-}
-export class RemoveOoSProduct implements ImAction {
-  public readonly type = 'Remove Out of Stock Product';
-  constructor(public readonly payload: Product) {}
-}
+
+export type reducerFunction<T> = (state: T, action: Action) => T;
 ```
 
 ---
 
 ```typescript
-export class ProductsService {
-  private readonly minimalStock = environment.minimalStock;
-  constructor(
-    private apiProductsService: ApiProductsService,
-    private outOfStockStoreService: OutOfStockStoreService
-  ) {}
-  public getProducts$() {
-    return this.apiProductsService.getProducts$().pipe(
-      tap(products => {
-        products.forEach(product => {
-          if (product.stock <= this.minimalStock) {
-            const addOutOfStockAction = new AddOoSProduct(product);
-            this.outOfStockStoreService.dispatch(addOutOfStockAction);
-          }
-        });
-      })
-    );
+export class RxStore<T> {
+  private state: T;
+  private subject$ = new BehaviorSubject<T>(this.get());
+
+  constructor(initialState: T, private reducer: reducerFunction<T>) {
+    this.set(initialState);
   }
-  public refill(product: Product) {
-    product.stock += environment.minimalStock;
-    this.apiProductsService.putProduct$(product).subscribe(() => {
-      const removeOutOfStockAction = new RemoveOoSProduct(product);
-      this.outOfStockStoreService.dispatch(removeOutOfStockAction);
-    });
+  public select$(): Observable<T> {
+    return this.subject$.asObservable();
+  }
+  public dispatch(action: Action) {
+    const curretState = this.get();
+    const newState = this.reducer(curretState, action);
+    this.set(newState);
+  }
+  private get(): T {
+    return { ...this.state };
+  }
+  private set(newSate: T) {
+    this.state = { ...newSate };
+    this.subject$.next(this.get());
   }
 }
 ```
@@ -227,50 +193,42 @@ export class ProductsService {
 
 ## 2.3 La función reductora de estado
 
+`libs\rx-store\src\lib\rx-store.spec.ts`
+
 ```typescript
-function reducer(state: OutOfStock = OutOfStock_Initial_State, action: ImAction): OutOfStock {
-  const result = { ...state };
-  const product = action.payload;
-  switch (action.type) {
-    case 'Add Out of Stock Product':
-      if (result.products.find(p => p._id === product._id) === undefined) {
-        result.products = [...result.products, product];
-      }
-      break;
-    case 'Remove Out of Stock Product':
-      result.products = result.products.filter(p => p._id !== product._id);
-      break;
-    default:
-      break;
-  }
-  return result;
-}
+const stockReducer: reducerFunction<ProductStock> = function(
+    state: ProductStock,
+    action: Action
+  ): ProductStock {
+    const clonedState = { ...state };
+    switch (action.type) {
+      case 'set':
+        clonedState.stock = action.payload;
+        break;
+      case 'increment':
+        clonedState.stock += action.payload;
+        break;
+      default:
+        break;
+    }
+    return clonedState;
+  };
 ```
 
 ---
 
-## 2.4 La selección de suscripciones
-
 ```typescript
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private outOfStockStoreService: OutOfStockStoreService
-  ) {
-    this.numberOfProductsOutOfStock$ = this.outOfStockStoreService
-      .select$()
-      .pipe(map(state => state.products.length));
-  }
-```
-
---
-
-```typescript
- public ngOnInit() {
-  this.productsOutOfStock$ = this.outOfStockStoreService
-    .select$()
-    .pipe(map(store => store.products));
-  this.productsService.getProducts$().subscribe();
-}
+describe('WHEN: I get an increment ', () => {
+  const stockRxStore = new RxStore<ProductStock>(initial, stockReducer);
+  const incrementAction: Action = { type: 'increment', payload: 5 };
+  stockRxStore.dispatch(incrementAction);
+  it('THEN: it should raise the stock', done => {
+    stockRxStore.select$().subscribe(res => {
+      expect(res).toEqual({ stock: 30 });
+      done();
+    });
+  });
+});
 ```
 
 ---
@@ -282,7 +240,6 @@ function reducer(state: OutOfStock = OutOfStock_Initial_State, action: ImAction)
 ## El Store observable
 ## Las acciones
 ## El reductor
-## Tipado estricto
 
 ---
 
@@ -297,6 +254,6 @@ function reducer(state: OutOfStock = OutOfStock_Initial_State, action: ImAction)
 ## Effects
 
 
-> **Blog de apoyo:** [Detección del cambio en Angular](https://academia-binaria.com/deteccion-del-cambio-en-Angular/)
+> **Blog de apoyo:** [Flujo reactivo unidireccional con Angular y RxJs](https://academia-binaria.com/flujo-reactivo-unidireccional-con-Angular-y-RxJs/)
 
 > > By [Alberto Basalo](https://twitter.com/albertobasalo)

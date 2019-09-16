@@ -1,5 +1,12 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export interface Action {
+  type: string;
+  payload: any;
+}
+
+export type reducerFunction<T> = (state: T, action: Action) => T;
+
 export class RxStore<T> {
   private state: T;
   private subject$ = new BehaviorSubject<T>(this.get());
@@ -27,10 +34,3 @@ export class RxStore<T> {
     this.subject$.next(this.get());
   }
 }
-
-export interface Action {
-  type: string;
-  payload: any;
-}
-
-export type reducerFunction<T> = (state: T, action: Action) => T;
