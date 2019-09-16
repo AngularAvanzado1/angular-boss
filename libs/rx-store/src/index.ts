@@ -1,1 +1,2 @@
-export * from './lib/mini-store.class';
+export * from './lib/mini-store';
+export * from './lib/rx-store';

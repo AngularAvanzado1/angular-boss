@@ -1,23 +1,26 @@
-import { MiniStore } from './mini-store.class';
+import { MiniStore } from './mini-store';
 
 describe('GIVEN: a basic mini-store of a thermometer', () => {
-  const initial = {
+  interface ThermoMetric {
+    temperature: number;
+  }
+  const initial: ThermoMetric = {
     temperature: 0
   };
   describe('WHEN: I start one ', () => {
-    const thermMiniStore = new MiniStore<{ temperature: number }>(initial);
+    const thermoMiniStore = new MiniStore<ThermoMetric>(initial);
     it('THEN: it should have the inital value', done => {
-      thermMiniStore.select$().subscribe(res => {
+      thermoMiniStore.select$().subscribe(res => {
         expect(res).toEqual(initial);
         done();
       });
     });
   });
   describe('WHEN: I start and set a new value ', () => {
-    const thermMiniStore = new MiniStore<{ temperature: number }>(initial);
-    thermMiniStore.set({ temperature: 1000 });
+    const thermoMiniStore = new MiniStore<ThermoMetric>(initial);
+    thermoMiniStore.set({ temperature: 1000 });
     it('THEN: it should emit the same value', done => {
-      thermMiniStore.select$().subscribe(res => {
+      thermoMiniStore.select$().subscribe(res => {
         expect(res).toEqual({ temperature: 1000 });
         done();
       });
