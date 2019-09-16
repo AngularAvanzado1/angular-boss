@@ -20,6 +20,8 @@ class: impact
 
     # 2. Implementación de un Store con RxJs
 
+--
+
 > Redux no hace rápido lo simple, sino mantenible lo complejo
 
 ---
