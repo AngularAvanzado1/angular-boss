@@ -6,7 +6,7 @@ describe('GIVEN: a basic mini-store of a thermometer', () => {
   }
 
   const initial: ThermoMetric = {
-    temperature: 0
+    temperature: 25
   };
 
   const thermoReducer: reducerFunction<ThermoMetric> = function(
@@ -14,8 +14,15 @@ describe('GIVEN: a basic mini-store of a thermometer', () => {
     action: Action
   ): ThermoMetric {
     const clonedState = { ...state };
-    if (action.type === 'set') {
-      clonedState.temperature = action.payload;
+    switch (action.type) {
+      case 'set':
+        clonedState.temperature = action.payload;
+        break;
+      case 'increment':
+        clonedState.temperature += action.payload;
+        break;
+      default:
+        break;
     }
     return clonedState;
   };
@@ -31,11 +38,22 @@ describe('GIVEN: a basic mini-store of a thermometer', () => {
   });
   describe('WHEN: I start and set a new value ', () => {
     const thermoRxMiniStore = new RxStore<ThermoMetric>(initial, thermoReducer);
-    const metricAction: Action = { type: 'set', payload: 1000 };
+    const metricAction: Action = { type: 'set', payload: 40 };
     thermoRxMiniStore.dispatch(metricAction);
     it('THEN: it should emit the same value', done => {
       thermoRxMiniStore.select$().subscribe(res => {
-        expect(res).toEqual({ temperature: 1000 });
+        expect(res).toEqual({ temperature: 40 });
+        done();
+      });
+    });
+  });
+  describe('WHEN: I get an increment ', () => {
+    const thermoRxMiniStore = new RxStore<ThermoMetric>(initial, thermoReducer);
+    const metricAction: Action = { type: 'increment', payload: 5 };
+    thermoRxMiniStore.dispatch(metricAction);
+    it('THEN: it should raise the temperature', done => {
+      thermoRxMiniStore.select$().subscribe(res => {
+        expect(res).toEqual({ temperature: 30 });
         done();
       });
     });

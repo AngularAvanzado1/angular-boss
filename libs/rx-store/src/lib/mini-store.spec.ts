@@ -5,7 +5,7 @@ describe('GIVEN: a basic mini-store of a thermometer', () => {
     temperature: number;
   }
   const initial: ThermoMetric = {
-    temperature: 0
+    temperature: 25
   };
   describe('WHEN: I start one ', () => {
     const thermoMiniStore = new MiniStore<ThermoMetric>(initial);
@@ -18,10 +18,10 @@ describe('GIVEN: a basic mini-store of a thermometer', () => {
   });
   describe('WHEN: I start and set a new value ', () => {
     const thermoMiniStore = new MiniStore<ThermoMetric>(initial);
-    thermoMiniStore.set({ temperature: 1000 });
+    thermoMiniStore.set({ temperature: 40 });
     it('THEN: it should emit the same value', done => {
       thermoMiniStore.select$().subscribe(res => {
-        expect(res).toEqual({ temperature: 1000 });
+        expect(res).toEqual({ temperature: 40 });
         done();
       });
     });

@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export class RxStore<T> {
   private state: T;
-  private subject$ = new BehaviorSubject(this.get());
+  private subject$ = new BehaviorSubject<T>(this.get());
 
   constructor(initialState: T, private reducer: reducerFunction<T>) {
     this.set(initialState);
