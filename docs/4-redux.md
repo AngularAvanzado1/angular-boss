@@ -109,17 +109,10 @@ As a: seller,
   I want: to know how many products are out of stock
   so that: I can refill them
 
-As a: seller,
-  I want: to refill a product
-  so that: I can sell more units
-
 ```
 
 ```
-ng g m out-of-stock --project=warehouse --routing
-ng g c out-of-stock/out-of-stock --project=warehouse
-ng g s core/api-products --project=warehouse
-ng g s core/products --project=warehouse
+ng g @nrwl/workspace:library rx-store
 ```
 
 ---

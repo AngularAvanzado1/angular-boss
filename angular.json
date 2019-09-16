@@ -403,6 +403,31 @@
         }
       },
       "schematics": {}
+    },
+    "rx-store": {
+      "root": "libs/rx-store",
+      "sourceRoot": "libs/rx-store/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/rx-store/tsconfig.lib.json",
+              "libs/rx-store/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/rx-store/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/rx-store/jest.config.js",
+            "tsConfig": "libs/rx-store/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

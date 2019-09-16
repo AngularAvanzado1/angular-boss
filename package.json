@@ -15,6 +15,7 @@
     "build:api": "ng build api --prod",
     "test:api": "ng test api --watch --verbose",
     "test:data": "ng test shared-data --watch --verbose",
+    "test:rx-store": "ng test rx-store --watch --verbose",
     "lint": "nx workspace-lint && ng lint",
     "e2e": "ng e2e",
     "affected:apps": "nx affected:apps",
