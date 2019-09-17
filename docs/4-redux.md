@@ -177,6 +177,7 @@ export class RxStore<T> {
   public dispatch(action: Action) {
     const curretState = this.get();
     const newState = this.reducer(curretState, action);
+    // instrumentation, cache, log...
     this.set(newState);
   }
   private get(): T {
