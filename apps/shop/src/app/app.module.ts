@@ -2,6 +2,11 @@ import { UiModule } from '@a-boss/ui';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +27,20 @@ import { AppComponent } from './app.component';
       ],
       { initialNavigation: 'enabled' }
     ),
-    UiModule
+    UiModule,
+    StoreModule.forRoot(
+      {},
+      {
+        metaReducers: !environment.production ? [] : [],
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictStateImmutability: true
+        }
+      }
+    ),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreRouterConnectingModule.forRoot({ routerState: RouterState.Minimal })
   ],
   providers: [],
   bootstrap: [AppComponent]

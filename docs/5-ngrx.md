@@ -79,8 +79,8 @@ class: impact
 # 1 Instalación y configuración
 
 ## Instalación de NgRx
-## Registro y configuración
-## Router y DevTools
+## DevTools
+## Router
 
 ---
 
@@ -90,28 +90,20 @@ class: impact
 ng g @nrwl/angular:ngrx app --module=apps/shop/src/app/app.module.ts --root --minimal
 
 ```
+---
+
+## 1.2 DevTools
+
+```bash
+# https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
+```
 
 ---
 
-## 1.2 Registro y configuración
+## 1.3 Router
 
 ```typescript
 StoreRouterConnectingModule.forRoot({ routerState: RouterState.Minimal })
-```
-
----
-
-## 1.3 Router y DevTools
-
-```
-ng add @ngrx/router-store@next --project shop
-ng add @ngrx/store-devtools@next --project shop
-```
-
-```typescript
-export interface RootState {
-  router: RouterReducerState<any>;
-}
 ```
 
 ---
@@ -121,8 +113,8 @@ export interface RootState {
 # 1 Instalación y configuración
 
 ## Instalación de NgRx
-## Registro y configuración
-## Router y DevTools
+## DevTools
+## Router
 
 ---
 
