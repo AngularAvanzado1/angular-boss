@@ -26,5 +26,7 @@ class: impact
 
 # [4-Redux](https://academiabinaria.github.io/angular-boss/4-redux.html)
 
+# [5-NgRx](https://academiabinaria.github.io/angular-boss/5-ngrx.html)
+
 ---
 
