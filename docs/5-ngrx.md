@@ -86,8 +86,12 @@ class: impact
 
 ## 1.1 Instalación de NgRx
 
-```terminal
-ng add @ngrx/store@next --project shop --statePath store --stateInterface RootState
+```bash
+ng add add @ngrx/store
+ng add @ngrx/store-devtools
+ng add @ngrx/router-store
+ng add add @ngrx/schematics
+ng g @nrwl/angular:ngrx app --module=apps/warehouse/src/app/app.module.ts --root --minimal
 ```
 
 ---

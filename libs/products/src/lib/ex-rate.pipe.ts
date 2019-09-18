@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, refCount, shareReplay } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Pipe({
   name: 'exRate'
@@ -24,7 +24,7 @@ export class ExRatePipe implements PipeTransform {
     const ratesUrl = this.ratesApi + symbol;
     return this.httpClient.get<any>(ratesUrl).pipe(
       shareReplay(1),
-      refCount(),
+      // refCount(),
       map(resp => resp.rates[symbol])
     );
   }
