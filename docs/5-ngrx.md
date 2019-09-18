@@ -260,13 +260,13 @@ class: impact
 ## State
 
 ```typescript
-// root.state.ts
-export interface RootState {
-  router: RouterReducerState<any>;
-  shoppingCart: ShoppingCart;
+export interface State {
+  registeredPaymentMethods: RegisteredPaymentMethods;
 }
-// shoppingCart.state.ts
-export const initialState: ShoppingCart = { _id: '', items: [], client: '', status: '' };
+
+export const initialState: State = {
+  registeredPaymentMethods: { list: [], preferred: null }
+};
 ```
 ---
 
