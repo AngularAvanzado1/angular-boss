@@ -47,13 +47,24 @@ As a: developer,
 
 [NgRx: Reactive State for Angular](https://ngrx.io/)
 
---
+### Inspirada en Redux
+
+### Basada en RxJS
+
+---
 
 > Redux no hace rápido lo simple, sino mantenible lo complejo
 
 --
 
 > NgRx no hace rápido a Redux, sino mantenible el boilerplate
+
+### Estándar de facto,
+
+### Herramientas de generación de código
+
+### Modular y extensible.
+
 
 ---
 
