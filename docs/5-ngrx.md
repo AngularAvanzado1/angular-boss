@@ -51,19 +51,25 @@ As a: developer,
 
 ### Basada en RxJS
 
----
-
-> Redux no hace rápido lo simple, sino mantenible lo complejo
-
---
-
-> NgRx no hace rápido a Redux, sino mantenible el boilerplate
-
 ### Estándar de facto,
 
 ### Herramientas de generación de código
 
 ### Modular y extensible.
+
+---
+
+Mantra para Redux:
+
+> Redux no hace rápido lo simple, sino mantenible lo complejo
+
+--
+
+Mantra Redux con NgRx:
+
+> NgRx no hace rápido a Redux, sino mantenible el boilerplate
+
+
 
 
 ---
