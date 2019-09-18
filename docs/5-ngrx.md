@@ -135,26 +135,46 @@ Address o Payments
 
 ```yaml
 As a: customer,
-  I want: to add items to my shopping cart
-  so that: I can buy them
+  I want: to add payment methods
+  so that: I can pay with them
 
 As a: customer,
-  I want: to see the total units always updated
-  so that: I know how many items I will buy
+  I want: to select one as preferred
+  so that: I can make fewer clicks
 
+As a: customer,
+  I want: to change de expiration date
+  so that: I get my cards up to date
 ```
 
 ---
 
 ## Create
 
-```typescript
-import { ShoppingCartItem } from '@angular-business/models';
-import { createAction, props } from '@ngrx/store';
+```bash
+ng g m payments --project=shop --module=app.module.ts --routing --route=payments
+ng g @ngrx/schematics:feature payments/store/payments --project=shop --module=payments/payments.module.ts --no-flat --no-spec --creators
+```
 
-export const addShoppingCartItem = createAction(
-  '[Product Catalog] Add to Shopping Cart',
-  props<{ newShoppingCartItem: ShoppingCartItem }>()
+```typescript
+export interface Payment {
+  id: string;
+  expiration: Date;
+}
+
+export interface RegisteredPaymentMethods {
+  list: Payment[];
+  preferred: string;
+}
+
+export const selectPreferredPayment = createAction(
+  '[Payments] Load Payments Success',
+  props<{ paymentId: string | number }>()
+);
+
+export const setExpirationDate = createAction(
+  '[Payments] Load Payments Success',
+  props<{ updatedPayment: PaymentsEntity }>()
 );
 ```
 
@@ -163,13 +183,13 @@ export const addShoppingCartItem = createAction(
 ## Dispatch
 
 ```typescript
-constructor(private store: Store<RootState>) {}
+  selectPreferredPayment(paymentId: string | number) {
+    this.store.dispatch(PaymentsActions.selectPreferredPayment({ paymentId }));
+  }
 
-public buyProduct(product: Product) {
-  const payload = { product: product, quantity: 1 };
-  const action = addShoppingCartItem({ newShoppingCartItem: payload });
-  this.store.dispatch(action);
-}
+  setExpirationDate(updatedPayment: PaymentsEntity) {
+    this.store.dispatch(PaymentsActions.setExpirationDate({ updatedPayment }));
+  }
 ```
 
 
