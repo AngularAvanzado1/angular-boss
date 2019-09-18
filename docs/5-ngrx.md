@@ -104,6 +104,10 @@ ng g @nrwl/angular:ngrx app --module=apps/shop/src/app/app.module.ts --root --mi
 
 ```typescript
 StoreRouterConnectingModule.forRoot({ routerState: RouterState.Minimal })
+StoreModule.forRoot(
+      {
+        router: routerReducer
+      },...
 ```
 
 ---
