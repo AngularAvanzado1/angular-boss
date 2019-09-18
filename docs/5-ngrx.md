@@ -153,8 +153,10 @@ As a: customer,
 
 ```bash
 ng g m payments --project=shop --module=app.module.ts --routing --route=payments
-ng g @ngrx/schematics:feature payments/store/payments --project=shop --module=payments/payments.module.ts --no-flat --no-spec --creators
+ng g @ngrx/schematics:feature payments/store/paymentMethod --project=shop --module=payments/payments.module.ts --no-flat --no-spec --creators
 ```
+
+`apps\shop\src\app\payments\store\payment-method\payment-method.model.ts`
 
 ```typescript
 export interface Payment {
@@ -166,15 +168,28 @@ export interface RegisteredPaymentMethods {
   list: Payment[];
   preferred: string;
 }
+```
 
-export const selectPreferredPayment = createAction(
-  '[Payments] Load Payments Success',
-  props<{ paymentId: string | number }>()
+`apps\shop\src\app\payments\store\payment-method\payment-method.actions.ts`
+
+```typescript
+export const loadPaymentMethods = createAction(
+  '[PaymentMethod] Load PaymentMethods'
 );
 
-export const setExpirationDate = createAction(
-  '[Payments] Load Payments Success',
-  props<{ updatedPayment: PaymentsEntity }>()
+export const addPaymentMethod = createAction(
+  '[PaymentMethod] Add PaymentMethod',
+  props<{ newPaymentMethod: PaymentMethod }>()
+);
+
+export const selectPreferredPaymentMethod = createAction(
+  '[PaymentMethod] Add PaymentMethod',
+  props<{ preferredId: string }>()
+);
+
+export const setExpirationPaymentMethod = createAction(
+  '[PaymentMethod] Set Expiration Date on PaymentMethod',
+  props<{ updatedPaymentMethod: PaymentMethod }>()
 );
 ```
 
@@ -182,14 +197,43 @@ export const setExpirationDate = createAction(
 
 ## Dispatch
 
-```typescript
-  selectPreferredPayment(paymentId: string | number) {
-    this.store.dispatch(PaymentsActions.selectPreferredPayment({ paymentId }));
-  }
+`apps\shop\src\app\payments\store\payment-method\payment-method.service.ts`
 
-  setExpirationDate(updatedPayment: PaymentsEntity) {
-    this.store.dispatch(PaymentsActions.setExpirationDate({ updatedPayment }));
+```typescript
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as PaymentMethodActions from './payment-method.actions';
+import {
+  PaymentMethod,
+  RegisteredPaymentMethods
+} from './payment-method.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PaymentMethodFacade {
+  constructor(private store: Store<RegisteredPaymentMethods>) {}
+  public loadPaymentMethods() {
+    this.store.dispatch(PaymentMethodActions.loadPaymentMethods());
   }
+  public addPaymentMethod(paymentMethod: PaymentMethod) {
+    this.store.dispatch(
+      PaymentMethodActions.addPaymentMethod({ newPaymentMethod: paymentMethod })
+    );
+  }
+  public selectPreferredPaymentMethod(preferredId: string) {
+    this.store.dispatch(
+      PaymentMethodActions.selectPreferredPaymentMethod({ preferredId })
+    );
+  }
+  public setExpirationPaymentMethod(paymentMethod: PaymentMethod) {
+    this.store.dispatch(
+      PaymentMethodActions.setExpirationPaymentMethod({
+        updatedPaymentMethod: paymentMethod
+      })
+    );
+  }
+}
 ```
 
 
