@@ -127,6 +127,8 @@ class: impact
 
 ---
 
+Address o Payments
+
 ```yaml
 As a: customer,
   I want: to add items to my shopping cart
