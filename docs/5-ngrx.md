@@ -87,11 +87,8 @@ class: impact
 ## 1.1 Instalación de NgRx
 
 ```bash
-ng add add @ngrx/store
-ng add @ngrx/store-devtools
-ng add @ngrx/router-store
-ng add add @ngrx/schematics
-ng g @nrwl/angular:ngrx app --module=apps/warehouse/src/app/app.module.ts --root --minimal
+ng g @nrwl/angular:ngrx app --module=apps/shop/src/app/app.module.ts --root --minimal
+
 ```
 
 ---
@@ -99,9 +96,7 @@ ng g @nrwl/angular:ngrx app --module=apps/warehouse/src/app/app.module.ts --root
 ## 1.2 Registro y configuración
 
 ```typescript
-StoreModule.forRoot(rootReducers, { metaReducers })
-export const rootReducers: ActionReducerMap<RootState> = {};
-export interface RootState{}
+StoreRouterConnectingModule.forRoot({ routerState: RouterState.Minimal })
 ```
 
 ---
