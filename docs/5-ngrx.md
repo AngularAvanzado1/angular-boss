@@ -185,7 +185,7 @@ export const addPaymentMethod = createAction(
 );
 
 export const selectPreferredPaymentMethod = createAction(
-  '[PaymentMethod] Add PaymentMethod',
+  '[PaymentMethod] Select preferred PaymentMethod',
   props<{ preferredId: string }>()
 );
 
@@ -257,11 +257,11 @@ export class PaymentsComponent implements OnInit {
     this.paymentMethodService.loadPaymentMethods();
     const visa: PaymentMethod = {
       id: '1234 7896 3214 6549',
-      expiration: new Date(2020, 6, 30)
+      expiration: new Date(2020, 6-1, 30)
     };
     this.paymentMethodService.addPaymentMethod(visa);
     this.paymentMethodService.selectPreferredPaymentMethod(visa.id);
-    visa.expiration = new Date(2021, 12, 31);
+    visa.expiration = new Date(2021, 12-1, 31);
     this.paymentMethodService.setExpirationPaymentMethod(visa);
   }
 }
@@ -399,23 +399,30 @@ class: impact
 
 ## Create selector
 ## Selecting data
-## Fachadas
+## Showing data
 
 ---
 
 ## Create selector
 
-```typescript
-export const shoppingCartFeature = (state: RootState) => state.shoppingCart;
+`apps\shop\src\app\payments\store\payment-method\payment-method.selectors.ts`
 
-export const shoppingCartItems = createSelector(
-  shoppingCartFeature,
-  (state: ShoppingCart) => state.items
+```typescript
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { paymentMethodFeatureKey, State } from './payment-method.reducer';
+
+export const getPaymentMethodState = createFeatureSelector<State>(
+  paymentMethodFeatureKey
 );
 
-export const shoppingCartItemsCount = createSelector(
-  shoppingCartFeature,
-  (state: ShoppingCart) => state.items.length
+export const getPaymentMethodsList = createSelector(
+  getPaymentMethodState,
+  (state: State) => state.paymentMethods.list
+);
+
+export const getPreferredPaymentMethod = createSelector(
+  getPaymentMethodState,
+  (state: State) => state.paymentMethods.preferred
 );
 ```
 
@@ -424,19 +431,38 @@ export const shoppingCartItemsCount = createSelector(
 ## Selecting data
 
 ```typescript
-//shell.component.ts
+  public getPaymentMethodsList$(): Observable<PaymentMethod[]> {
+    return this.store.select(PaymentMethodSelectors.getPaymentMethodsList);
+  }
 
-public shoppingCartItemsCount$: Observable<number>;
-
-constructor(private store: Store<RootState>) {
-  this.shoppingCartItemsCount$ = this.store.pipe(select(shoppingCartItemsCount));
-}
+  public getPreferredPaymentMethod$(): Observable<string> {
+    return this.store.select(PaymentMethodSelectors.getPreferredPaymentMethod);
+  }
 ```
 
 ---
 
-## Fachadas
+## Showing data
 
+```typescript
+export class PaymentsComponent implements OnInit {
+  public paymentMethodsList$: Observable<PaymentMethod[]>;
+  public preferredPaymentMethod$: Observable<string>;
+  constructor(private paymentMethodService: PaymentMethodService) {}
+
+  ngOnInit() {
+    this.paymentMethodsList$ = this.paymentMethodService.getPaymentMethodsList$();
+    this.preferredPaymentMethod$ = this.paymentMethodService.getPreferredPaymentMethod$();
+  }
+}
+```
+
+```html
+<p>Payment Methods List:</p>
+<pre>{{ paymentMethodsList$ | async | json }}</pre>
+<p>Preferred Payment Method:</p>
+<pre>{{ preferredPaymentMethod$ | async | json }}</pre>
+```
 
 ---
 

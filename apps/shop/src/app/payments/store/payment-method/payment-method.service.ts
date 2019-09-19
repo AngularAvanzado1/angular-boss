@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import * as PaymentMethodActions from './payment-method.actions';
 import { PaymentMethod, PaymentMethods } from './payment-method.model';
+import * as PaymentMethodSelectors from './payment-method.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +31,13 @@ export class PaymentMethodService {
         updatedPaymentMethod: { ...updatedPaymentMethod }
       })
     );
+  }
+
+  public getPaymentMethodsList$(): Observable<PaymentMethod[]> {
+    return this.store.select(PaymentMethodSelectors.getPaymentMethodsList);
+  }
+
+  public getPreferredPaymentMethod$(): Observable<string> {
+    return this.store.select(PaymentMethodSelectors.getPreferredPaymentMethod);
   }
 }
