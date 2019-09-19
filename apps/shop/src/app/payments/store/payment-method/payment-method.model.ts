@@ -3,7 +3,7 @@ export interface PaymentMethod {
   expiration: Date;
 }
 
-export interface RegisteredPaymentMethods {
+export interface PaymentMethods {
   list: PaymentMethod[];
   preferred: string;
 }

@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as PaymentMethodActions from './payment-method.actions';
-import {
-  PaymentMethod,
-  RegisteredPaymentMethods
-} from './payment-method.model';
+import { PaymentMethod, PaymentMethods } from './payment-method.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentMethodService {
-  constructor(private store: Store<RegisteredPaymentMethods>) {}
+  constructor(private store: Store<PaymentMethods>) {}
   public loadPaymentMethods() {
     this.store.dispatch(PaymentMethodActions.loadPaymentMethods());
   }
-  public addPaymentMethod(paymentMethod: PaymentMethod) {
+  public addPaymentMethod(newPaymentMethod: PaymentMethod) {
     this.store.dispatch(
-      PaymentMethodActions.addPaymentMethod({ newPaymentMethod: paymentMethod })
+      PaymentMethodActions.addPaymentMethod({
+        newPaymentMethod: { ...newPaymentMethod }
+      })
     );
   }
   public selectPreferredPaymentMethod(preferredId: string) {
@@ -24,10 +23,10 @@ export class PaymentMethodService {
       PaymentMethodActions.selectPreferredPaymentMethod({ preferredId })
     );
   }
-  public setExpirationPaymentMethod(paymentMethod: PaymentMethod) {
+  public setExpirationPaymentMethod(updatedPaymentMethod: PaymentMethod) {
     this.store.dispatch(
       PaymentMethodActions.setExpirationPaymentMethod({
-        updatedPaymentMethod: paymentMethod
+        updatedPaymentMethod: { ...updatedPaymentMethod }
       })
     );
   }

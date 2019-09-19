@@ -159,16 +159,18 @@ ng g @ngrx/schematics:feature payments/store/paymentMethod --project=shop --modu
 `apps\shop\src\app\payments\store\payment-method\payment-method.model.ts`
 
 ```typescript
-export interface Payment {
+export interface PaymentMethod {
   id: string;
   expiration: Date;
 }
 
-export interface RegisteredPaymentMethods {
-  list: Payment[];
+export interface PaymentMethods {
+  list: PaymentMethod[];
   preferred: string;
 }
 ```
+
+---
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.actions.ts`
 
@@ -205,37 +207,63 @@ import { Store } from '@ngrx/store';
 import * as PaymentMethodActions from './payment-method.actions';
 import {
   PaymentMethod,
-  RegisteredPaymentMethods
+  PaymentMethods
 } from './payment-method.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentMethodFacade {
-  constructor(private store: Store<RegisteredPaymentMethods>) {}
-  public loadPaymentMethods() {
-    this.store.dispatch(PaymentMethodActions.loadPaymentMethods());
-  }
-  public addPaymentMethod(paymentMethod: PaymentMethod) {
-    this.store.dispatch(
-      PaymentMethodActions.addPaymentMethod({ newPaymentMethod: paymentMethod })
-    );
-  }
-  public selectPreferredPaymentMethod(preferredId: string) {
-    this.store.dispatch(
-      PaymentMethodActions.selectPreferredPaymentMethod({ preferredId })
-    );
-  }
-  public setExpirationPaymentMethod(paymentMethod: PaymentMethod) {
-    this.store.dispatch(
-      PaymentMethodActions.setExpirationPaymentMethod({
-        updatedPaymentMethod: paymentMethod
-      })
-    );
-  }
+  constructor(private store: Store<PaymentMethods>) {}
 }
 ```
 
+---
+
+```typescript
+public loadPaymentMethods() {
+  this.store.dispatch(PaymentMethodActions.loadPaymentMethods());
+}
+public addPaymentMethod(paymentMethod: PaymentMethod) {
+  this.store.dispatch(
+    PaymentMethodActions.addPaymentMethod({ newPaymentMethod: paymentMethod })
+  );
+}
+public selectPreferredPaymentMethod(preferredId: string) {
+  this.store.dispatch(
+    PaymentMethodActions.selectPreferredPaymentMethod({ preferredId })
+  );
+}
+public setExpirationPaymentMethod(paymentMethod: PaymentMethod) {
+  this.store.dispatch(
+    PaymentMethodActions.setExpirationPaymentMethod({
+      updatedPaymentMethod: paymentMethod
+    })
+  );
+}
+```
+
+---
+
+`apps\shop\src\app\payments\payments.component.ts`
+
+```typescript
+export class PaymentsComponent implements OnInit {
+  constructor(private paymentMethodService: PaymentMethodService) {}
+
+  ngOnInit() {
+    this.paymentMethodService.loadPaymentMethods();
+    const visa: PaymentMethod = {
+      id: '1234 7896 3214 6549',
+      expiration: new Date(2020, 6, 30)
+    };
+    this.paymentMethodService.addPaymentMethod(visa);
+    this.paymentMethodService.selectPreferredPaymentMethod(visa.id);
+    visa.expiration = new Date(2021, 12, 31);
+    this.paymentMethodService.setExpirationPaymentMethod(visa);
+  }
+}
+```
 
 ---
 
@@ -259,13 +287,15 @@ class: impact
 
 ## State
 
+`apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
+
 ```typescript
 export interface State {
-  registeredPaymentMethods: RegisteredPaymentMethods;
+  paymentMethods: PaymentMethods;
 }
 
 export const initialState: State = {
-  registeredPaymentMethods: { list: [], preferred: null }
+  paymentMethods: { list: [], preferred: null }
 };
 ```
 ---
@@ -273,35 +303,80 @@ export const initialState: State = {
 ## Create function
 
 ```typescript
-// create a reducer function
-export const shoppingCartReducer = createReducer(
+const paymentMethodReducer = createReducer(
   initialState,
-  on(addShoppingCartItem, onAddShoppingCartItem)
+  on(PaymentMethodActions.loadPaymentMethods, state => state)
 );
-// respond to an action
-function onAddShoppingCartItem(state: ShoppingCart, { newShoppingCartItem }) {
-  return { ...state, items: [...state.items, newShoppingCartItem] };
-}
+```
+---
+
+```typescript
+  on(PaymentMethodActions.addPaymentMethod, (state, { newPaymentMethod }) => {
+    return {
+      ...state,
+      paymentMethods: {
+        ...state.paymentMethods,
+        list: [...state.paymentMethods.list, newPaymentMethod]
+      }
+    };
+  })
+```
+---
+
+```typescript
+  on(
+    PaymentMethodActions.selectPreferredPaymentMethod,
+    (state, { preferredId }) => {
+      return {
+        ...state,
+        paymentMethods: { ...state.paymentMethods, preferred: preferredId }
+      };
+    }
+  )
+  ```
+---
+
+```typescript
+  on(
+    PaymentMethodActions.setExpirationPaymentMethod,
+    (state, { updatedPaymentMethod }) => {
+      const list = state.paymentMethods.list;
+      const updatedlist = list.map(pM =>
+        pM.id === updatedPaymentMethod.id ? updatedPaymentMethod : pM
+      );
+      return {
+        ...state,
+        paymentMethods: {
+          ...state.paymentMethods,
+          list: updatedlist
+        }
+      };
+    }
+  )
+);
 ```
 
 ---
 ## Register in Store
 
-### Adding to Root Store
+`apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
 
 ```typescript
-export const rootReducers: ActionReducerMap<RootState> = {
-  router: routerReducer,
-  shoppingCart: shoppingCartReducer
-};
+export function reducer(state: State | undefined, action: Action) {
+  return paymentMethodReducer(state, action);
+}
 ```
 
-> Alternative : Create a new Feature Store
-
---
+`apps\shop\src\app\payments\payments.module.ts`
 
 ```typescript
-StoreModule.forFeature('shoppingCart', shoppingCartReducer)
+import * as fromPaymentMethod from './store/payment-method/payment-method.reducer';
+@NgModule({
+  imports: [
+    StoreModule.forFeature(
+      fromPaymentMethod.paymentMethodFeatureKey,
+      fromPaymentMethod.reducer
+    )]
 ```
 
 ---

@@ -1,15 +1,15 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as PaymentMethodActions from './payment-method.actions';
-import { RegisteredPaymentMethods } from './payment-method.model';
+import { PaymentMethods } from './payment-method.model';
 
 export const paymentMethodFeatureKey = 'paymentMethod';
 
 export interface State {
-  registeredPaymentMethods: RegisteredPaymentMethods;
+  paymentMethods: PaymentMethods;
 }
 
 export const initialState: State = {
-  registeredPaymentMethods: { list: [], preferred: null }
+  paymentMethods: { list: [], preferred: null }
 };
 
 const paymentMethodReducer = createReducer(
@@ -17,12 +17,39 @@ const paymentMethodReducer = createReducer(
 
   on(PaymentMethodActions.loadPaymentMethods, state => state),
   on(PaymentMethodActions.addPaymentMethod, (state, { newPaymentMethod }) => {
-    state.registeredPaymentMethods.list = [
-      ...state.registeredPaymentMethods.list,
-      newPaymentMethod
-    ];
-    return state;
-  })
+    return {
+      ...state,
+      paymentMethods: {
+        ...state.paymentMethods,
+        list: [...state.paymentMethods.list, newPaymentMethod]
+      }
+    };
+  }),
+  on(
+    PaymentMethodActions.selectPreferredPaymentMethod,
+    (state, { preferredId }) => {
+      return {
+        ...state,
+        paymentMethods: { ...state.paymentMethods, preferred: preferredId }
+      };
+    }
+  ),
+  on(
+    PaymentMethodActions.setExpirationPaymentMethod,
+    (state, { updatedPaymentMethod }) => {
+      const list = state.paymentMethods.list;
+      const updatedlist = list.map(pM =>
+        pM.id === updatedPaymentMethod.id ? updatedPaymentMethod : pM
+      );
+      return {
+        ...state,
+        paymentMethods: {
+          ...state.paymentMethods,
+          list: updatedlist
+        }
+      };
+    }
+  )
 );
 
 export function reducer(state: State | undefined, action: Action) {
