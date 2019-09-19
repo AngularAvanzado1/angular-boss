@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { PaymentMethod } from './store/payment-method/payment-method.model';
 import { PaymentMethodService } from './store/payment-method/payment-method.service';
 
@@ -8,9 +9,15 @@ import { PaymentMethodService } from './store/payment-method/payment-method.serv
   styleUrls: ['./payments.component.css']
 })
 export class PaymentsComponent implements OnInit {
+  public paymentMethodsList$: Observable<PaymentMethod[]>;
+  public preferredPaymentMethod$: Observable<string>;
+
   constructor(private paymentMethodService: PaymentMethodService) {}
 
   ngOnInit() {
+    this.paymentMethodsList$ = this.paymentMethodService.getPaymentMethodsList$();
+    this.preferredPaymentMethod$ = this.paymentMethodService.getPreferredPaymentMethod$();
+
     this.paymentMethodService.loadPaymentMethods();
 
     const visa: PaymentMethod = {

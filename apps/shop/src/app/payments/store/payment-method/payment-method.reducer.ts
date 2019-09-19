@@ -10,6 +10,8 @@ export const initialState: State = {
   paymentMethods: { list: [], preferred: null }
 };
 
+export const paymentMethodFeatureKey = 'paymentMethod';
+
 const paymentMethodReducer = createReducer(
   initialState,
 
