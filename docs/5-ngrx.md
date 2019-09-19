@@ -482,8 +482,7 @@ class: impact
 
 ## Install
 ## Efecto básico
-## Api async effects
-## More Api async effects
+## Api async
 
 ---
 
@@ -612,8 +611,8 @@ EffectsModule.forFeature([PaymentMethodEffects])
 
 ```yaml
 As a: customer,
-  I want: to load my shopping cart from server
-  so that: I can see it anywhere
+  I want: to see the current exchange rate in several currencies
+  so that: I can decide
 ```
 
 ---
@@ -687,93 +686,6 @@ public loadShoppingCart(){
 
 ---
 
-## More Api async effects
-
-```yaml
-As a: customer,
-  I want: to save my shopping cart to server
-  so that: I can see it anywhere
-```
-
----
-
-
-```typescript
-// shopping-cart.actions.ts
-export const saveShoppingCart = createAction(
-  '[Navigation Section] Save Shopping Cart',
-  props<{ shoppingCartToSave: ShoppingCart }>()
-);
-
-export const shoppingCartSaved = createAction(
-  '[ShoppingCart Effects] Shopping Cart Saved',
-  props<{ savedShoppingCart: ShoppingCart }>()
-);
-
-export const shoppingCartErrorSaving = createAction(
-  '[ShoppingCart Effects] Shopping Cart Error Saving',
-  props<{ error: string }>()
-);
-```
-
----
-
-```typescript
-//shopping-cart.effects.ts
-
-public saveShoppingCart$ = createEffect(this.saveShoppingCart.bind(this));
-
-private saveShoppingCart() {
-  return this.actions$.pipe(
-    ofType(saveShoppingCart),
-    switchMap(action =>
-      this.cartService.postShoppingCart(action.shoppingCartToSave).pipe(
-        map(result => shoppingCartSaved({ savedShoppingCart: result })),
-        catchError(error => of(shoppingCartErrorSaving({ error: error.message })))
-      )
-    )
-  );
-}
-```
-
----
-
-```typescript
-// shopping-cart.reducer.ts
-export const shoppingCartReducer = createReducer(
-  initialState,
-  on(shoppingCartSaved, onShoppingCartSaved),
-  on(shoppingCartErrorSaving, onApiError)
-);
-
-function onShoppingCartSaved(state: ShoppingCart, { savedShoppingCart }) {
-  return savedShoppingCart;
-}
-function onApiError(state: ShoppingCart, { error }) {
-  return { ...state, error: error };
-}
-```
-
----
-
-```typescript
-// shell.component.ts
-public saveShoppingCart() {
-  this.getCurrentShoppingCart$().subscribe(current => this.saveCurrentShoppingCart(current));
-}
-
-private getCurrentShoppingCart$() {
-  return this.store.pipe(
-    select(shoppingCartFeature),
-    take(1)
-  );
-}
-
-private saveCurrentShoppingCart(current: ShoppingCart) {
-  const action = saveShoppingCart({ shoppingCartToSave: current });
-  this.store.dispatch(action);
-}
-```
 
 ---
 
@@ -784,7 +696,6 @@ private saveCurrentShoppingCart(current: ShoppingCart) {
 ## Install
 ## Efecto básico
 ## Api async effects
-## More Api async effects
 
 ---
 
