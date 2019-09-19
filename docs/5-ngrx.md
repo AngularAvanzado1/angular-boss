@@ -615,6 +615,11 @@ As a: customer,
   so that: I can decide
 ```
 
+```bash
+ng g m rates --project=shop --module=app.module.ts --routing --route=rates
+ng g @ngrx/schematics:feature rates/store/exchange-rate --project=shop --module=rates/rates.module.ts --no-flat --no-spec --creators
+```
+
 ---
 
 
