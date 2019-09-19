@@ -497,46 +497,113 @@ yarn add @ngrx/effects
 
 ## Efecto básico
 
+
+### Acciones
+
+`apps\shop\src\app\payments\store\payment-method\payment-method.actions.ts`
+
 ```typescript
-//shopping-cart.effects.ts
-@Injectable()
-export class ShoppingCartEffects {
-   // Create an Observable of actions,
-   // with the pipe functions in line
-   public logAddProduct_Inline$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(addShoppingCartItem),
-        tap(action => console.log('action_Inline:', action))
-      ),
-    { dispatch: false }
-  );
+export const loadPaymentMethods = createAction(
+  '[PaymentMethod] Load Payment Methods'
+);
 
-  // Create an Observable of actions,
-  // with the pipe functions as class methods
-  public logAddProduct$ = createEffect(
-    this.logAddProductAction.bind(this),
-    { dispatch: false }
-  );
+export const loadPaymentMethodsSucess = createAction(
+  '[PaymentMethod] Load Payment Methods Success',
+  props<{ paymentMethodList: PaymentMethod[] }>()
+);
 
-  constructor(private actions$: Actions) {}
-
-  private logAddProductAction() {
-    return this.actions$.pipe(
-      ofType(addShoppingCartItem),
-      tap(action => console.log('action:', action))
-    );
-  }
-}
+export const loadPaymentMethodsError = createAction(
+  '[PaymentMethod] Load Payment Methods Error'
+);
 ```
 
 ---
 
-### Register
+### Definición
+
+`apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
 
 ```typescript
-// app.module.ts
-EffectsModule.forRoot([ShoppingCartEffects]),
+public loadPaymentMethods$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(PaymentMethodActions.loadPaymentMethods),
+    concatMap(() => {
+      try {
+        let storedList = JSON.parse(
+          window.localStorage.getItem(this.storeKey)
+        );
+        if (!storedList) {
+          storedList = initialState.paymentMethods.list;
+          window.localStorage.setItem(
+            this.storeKey,
+            JSON.stringify(storedList)
+          );
+        }
+        return of(
+          PaymentMethodActions.loadPaymentMethodsSucess({
+            paymentMethodList: storedList
+          })
+        );
+      } catch (e) {
+        return of(PaymentMethodActions.loadPaymentMethodsError);
+      }
+    })
+  )
+);
+```
+
+---
+
+### Reducer y Register
+
+`apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
+
+```typescript
+on(
+    PaymentMethodActions.loadPaymentMethodsSucess,
+    (state, { paymentMethodList }) => {
+      return {
+        ...state,
+        paymentMethods: { ...state.paymentMethods, list: paymentMethodList }
+      };
+    }
+  ),
+  on(PaymentMethodActions.loadPaymentMethodsError, state => state),
+```
+
+`apps\shop\src\app\payments\payments.module.ts`
+
+```typescript
+EffectsModule.forFeature([PaymentMethodEffects])
+```
+
+---
+
+### Otro más sin reacciones
+
+`apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
+
+```typescript
+  public addPaymentMethod$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PaymentMethodActions.addPaymentMethod),
+      concatMap(action => {
+        try {
+          let storedList = JSON.parse(
+            window.localStorage.getItem(this.storeKey)
+          );
+          storedList = [...storedList, action.newPaymentMethod];
+          window.localStorage.setItem(
+            this.storeKey,
+            JSON.stringify(storedList)
+          );
+          return EMPTY;
+        } catch (e) {
+          return EMPTY;
+        }
+      })
+    )
+  );
 ```
 
 ---
