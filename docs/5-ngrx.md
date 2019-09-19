@@ -224,20 +224,22 @@ export class PaymentMethodFacade {
 public loadPaymentMethods() {
   this.store.dispatch(PaymentMethodActions.loadPaymentMethods());
 }
-public addPaymentMethod(paymentMethod: PaymentMethod) {
-  this.store.dispatch(
-    PaymentMethodActions.addPaymentMethod({ newPaymentMethod: paymentMethod })
-  );
-}
+public addPaymentMethod(newPaymentMethod: PaymentMethod) {
+    this.store.dispatch(
+      PaymentMethodActions.addPaymentMethod({
+        newPaymentMethod: { ...newPaymentMethod }
+      })
+    );
+  }
 public selectPreferredPaymentMethod(preferredId: string) {
   this.store.dispatch(
     PaymentMethodActions.selectPreferredPaymentMethod({ preferredId })
   );
 }
-public setExpirationPaymentMethod(paymentMethod: PaymentMethod) {
+public setExpirationPaymentMethod(updatedPaymentMethod: PaymentMethod) {
   this.store.dispatch(
     PaymentMethodActions.setExpirationPaymentMethod({
-      updatedPaymentMethod: paymentMethod
+      updatedPaymentMethod: { ...updatedPaymentMethod }
     })
   );
 }
@@ -311,49 +313,49 @@ const paymentMethodReducer = createReducer(
 ---
 
 ```typescript
-  on(PaymentMethodActions.addPaymentMethod, (state, { newPaymentMethod }) => {
-    return {
-      ...state,
-      paymentMethods: {
-        ...state.paymentMethods,
-        list: [...state.paymentMethods.list, newPaymentMethod]
-      }
-    };
-  })
+on(PaymentMethodActions.addPaymentMethod, (state, { newPaymentMethod }) => {
+  return {
+    ...state,
+    paymentMethods: {
+      ...state.paymentMethods,
+      list: [...state.paymentMethods.list, newPaymentMethod]
+    }
+  };
+})
 ```
 ---
 
 ```typescript
-  on(
-    PaymentMethodActions.selectPreferredPaymentMethod,
-    (state, { preferredId }) => {
-      return {
-        ...state,
-        paymentMethods: { ...state.paymentMethods, preferred: preferredId }
-      };
-    }
-  )
-  ```
+on(
+  PaymentMethodActions.selectPreferredPaymentMethod,
+  (state, { preferredId }) => {
+    return {
+      ...state,
+      paymentMethods: { ...state.paymentMethods, preferred: preferredId }
+    };
+  }
+)
+```
+
 ---
 
 ```typescript
-  on(
-    PaymentMethodActions.setExpirationPaymentMethod,
-    (state, { updatedPaymentMethod }) => {
-      const list = state.paymentMethods.list;
-      const updatedlist = list.map(pM =>
-        pM.id === updatedPaymentMethod.id ? updatedPaymentMethod : pM
-      );
-      return {
-        ...state,
-        paymentMethods: {
-          ...state.paymentMethods,
-          list: updatedlist
-        }
-      };
-    }
-  )
-);
+on(
+  PaymentMethodActions.setExpirationPaymentMethod,
+  (state, { updatedPaymentMethod }) => {
+    const list = state.paymentMethods.list;
+    const updatedlist = list.map(pM =>
+      pM.id === updatedPaymentMethod.id ? updatedPaymentMethod : pM
+    );
+    return {
+      ...state,
+      paymentMethods: {
+        ...state.paymentMethods,
+        list: updatedlist
+      }
+    };
+  }
+)
 ```
 
 ---
