@@ -27,7 +27,8 @@ import { AppComponent } from './app.component';
           path: 'catalog',
           loadChildren: () =>
             import('./catalog/catalog.module').then(m => m.CatalogModule)
-        }
+        },
+      { path: 'payments', loadChildren: () => import('./payments/payments.module').then(m => m.PaymentsModule) }
       ],
       { initialNavigation: 'enabled' }
     ),
