@@ -2,7 +2,14 @@ import { createAction, props } from '@ngrx/store';
 import { PaymentMethod } from './payment-method.model';
 
 export const loadPaymentMethods = createAction(
-  '[PaymentMethod] Load PaymentMethods'
+  '[PaymentMethod] Load Payment Methods'
+);
+export const loadPaymentMethodsSucess = createAction(
+  '[PaymentMethod] Load Payment Methods Success',
+  props<{ paymentMethodList: PaymentMethod[] }>()
+);
+export const loadPaymentMethodsError = createAction(
+  '[PaymentMethod] Load Payment Methods Error'
 );
 
 export const addPaymentMethod = createAction(

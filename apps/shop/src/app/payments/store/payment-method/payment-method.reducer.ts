@@ -16,6 +16,16 @@ const paymentMethodReducer = createReducer(
   initialState,
 
   on(PaymentMethodActions.loadPaymentMethods, state => state),
+  on(
+    PaymentMethodActions.loadPaymentMethodsSucess,
+    (state, { paymentMethodList }) => {
+      return {
+        ...state,
+        paymentMethods: { ...state.paymentMethods, list: paymentMethodList }
+      };
+    }
+  ),
+  on(PaymentMethodActions.loadPaymentMethodsError, state => state),
 
   on(PaymentMethodActions.addPaymentMethod, (state, { newPaymentMethod }) => {
     return {
