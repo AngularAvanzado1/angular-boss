@@ -480,17 +480,8 @@ class: impact
 
 # 5 Effects
 
-## Install
 ## Efecto básico
-## Api async
-
----
-
-## Install
-
-```
-yarn add @ngrx/effects
-```
+## Efecto asíncrono
 
 ---
 
@@ -523,32 +514,35 @@ export const loadPaymentMethodsError = createAction(
 `apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
 
 ```typescript
-public loadPaymentMethods$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(PaymentMethodActions.loadPaymentMethods),
-    concatMap(() => {
-      try {
-        let storedList = JSON.parse(
-          window.localStorage.getItem(this.storeKey)
-        );
-        if (!storedList) {
-          storedList = initialState.paymentMethods.list;
-          window.localStorage.setItem(
-            this.storeKey,
-            JSON.stringify(storedList)
+export class PaymentMethodEffects {
+  private storeKey = 'paymentMethodList';
+  public loadPaymentMethods$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PaymentMethodActions.loadPaymentMethods),
+      concatMap(() => {
+        try {
+          let storedList = JSON.parse(
+            window.localStorage.getItem(this.storeKey)
           );
+          if (!storedList) {
+            storedList = initialState.paymentMethods.list;
+            window.localStorage.setItem(
+              this.storeKey,
+              JSON.stringify(storedList)
+            );
+          }
+          return of(
+            PaymentMethodActions.loadPaymentMethodsSucess({
+              paymentMethodList: storedList
+            })
+          );
+        } catch (e) {
+          return of(PaymentMethodActions.loadPaymentMethodsError);
         }
-        return of(
-          PaymentMethodActions.loadPaymentMethodsSucess({
-            paymentMethodList: storedList
-          })
-        );
-      } catch (e) {
-        return of(PaymentMethodActions.loadPaymentMethodsError);
-      }
-    })
-  )
-);
+      })
+    )
+  );
+}
 ```
 
 ---
@@ -558,7 +552,7 @@ public loadPaymentMethods$ = createEffect(() =>
 `apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
 
 ```typescript
-on(
+  on(
     PaymentMethodActions.loadPaymentMethodsSucess,
     (state, { paymentMethodList }) => {
       return {
@@ -583,6 +577,7 @@ EffectsModule.forFeature([PaymentMethodEffects])
 `apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
 
 ```typescript
+export class PaymentMethodEffects {
   public addPaymentMethod$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PaymentMethodActions.addPaymentMethod),
@@ -603,11 +598,12 @@ EffectsModule.forFeature([PaymentMethodEffects])
       })
     )
   );
+}
 ```
 
 ---
 
-## Api async effects
+## Efecto asíncrono
 
 ```yaml
 As a: customer,
@@ -622,75 +618,102 @@ ng g @ngrx/schematics:feature rates/store/exchange-rate --project=shop --module=
 
 ---
 
+### Actions
+
+`apps\shop\src\app\rates\store\exchange-rate\exchange-rate.actions.ts`
 
 ```typescript
-// shopping-cart.actions.ts
-export const loadShoppingCart = createAction(
-  '[Application Start] Load Shopping Cart',
-  props<{}>()
+export const loadExchangeRates = createAction(
+  '[ExchangeRate] Load ExchangeRates'
 );
 
-export const shoppingCartLoaded = createAction(
-  '[ShoppingCart Effects] Shopping Cart Loaded',
-  props<{ loadedShoppingCart: ShoppingCart }>()
+export const loadExchangeRatesSuccess = createAction(
+  '[ExchangeRate] Load ExchangeRates Success',
+  props<{ rates: any }>()
 );
 
-export const shoppingCartErrorLoading = createAction(
-  '[ShoppingCart Effects] Shopping Cart Error Loading',
-  props<{ error: string }>()
+export const loadExchangeRatesError = createAction(
+  '[ExchangeRate] Load ExchangeRates Error',
+  props<{ rates: any }>()
 );
 ```
 
 ---
+### Effect
+
+`apps\shop\src\app\rates\store\exchange-rate\exchange-rate.effects.ts`
 
 ```typescript
-//shopping-cart.effects.ts
-
-public loadShoppingCart$ = createEffect(this.loadShoppingCart.bind(this));
-
-private loadShoppingCart() {
-  return this.actions$.pipe(
-    ofType(loadShoppingCart),
-    switchMap(() =>
-      this.cartService.getShoppingCart().pipe(
-        map(result => shoppingCartLoaded({ loadedShoppingCart: result })),
-        catchError(error => of(shoppingCartErrorLoading({ error: error.message })))
-      )
-    )
+export class ExchangeRateEffects {
+  public loadExchangeRates$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ExchangeRateActions.loadExchangeRates),
+      concatMap(() =>
+        this.http.get<any>('https://api.exchangeratesapi.io/latest').pipe(
+          map(res =>
+            ExchangeRateActions.loadExchangeRatesSuccess({ rates: res.rates })
+          ),
+          catchError(err =>
+            of(ExchangeRateActions.loadExchangeRatesError({ rates: err }))
+          )
+        )))
   );
+  constructor(private actions$: Actions, private http: HttpClient) {}
 }
+```
+
+---
+
+### Reducer
+
+`apps\shop\src\app\rates\store\exchange-rate\exchange-rate.reducer.ts`
+
+```typescript
+export interface ExchangeState {
+  rates: any;
+}
+
+export const initialState: ExchangeState = {
+  rates: {}
+};
 ```
 
 ---
 
 ```typescript
-// shopping-cart.reducer.ts
-export const shoppingCartReducer = createReducer(
-  initialState,
-   on(shoppingCartLoaded, onShoppingCartLoaded),
-   on(shoppingCartErrorLoading, onApiError)
-);
-
-function onShoppingCartLoaded(state: ShoppingCart, { loadedShoppingCart }) {
-  return loadedShoppingCart;
-}
-function onApiError(state: ShoppingCart, { error }) {
-  return { ...state, error: error };
-}
+  on(ExchangeRateActions.loadExchangeRates, state => state),
+  on(ExchangeRateActions.loadExchangeRatesSuccess, (state, payload) => ({
+    ...state,
+    rates: payload.rates
+  })),
+  on(ExchangeRateActions.loadExchangeRatesError, (state, payload) => ({
+    ...state,
+    rates: payload.rates
+  }))
 ```
 
 ---
+
+### Component
+
+`apps\shop\src\app\rates\rates.component.ts`
 
 ```typescript
-// shell.component.ts
-public loadShoppingCart(){
-  const action = loadShoppingCart({});
-  this.store.dispatch(action);
+export class RatesComponent implements OnInit {
+  public rates$ = this.store.select(exchangeRateFeatureKey, 'rates');
+  constructor(private store: Store<ExchangeState>) {}
+  ngOnInit() {
+    this.store.dispatch(ExchangeRateActions.loadExchangeRates());
+  }
 }
 ```
 
----
+--
 
+```html
+<p>rates :</p>
+<pre> {{ rates$ | async  | json  }} </pre>
+```
 
 ---
 
@@ -698,9 +721,8 @@ public loadShoppingCart(){
 
 # 5 Effects
 
-## Install
 ## Efecto básico
-## Api async effects
+## Efecto asíncrono
 
 ---
 
