@@ -511,6 +511,11 @@ export const loadPaymentMethodsError = createAction(
 
 ### Definición
 
+- Los reductores son funciones puras...
+- ... sin efectos colaterales.
+- Las actividades que los reductores no pueden...
+- ... las realizan los efectos.
+
 `apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
 
 ```typescript
