@@ -514,35 +514,43 @@ export const loadPaymentMethodsError = createAction(
 `apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
 
 ```typescript
+
+@Injectable()
 export class PaymentMethodEffects {
-  private storeKey = 'paymentMethodList';
-  public loadPaymentMethods$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PaymentMethodActions.loadPaymentMethods),
-      concatMap(() => {
-        try {
-          let storedList = JSON.parse(
-            window.localStorage.getItem(this.storeKey)
-          );
-          if (!storedList) {
-            storedList = initialState.paymentMethods.list;
-            window.localStorage.setItem(
-              this.storeKey,
-              JSON.stringify(storedList)
-            );
-          }
-          return of(
-            PaymentMethodActions.loadPaymentMethodsSucess({
-              paymentMethodList: storedList
-            })
-          );
-        } catch (e) {
-          return of(PaymentMethodActions.loadPaymentMethodsError);
-        }
-      })
-    )
-  );
+  public miEfecto$ : Observable<Action>;
+
+  constructor(private actions$: Actions) {}
 }
+```
+
+---
+```typescript
+public loadPaymentMethods$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(PaymentMethodActions.loadPaymentMethods),
+    concatMap(() => {
+      try {
+        let storedList = JSON.parse(
+          window.localStorage.getItem(this.storeKey)
+        );
+        if (!storedList) {
+          storedList = initialState.paymentMethods.list;
+          window.localStorage.setItem(
+            this.storeKey,
+            JSON.stringify(storedList)
+          );
+        }
+        return of(
+          PaymentMethodActions.loadPaymentMethodsSucess({
+            paymentMethodList: storedList
+          })
+        );
+      } catch (e) {
+        return of(PaymentMethodActions.loadPaymentMethodsError);
+      }
+    })
+  )
+);
 ```
 
 ---
@@ -577,28 +585,26 @@ EffectsModule.forFeature([PaymentMethodEffects])
 `apps\shop\src\app\payments\store\payment-method\payment-method.effects.ts`
 
 ```typescript
-export class PaymentMethodEffects {
-  public addPaymentMethod$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PaymentMethodActions.addPaymentMethod),
-      concatMap(action => {
-        try {
-          let storedList = JSON.parse(
-            window.localStorage.getItem(this.storeKey)
-          );
-          storedList = [...storedList, action.newPaymentMethod];
-          window.localStorage.setItem(
-            this.storeKey,
-            JSON.stringify(storedList)
-          );
-          return EMPTY;
-        } catch (e) {
-          return EMPTY;
-        }
-      })
-    )
-  );
-}
+public addPaymentMethod$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(PaymentMethodActions.addPaymentMethod),
+    concatMap(action => {
+      try {
+        let storedList = JSON.parse(
+          window.localStorage.getItem(this.storeKey)
+        );
+        storedList = [...storedList, action.newPaymentMethod];
+        window.localStorage.setItem(
+          this.storeKey,
+          JSON.stringify(storedList)
+        );
+        return EMPTY;
+      } catch (e) {
+        return EMPTY;
+      }
+    })
+  )
+);
 ```
 
 ---
@@ -701,7 +707,9 @@ export const initialState: ExchangeState = {
 ```typescript
 export class RatesComponent implements OnInit {
   public rates$ = this.store.select(exchangeRateFeatureKey, 'rates');
+
   constructor(private store: Store<ExchangeState>) {}
+
   ngOnInit() {
     this.store.dispatch(ExchangeRateActions.loadExchangeRates());
   }
