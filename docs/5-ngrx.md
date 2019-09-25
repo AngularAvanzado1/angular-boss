@@ -489,7 +489,7 @@ class: impact
 ## Install
 
 ```
-yarn add @ngrx/effects
+ng add @ngrx/effects
 ```
 
 ---

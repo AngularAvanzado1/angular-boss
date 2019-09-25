@@ -4,11 +4,11 @@ import { PaymentMethods } from './payment-method.model';
 
 export const paymentMethodFeatureKey = 'paymentMethod';
 
-export interface State {
+export interface PaymentMethodsState {
   paymentMethods: PaymentMethods;
 }
 
-export const initialState: State = {
+export const initialState: PaymentMethodsState = {
   paymentMethods: { list: [], preferred: null }
 };
 
@@ -62,6 +62,6 @@ const paymentMethodReducer = createReducer(
   )
 );
 
-export function reducer(state: State | undefined, action: Action) {
+export function reducer(state: PaymentMethodsState | undefined, action: Action) {
   return paymentMethodReducer(state, action);
 }
