@@ -1,16 +1,4 @@
-title: 5-NgRx
-class: animation-fade
-layout: true
-
-.bottom-bar[
-{{title}}
-]
-
----
-
-class: impact
-
-# {{title}}
+# 5-NgRx
 
 ## Redux con NgRx
 
@@ -70,19 +58,8 @@ Mantra Redux con NgRx:
 > NgRx no hace rápido a Redux, sino mantenible el boilerplate
 
 
-
-
----
-
-class: impact
-
 # 1 Instalación y configuración
 
-## Instalación de NgRx
-## DevTools
-## Router
-
----
 
 ## 1.1 Instalación de NgRx
 
@@ -90,7 +67,6 @@ class: impact
 ng g @nrwl/angular:ngrx app --module=apps/shop/src/app/app.module.ts --root --minimal
 
 ```
----
 
 ## 1.2 DevTools
 
@@ -98,7 +74,6 @@ ng g @nrwl/angular:ngrx app --module=apps/shop/src/app/app.module.ts --root --mi
 # https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
 ```
 
----
 
 ## 1.3 Router
 
@@ -112,26 +87,7 @@ StoreModule.forRoot(
 
 ---
 
-> Recap:
-
-# 1 Instalación y configuración
-
-## Instalación de NgRx
-## DevTools
-## Router
-
----
-
-class: impact
-
 # 2 Actions
-
-## Create
-## Dispatch
-
----
-
-Address o Payments
 
 ```yaml
 As a: customer,
@@ -147,9 +103,7 @@ As a: customer,
   so that: I get my cards up to date
 ```
 
----
-
-## Create
+## 2.1 Create
 
 ```bash
 ng g m payments --project=shop --module=app.module.ts --routing --route=payments
@@ -169,8 +123,6 @@ export interface PaymentMethods {
   preferred: string;
 }
 ```
-
----
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.actions.ts`
 
@@ -195,9 +147,7 @@ export const setExpirationPaymentMethod = createAction(
 );
 ```
 
----
-
-## Dispatch
+## 2.2 Dispatch
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.service.ts`
 
@@ -217,8 +167,6 @@ export class PaymentMethodFacade {
   constructor(private store: Store<PaymentMethods>) {}
 }
 ```
-
----
 
 ```typescript
 public loadPaymentMethods() {
@@ -245,8 +193,6 @@ public setExpirationPaymentMethod(updatedPaymentMethod: PaymentMethod) {
 }
 ```
 
----
-
 `apps\shop\src\app\payments\payments.component.ts`
 
 ```typescript
@@ -267,27 +213,10 @@ export class PaymentsComponent implements OnInit {
 }
 ```
 
----
-
-> Recap:
-
-# 2 Actions
-
-## Create
-## Dispatch
-
----
-
-class: impact
-
 # 3 State reducer
 
-## State
-## Create function
-## Register in Store
----
 
-## State
+## 3.1 State
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
 
@@ -302,7 +231,7 @@ export const initialState: State = {
 ```
 ---
 
-## Create function
+## 3.2 Create function
 
 ```typescript
 const paymentMethodReducer = createReducer(
@@ -337,8 +266,6 @@ on(
 )
 ```
 
----
-
 ```typescript
 on(
   PaymentMethodActions.setExpirationPaymentMethod,
@@ -359,7 +286,7 @@ on(
 ```
 
 ---
-## Register in Store
+## 3.3 Register in Store
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
 
@@ -381,29 +308,9 @@ import * as fromPaymentMethod from './store/payment-method/payment-method.reduce
     )]
 ```
 
----
-
-> Recap:
-
-# 3 State reducer
-
-## State
-## Create function
-## Register in Store
-
----
-
-class: impact
-
 # 4 Selectors
 
-## Create selector
-## Selecting data
-## Showing data
-
----
-
-## Create selector
+## 4.1 Create selector
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.selectors.ts`
 
@@ -426,9 +333,7 @@ export const getPreferredPaymentMethod = createSelector(
 );
 ```
 
----
-
-## Selecting data
+## 4.2 Selecting data
 
 ```typescript
   public getPaymentMethodsList$(): Observable<PaymentMethod[]> {
@@ -440,9 +345,7 @@ export const getPreferredPaymentMethod = createSelector(
   }
 ```
 
----
-
-## Showing data
+## 4.3 Showing data
 
 ```typescript
 export class PaymentsComponent implements OnInit {
@@ -463,29 +366,13 @@ export class PaymentsComponent implements OnInit {
 <p>Preferred Payment Method:</p>
 <pre>{{ preferredPaymentMethod$ | async | json }}</pre>
 ```
-
 ---
 
-> Recap:
-
-# 4 Selectors
-
-## Create selector
-## Selecting data
-## Fachadas
-
----
-
-class: impact
 
 # 5 Effects
 
-## Efecto básico
-## Efecto asíncrono
 
----
-
-## Efecto básico
+## 5.1 Efecto básico
 
 
 ### Acciones
@@ -507,8 +394,6 @@ export const loadPaymentMethodsError = createAction(
 );
 ```
 
----
-
 ### Definición
 
 - Los reductores son funciones puras...
@@ -528,7 +413,6 @@ export class PaymentMethodEffects {
 }
 ```
 
----
 ```typescript
 public loadPaymentMethods$ = createEffect(() =>
   this.actions$.pipe(
@@ -558,8 +442,6 @@ public loadPaymentMethods$ = createEffect(() =>
 );
 ```
 
----
-
 ### Reducer y Register
 
 `apps\shop\src\app\payments\store\payment-method\payment-method.reducer.ts`
@@ -582,8 +464,6 @@ public loadPaymentMethods$ = createEffect(() =>
 ```typescript
 EffectsModule.forFeature([PaymentMethodEffects])
 ```
-
----
 
 ### Otro más sin reacciones
 
@@ -612,9 +492,7 @@ public addPaymentMethod$ = createEffect(() =>
 );
 ```
 
----
-
-## Efecto asíncrono
+## 5.2 Efecto asíncrono
 
 ```yaml
 As a: customer,
@@ -626,8 +504,6 @@ As a: customer,
 ng g m rates --project=shop --module=app.module.ts --routing --route=rates
 ng g @ngrx/schematics:feature rates/store/exchange-rate --project=shop --module=rates/rates.module.ts --no-flat --no-spec --creators
 ```
-
----
 
 ### Actions
 
@@ -649,7 +525,6 @@ export const loadExchangeRatesError = createAction(
 );
 ```
 
----
 ### Effect
 
 `apps\shop\src\app\rates\store\exchange-rate\exchange-rate.effects.ts`
@@ -673,8 +548,6 @@ export class ExchangeRateEffects {
 }
 ```
 
----
-
 ### Reducer
 
 `apps\shop\src\app\rates\store\exchange-rate\exchange-rate.reducer.ts`
@@ -689,8 +562,6 @@ export const initialState: ExchangeState = {
 };
 ```
 
----
-
 ```typescript
   on(ExchangeRateActions.loadExchangeRates, state => state),
   on(ExchangeRateActions.loadExchangeRatesSuccess, (state, payload) => ({
@@ -702,8 +573,6 @@ export const initialState: ExchangeState = {
     rates: payload.rates
   }))
 ```
-
----
 
 ### Component
 
@@ -721,8 +590,6 @@ export class RatesComponent implements OnInit {
 }
 ```
 
---
-
 ```html
 <p>rates :</p>
 <pre> {{ rates$ | async  | json  }} </pre>
@@ -730,12 +597,9 @@ export class RatesComponent implements OnInit {
 
 ---
 
-> Recap:
+> **Blog de apoyo:** [Flujo reactivo unidireccional con Angular y RxJs](https://academia-binaria.com/flujo-reactivo-unidireccional-con-Angular-y-RxJs/)
 
-# 5 Effects
-
-## Efecto básico
-## Efecto asíncrono
+> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
 ---
 
@@ -748,6 +612,4 @@ export class RatesComponent implements OnInit {
 ## Actualizaciones y notificaciones
 
 
-> **Blog de apoyo:** [Detección del cambio en Angular](https://academia-binaria.com/deteccion-del-cambio-en-Angular/)
 
-> > By [Alberto Basalo](https://twitter.com/albertobasalo)
