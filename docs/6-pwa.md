@@ -89,13 +89,10 @@ yarn add -D ngx-pwa-icons
 cd apps/shop
 apps/shop/icon.png
 ngx-pwa-icons
+"build:shop": "ng build shop --prod",
 yarn add -D angular-http-server
-"angular-http-server": "angular-http-server"
-angular-http-server --open -p 9000 --path ./dist/apps/warehouse
+"start:shop:pwa": "angular-http-server --open -p 8080 --path ./dist/apps/shop",
 ```
-
-//https://medium.com/poka-techblog/turn-your-angular-app-into-a-pwa-in-4-easy-steps-543510a9b626
-
 
 ---
 
