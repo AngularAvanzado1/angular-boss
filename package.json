@@ -60,8 +60,8 @@
     "@ngrx/router-store": "8.3.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.4",
-    "@angular/cli": "8.3.4",
+    "@angular-devkit/build-angular": "^0.803.6",
+    "@angular/cli": "8.3.6",
     "@angular/compiler-cli": "^9.0.0-next.6",
     "@angular/language-service": "^9.0.0-next.6",
     "@nrwl/angular": "^8.5.0",
