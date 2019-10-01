@@ -86,8 +86,9 @@ ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production
 
 ```
 yarn add -D ngx-pwa-icons
-/warehouse/icon.png
-yarn ngx-pwa-icons
+cd apps/shop
+apps/shop/icon.png
+ngx-pwa-icons
 yarn add -D angular-http-server
 "angular-http-server": "angular-http-server"
 angular-http-server --open -p 9000 --path ./dist/apps/warehouse
