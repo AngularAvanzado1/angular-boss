@@ -46,7 +46,7 @@ class: impact
 ## 1.1 Instalación de de PWA
 
 ```terminal
-ng add @angular/pwa --project warehouse
+ng add @angular/pwa --project shop
 ```
 
 ---
@@ -55,9 +55,9 @@ ng add @angular/pwa --project warehouse
 
 ### angular json
 ```typescript
-architect.build.options.assetes: [..."apps/warehouse/src/manifest.json"]
+architect.build.options.assets: [..."apps/shop/src/manifest.json"]
 architect.configuration.production.serviceWorker: true
-architect.configuration.production.ngswConfigPath: "apps/warehouse/ngsw-config.json"
+architect.configuration.production.ngswConfigPath: "apps/shop/ngsw-config.json"
 ```
 
 --
