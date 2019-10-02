@@ -78,7 +78,7 @@ ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production
 
 ### otros
 - ngsw-config.json
-- manifest.json
+- manifest.webmanifest
 - /assets/icons
 ---
 
@@ -104,6 +104,137 @@ yarn add -D angular-http-server
 ## Modificaciones automáticas
 ## Paquetes recomendados
 
+---
+
+class: impact
+
+# 2 Configuración de caché
+
+## Assets
+## API
+
+---
+
+## Assets
+
+### default Full App
+
+```json
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+```
+
+### proposed Lazy App
+
+```json
+  "assetGroups":[
+    {
+      "name": "coreapp",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/common*.js",
+          "/main*.js",
+          "/ngsw*.js",
+          "/*woker*.js",
+          "/*polyfills*.js",
+          "/runtime*.js"
+        ]
+      }
+    },
+    {
+      "name": "lazyapp",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/*.js"]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ]
+```
+
+---
+
+## API
+
+### dataGroups
+
+```json
+ "dataGroups": [
+  {
+    "name": "cache-first-greeting",
+    "urls": [
+      "http://localhost:3333/api"
+    ],
+    "cacheConfig": {
+      "strategy": "performance",
+      "maxAge": "1d",
+      "maxSize": 10
+    }
+  },
+  {
+    "name": "api-first-rates",
+    "urls": [
+      "https://api.exchangeratesapi.io/latest?symbols=GBP",
+      "https://api.exchangeratesapi.io/latest"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "timeout": "5s",
+      "maxAge": "1h",
+      "maxSize": 10,
+    }
+  }
+]
+```
+
+---
+
+> Recap:
+
+# 2 Configuración de caché
+
+## Assets
+## API
 
 ---
 

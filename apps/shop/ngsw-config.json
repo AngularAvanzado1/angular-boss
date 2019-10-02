@@ -3,7 +3,7 @@
   "index": "/index.html",
   "assetGroups": [
     {
-      "name": "app",
+      "name": "onlyapp",
       "installMode": "prefetch",
       "resources": {
         "files": [
@@ -11,10 +11,24 @@
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js"
+          "/common*.js",
+          "/main*.js",
+          "/ngsw*.js",
+          "/*woker*.js",
+          "/*polyfills*.js",
+          "/runtime*.js"
         ]
       }
-    }, {
+    },
+    {
+      "name": "lazyapp",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/*.js"]
+      }
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
@@ -23,6 +37,30 @@
           "/assets/**",
           "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "cache-first",
+      "urls": [""],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxAge": "1d",
+        "maxSize": 10
+      }
+    },
+    {
+      "name": "api-first-rates",
+      "urls": [
+        "https://api.exchangeratesapi.io/latest?symbols=GBP",
+        "https://api.exchangeratesapi.io/latest"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "timeout": "5s",
+        "maxAge": "1h",
+        "maxSize": 10
       }
     }
   ]

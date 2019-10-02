@@ -1,12 +1,12 @@
 import { GreetingsService } from '@a-boss/data';
 import { Greetings } from '@a-boss/domain';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ab-ui-greetings',
   template: `
     <h1>
-      {{ theGreeting.message }}
+      <a [routerLink]="['/']">{{ theGreeting.message }}</a>
     </h1>
   `,
   styles: []
@@ -14,11 +14,16 @@ import { Component, OnInit } from '@angular/core';
 export class GreetingsComponent implements OnInit {
   public theGreeting: Greetings = { message: 'Hello world' };
 
-  constructor(private greetingsService: GreetingsService) {}
+  constructor(
+    private greetingsService: GreetingsService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   public ngOnInit() {
     this.greetingsService.getGrettings$().subscribe(this.appendApiMessage);
   }
-  private appendApiMessage = (apiGreetings: Greetings) =>
-    (this.theGreeting.message += ' and ' + apiGreetings.message);
+  private appendApiMessage = (apiGreetings: Greetings) => {
+    this.theGreeting.message += ' and ' + apiGreetings.message;
+    this.cdr.detectChanges();
+  };
 }
