@@ -126,11 +126,8 @@ class: impact
       "installMode": "prefetch",
       "resources": {
         "files": [
-          "/favicon.ico",
-          "/index.html",
-          "/manifest.webmanifest",
-          "/*.css",
-          "/*.js"
+          "/favicon.ico", "/index.html",
+          "/manifest.webmanifest",  "/*.css", "/*.js"
         ]
       }
     },
@@ -147,6 +144,8 @@ class: impact
     }
   ],
 ```
+
+---
 
 ### proposed Lazy App
 
@@ -177,19 +176,7 @@ class: impact
       "resources": {
         "files": ["/*.js"]
       }
-    },
-    {
-      "name": "assets",
-      "installMode": "lazy",
-      "updateMode": "prefetch",
-      "resources": {
-        "files": [
-          "/assets/**",
-          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
-        ]
-      }
-    }
-  ]
+    }...
 ```
 
 ---
