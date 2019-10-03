@@ -271,11 +271,16 @@ private checkVersionUpdates() {
   }
 }
 ```
---
+---
+
+`apps\shop\ngsw-config.json`
+
+```json
 "appData": {
   "version": "6.1.0",
   "changelog": "PWA: Added a better update mode"
 },
+```
 ---
 
 ## Notificaciones Push
@@ -296,6 +301,7 @@ constructor(private swPush: SwPush) {
     }
   }
 ```
+---
 
 > Recap:
 

@@ -20,7 +20,7 @@ class: impact
 
 # [1-Test](https://academiabinaria.github.io/angular-boss/1-test.html)
 
---
+---
 
 # [2-Change](https://academiabinaria.github.io/angular-boss/2-change.html)
 
