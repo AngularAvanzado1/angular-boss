@@ -19,8 +19,6 @@ class: impact
     # 1. Angular Service Worker con el CLI
     # 2. Configuración de caché
     # 3. Actualizaciones y notificaciones
-    # 4. Shell
-
 
 ---
 
