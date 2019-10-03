@@ -1,6 +1,10 @@
 {
   "$schema": "../../node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
+  "appData": {
+    "version": "6.1.2",
+    "changelog": "PWA: Added a better update mode"
+  },
   "assetGroups": [
     {
       "name": "onlyapp",

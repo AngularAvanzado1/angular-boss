@@ -43,7 +43,7 @@ class: impact
 
 ---
 
-## 1.1 Instalación de de PWA
+## 1.1 Instalación de PWA
 
 ```terminal
 ng add @angular/pwa --project shop
@@ -224,6 +224,85 @@ class: impact
 ## API
 
 ---
+
+class: impact
+
+# 3 Actualizaciones y notificaciones
+
+## Actualización de versiones
+## Notificaciones Push
+
+---
+
+## Actualización de versiones
+
+`apps\shop\ngsw-config.json`
+
+```json
+"appData": {
+  "version": "6.0.1",
+  "changelog": "PWA: trying a better update mode"
+},
+```
+
+`apps\shop\src\app\app.component.ts`
+
+```typescript
+constructor(private swUpdate: SwUpdate) {
+  this.checkVersionUpdates();
+}
+```
+---
+
+```typescript
+private checkVersionUpdates() {
+  if (this.swUpdate.isEnabled) {
+    this.swUpdate.available.subscribe(event => {
+      if (event.current.appData) {
+        const appData: any = event.current.appData;
+        let msg = `New version ${appData.version} available.`;
+        msg += `${appData.changelog}.`;
+        msg += 'Reaload now?';
+        if (confirm(msg)) {
+          window.location.reload();
+        }
+      }
+    });
+  }
+}
+```
+--
+"appData": {
+  "version": "6.1.0",
+  "changelog": "PWA: Added a better update mode"
+},
+---
+
+## Notificaciones Push
+
+```typescript
+constructor(private swPush: SwPush) {
+  this.subscribeToNotifications();
+}
+  private subscribeToNotifications() {
+    if (this.swPush.isEnabled) {
+      this.swPush
+        .requestSubscription({ serverPublicKey: 'VAPID_PUBLIC_KEY' })
+        .then(sub => {
+          console.log('subscription to server', sub.toJSON());
+          this.swPush.messages.subscribe(msg => console.log('Received: ', msg));
+        })
+        .catch(err => console.error('Could not subscribe', err));
+    }
+  }
+```
+
+> Recap:
+
+# 3 Actualizaciones y notificaciones
+
+## Actualización de versiones
+## Notificaciones Push
 
 > Next:
 
