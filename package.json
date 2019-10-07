@@ -54,7 +54,7 @@
     "@ngrx/entity": "8.3.0",
     "@ngrx/router-store": "8.3.0",
     "@ngrx/store": "8.3.0",
-    "@nrwl/schematics": "^8.5.2",
+    "@nrwl/schematics": "^8.6.0",
     "core-js": "^2.5.4",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.5.3",
