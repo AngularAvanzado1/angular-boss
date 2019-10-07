@@ -36,6 +36,8 @@ class: impact
 
 # [6-PWA](https://academiabinaria.github.io/angular-boss/6-pwa.html)
 
+# [7-SSR](https://academiabinaria.github.io/angular-boss/7-ssr.html)
+
 ---
 
 ---
