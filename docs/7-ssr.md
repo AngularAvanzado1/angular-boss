@@ -12,7 +12,7 @@ class: impact
 
 # {{title}}
 
-## Angular Universal
+## Server Side Rendering
 
 ---
 
