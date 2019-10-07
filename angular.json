@@ -15,7 +15,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/shop",
+            "outputPath": "dist/browser",
             "index": "apps/shop/src/index.html",
             "main": "apps/shop/src/main.ts",
             "polyfills": "apps/shop/src/polyfills.ts",
@@ -96,6 +96,29 @@
             "jestConfig": "apps/shop/jest.config.js",
             "tsConfig": "apps/shop/tsconfig.spec.json",
             "setupFile": "apps/shop/src/test-setup.ts"
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "apps/shop/src/main.server.ts",
+            "tsConfig": "apps/shop/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/shop/src/environments/environment.ts",
+                  "with": "apps/shop/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": {
+                "scripts": false,
+                "styles": true
+              }
+            }
           }
         }
       }
