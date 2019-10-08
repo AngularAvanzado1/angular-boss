@@ -172,9 +172,13 @@ class: impact
 
 ## 3.2 Shell para mejora de experiencia inicial
 
+https://next.angular.io/guide/app-shell
+
 ---
 
 ## 3.3 Pre renderizado de toda la aplicación
+
+https://github.com/chrisguttandin/angular-prerender
 
 ---
 
