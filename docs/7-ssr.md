@@ -118,9 +118,25 @@ class: impact
 
 ## 2.1 Add Express Engine
 
+```bash
+ng add @nguniversal/express-engine --clientProject shop
+```
+
 ---
 
 ## 2.2 Scripts de compilado y despliegue
+
+```json
+{
+  "compile:server": "webpack --config webpack.server.config.js --progress --colors",
+  "start:ssr": "npm run build:ssr && npm run serve:ssr",
+  "serve:ssr": "node dist/server",
+  "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
+  "build:client-and-server-bundles": "ng build --prod && ng run shop:server:production --bundleDependencies all"
+}
+```
+
+> --bundleDependencies all ????
 
 ---
 
