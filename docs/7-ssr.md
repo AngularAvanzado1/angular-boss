@@ -128,19 +128,21 @@ ng add @nguniversal/express-engine --clientProject shop
 
 ```json
 {
-  "compile:server": "webpack --config webpack.server.config.js --progress --colors",
   "start:ssr": "npm run build:ssr && npm run serve:ssr",
-  "serve:ssr": "node dist/server",
   "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
-  "build:client-and-server-bundles": "ng build --prod && ng run shop:server:production --bundleDependencies all"
+  "build:client-and-server-bundles": "ng build --prod && ng run shop:server:production --bundleDependencies all",
+  "compile:server": "webpack --config webpack.server.config.js --progress --colors",
+  "serve:ssr": "node dist/server"
 }
 ```
 
-> --bundleDependencies all ????
-
----
-
 ## 2.3 Control de rutas
+
+```json
+http://localhost:4000
+http://localhost:4000/rates
+```
+
 
 ---
 

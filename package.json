@@ -36,10 +36,10 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "start:ssr": "npm run build:ssr && npm run serve:ssr",
-    "compile:server": "webpack --config webpack.server.config.js --progress --colors",
-    "serve:ssr": "node dist/server",
     "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
-    "build:client-and-server-bundles": "ng build --prod && ng run shop:server:production --bundleDependencies all"
+    "build:client-and-server-bundles": "ng build --prod && ng run shop:server:production --bundleDependencies all",
+    "compile:server": "webpack --config webpack.server.config.js --progress --colors",
+    "serve:ssr": "node dist/server"
   },
   "private": true,
   "dependencies": {
