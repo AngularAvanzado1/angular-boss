@@ -176,8 +176,11 @@ class: impact
 
 > Adecuado para aplicaciones de usuario registrado, pero con un portal de bienvenida indexable y rápido.
 
-```bash
   https://next.angular.io/guide/app-shell
+
+```bash
+ng g application admin --inlineStyle --inlineTemplate --routing --prefix=ab-admin --skipTests --no-interactive
+ng g appShell --clientProject=admin --universalProject=uadmin --dry-run --no-interactive
 ```
 
 ---
