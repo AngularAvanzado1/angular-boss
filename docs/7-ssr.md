@@ -160,25 +160,42 @@ class: impact
 
 # 3 Variantes: shell y pre-rendering
 
-## Cuando el SEO no es problema
 ## Shell para mejora de experiencia inicial
 ## Pre renderizado de toda la aplicación
 
----
-
-## 3.1 Cuando el SEO no es problema
 
 ---
 
-## 3.2 Shell para mejora de experiencia inicial
+## 3.1 Shell para mejora de experiencia inicial
 
-https://next.angular.io/guide/app-shell
+- Muestra un contenido instantáneo mientras descarga la app.
+
+- Mejora la experiencia de usuario en la primera visita.
+
+- De cara al SEO, sólo indexa el contenido inicial.
+
+> Adecuado para aplicaciones de usuario registrado, pero con un portal de bienvenida indexable y rápido.
+
+```bash
+  https://next.angular.io/guide/app-shell
+```
 
 ---
 
-## 3.3 Pre renderizado de toda la aplicación
+## 3.2 Pre renderizado de toda la aplicación
 
-https://github.com/chrisguttandin/angular-prerender
+- Se trata de volver no sólo al servidor web, si no al servidor de ficheros.
+
+- La idea es invocar repetidamente al SSR y almacenar el HTML resultante en ficheros físicos.
+
+- En producción, los robots y los usuarios recibirán ya esas copias pre generadas.
+
+- Para mantener el sistema actualizado se necesita regenerar frecuentemente los ficheros
+
+> Adecuado para blogs y sitios que no puedan o no quieran tener un servidor web corriendo.
+
+
+[angular Prerender](https://github.com/chrisguttandin/angular-prerender)
 
 ---
 
@@ -186,7 +203,6 @@ https://github.com/chrisguttandin/angular-prerender
 
 # 3 Variantes: shell y pre-rendering
 
-## Cuando el SEO no es problema
 ## Shell para mejora de experiencia inicial
 ## Pre renderizado de toda la aplicación
 
