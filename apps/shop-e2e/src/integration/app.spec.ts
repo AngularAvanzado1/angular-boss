@@ -1,5 +1,8 @@
 import { getGreeting } from '../support/app.po';
 
+declare var cy;
+declare var context;
+
 describe('GIVEN: the shop web app', () => {
   beforeEach(() => cy.visit('/'));
   context('WHEN: user visits home page', () => {

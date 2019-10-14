@@ -1,5 +1,6 @@
 import { getGreeting } from '../support/app.po';
-
+declare var cy;
+declare var context;
 describe('warehouse', () => {
   beforeEach(() => cy.visit('/'));
 
