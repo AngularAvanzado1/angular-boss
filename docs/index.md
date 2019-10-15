@@ -40,5 +40,9 @@ class: impact
 
 ---
 
+# [8-i18n](https://academiabinaria.github.io/angular-boss/8-i18n.html)
+
+# [9-WebC](https://academiabinaria.github.io/angular-boss/7-WebC.html)
+
 ---
 
