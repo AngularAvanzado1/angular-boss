@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  buy: 'buy',
-  sell: 'sell'
+  buy: 'for buy',
+  sell: 'for sell'
 };
 
 /*
