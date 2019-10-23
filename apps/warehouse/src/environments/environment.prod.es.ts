@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  buy: 'for buy',
-  sell: 'for sell'
+  buy: 'para comprar',
+  sell: 'para vender'
 };
