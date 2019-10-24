@@ -16,7 +16,7 @@ class: impact
 
 ---
 
-    # 1. Componentes independientes de los frameworks
+    # 1. Componentes independientes del framework
     # 2. Desarrollo y despliegue con Angular
     # 3. Consumo en HTML
 
@@ -24,7 +24,7 @@ class: impact
 
 class: impact
 
-# 1. Componentes independientes de los frameworks
+# 1. Componentes independientes del framework
 
 ## Origen y potencial
 ## Estándares y tecnología
@@ -55,12 +55,18 @@ Bajo el término Web Components se esconden diversas tecnologías
 
 - Shadow DOM
 - HTML templates
-- _HTML imports_
+- ~~HTML imports~~
 - **Custom elements.**
 
 ---
 
+El estándar:
+
 > Los **Custom Web Elements** son etiquetas HTML encapsuladas reutilizables para usar en páginas y aplicaciones web. Sólo requieren HTML y JavaScript.
+
+--
+
+La tecnología:
 
 > Angular Elements empaqueta tus componentes como **Custom Web Elements**.
 
@@ -71,7 +77,7 @@ Bajo el término Web Components se esconden diversas tecnologías
 
 > Recap:
 
-# 1. Componentes independientes de los frameworks
+# 1. Componentes independientes del framework
 
 ## Origen y potencial
 ## Estándares y tecnología
