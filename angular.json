@@ -512,6 +512,127 @@
         }
       },
       "schematics": {}
+    },
+    "external-currency-elements": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/external/currency-elements",
+      "sourceRoot": "apps/external/currency-elements/src",
+      "prefix": "angular-boss",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/external/currency-elements",
+            "index": "apps/external/currency-elements/src/index.html",
+            "main": "apps/external/currency-elements/src/main.ts",
+            "polyfills": "apps/external/currency-elements/src/polyfills.ts",
+            "tsConfig": "apps/external/currency-elements/tsconfig.app.json",
+            "assets": [
+              "apps/external/currency-elements/src/favicon.ico",
+              "apps/external/currency-elements/src/assets"
+            ],
+            "styles": ["apps/external/currency-elements/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/external/currency-elements/src/environments/environment.ts",
+                  "with": "apps/external/currency-elements/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "external-currency-elements:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "external-currency-elements:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "external-currency-elements:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/external/currency-elements/tsconfig.app.json",
+              "apps/external/currency-elements/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/external/currency-elements/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/external/currency-elements/jest.config.js",
+            "tsConfig": "apps/external/currency-elements/tsconfig.spec.json",
+            "setupFile": "apps/external/currency-elements/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "external-currency-elements-e2e": {
+      "root": "apps/external/currency-elements-e2e",
+      "sourceRoot": "apps/external/currency-elements-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/external/currency-elements-e2e/cypress.json",
+            "tsConfig": "apps/external/currency-elements-e2e/tsconfig.e2e.json",
+            "devServerTarget": "external-currency-elements:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "external-currency-elements:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/external/currency-elements-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/external/currency-elements-e2e/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

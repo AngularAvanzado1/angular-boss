@@ -40,6 +40,12 @@
     },
     "currency": {
       "tags": []
+    },
+    "external-currency-elements-e2e": {
+      "tags": []
+    },
+    "external-currency-elements": {
+      "tags": []
     }
   }
 }

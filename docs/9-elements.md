@@ -140,26 +140,54 @@ export class ConverterComponent implements OnInit {
 
 ---
 
+### El componente sigue siendo Angular
+
+`apps\warehouse\src\app\app.module.ts`
+
+```typescript
+import { CurrencyModule } from '@angular-boss/currency';
+
+@NgModule({
+  imports: [
+    CurrencyModule
+  ],
+})
+export class AppModule {}
+```
+
+---
+
+`apps\warehouse\src\app\app.component.html`
+
+```html
+<angular-boss-converter amount="100"
+                        factor="1.5"></angular-boss-converter>
+```
+
+---
+
 ## Exponer los componentes
 
 `add @angular/elements`
 
-`libs\currency\src\lib\currency.module.ts`
+`generate @nrwl/angular:application currency-elements --directory=external`
+
+`apps\external\currency-elements\src\app\app.module.ts`
 
 ```typescript
-import { CommonModule } from '@angular/common';
+import { ConverterComponent, CurrencyModule } from '@angular-boss/currency';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { FormsModule } from '@angular/forms';
-import { ConverterComponent } from './converter/converter.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
-  declarations: [ConverterComponent],
-  exports: [ConverterComponent],
+  declarations: [],
+  imports: [BrowserModule, CurrencyModule],
+  providers: [],
+  bootstrap: [],
   entryComponents: [ConverterComponent]
 })
-export class CurrencyModule {
+export class AppModule {
   constructor(injector: Injector) {
     const el = createCustomElement(ConverterComponent, { injector });
     customElements.define('angular-boss-currency-converter', el);
@@ -171,22 +199,11 @@ export class CurrencyModule {
 
 ## Compilación y despliegue
 
-### El componente sigue siendo Angular
 
-`apps\warehouse\src\app\app.component.html`
-
-```html
-<angular-boss-converter amount="100"
-                        factor="1.5"></angular-boss-converter>
-```
 
 Pero aplicando la magia de `@angular/elements` y algunas utilidades  podemos compilarlo como un Web Component en un sólo comando.
 
----
-
-## Compilación y despliegue
-
-`ng add ngx-build-plus`
+`ng add ngx-build-plus --project currency-elements`
 
 ``
 
