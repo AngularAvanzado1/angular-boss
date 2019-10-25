@@ -208,7 +208,7 @@ Toca aplicar la magia de `@angular/elements` y utilidades como `ngx-build-plus` 
 
 `ng g ngx-build-plus:wc-polyfill --project external-currency`
 
-`ng build --prod --project external-currency`
+`ng build --prod --single-bundle --project external-currency`
 
 
 ``
