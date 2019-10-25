@@ -195,7 +195,6 @@ import 'zone.js';
 })
 export class AppModule {
   constructor(private injector: Injector) {}
-
   ngDoBootstrap() {
     const el = createCustomElement(ConverterComponent, {
       injector: this.injector
@@ -232,6 +231,8 @@ Si queremos garantizar la compatibilidad en todos los navegadores
 `ng g ngx-build-plus:wc-polyfill --project external-currency`
 
 > ojo que puede fallar la generación de los assets
+
+---
 
 ### Compilación
 
