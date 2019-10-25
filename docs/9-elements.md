@@ -204,7 +204,7 @@ export class AppModule {
 
 Toca aplicar la magia de `@angular/elements` y utilidades como `ngx-build-plus` podemos compilarlo como un Web Component.
 
-`ng add ngx-build-plus --project currency-elements`
+`ng add ngx-build-plus --project external-currency`
 
 `ng g ngx-build-plus:wc-polyfill --project external-currency`
 
