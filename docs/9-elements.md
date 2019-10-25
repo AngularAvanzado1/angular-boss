@@ -170,9 +170,9 @@ export class AppModule {}
 
 `add @angular/elements`
 
-`generate @nrwl/angular:application currency-elements --directory=external`
+`generate @nrwl/angular:application external-currency`
 
-`apps\external\currency-elements\src\app\app.module.ts`
+`apps\external-currency\src\app\app.module.ts`
 
 ```typescript
 import { ConverterComponent, CurrencyModule } from '@angular-boss/currency';

@@ -46,6 +46,12 @@
     },
     "external-currency-elements": {
       "tags": []
+    },
+    "external-currency-e2e": {
+      "tags": []
+    },
+    "external-currency": {
+      "tags": []
     }
   }
 }
