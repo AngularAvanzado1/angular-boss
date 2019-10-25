@@ -4,10 +4,7 @@ import { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
 import 'zone.js';
 @NgModule({
-  declarations: [],
   imports: [BrowserModule, CurrencyModule],
-  providers: [],
-  bootstrap: [],
   entryComponents: [ConverterComponent]
 })
 export class AppModule {

@@ -170,9 +170,16 @@ export class AppModule {}
 
 Necesitamos un proyecto para exportar el componente.
 
+`generate @nrwl/angular:application external-currency`
+
+
+Incorporamos las herramientas de Angular Elements
+
 `add @angular/elements`
 
-`generate @nrwl/angular:application external-currency`
+---
+
+Exportamos el componente y eliminamos todo lo demás
 
 `apps\external-currency\src\app\app.module.ts`
 
@@ -181,22 +188,32 @@ import { ConverterComponent, CurrencyModule } from '@angular-boss/currency';
 import { Injector, NgModule } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { BrowserModule } from '@angular/platform-browser';
-
+import 'zone.js';
 @NgModule({
-  declarations: [],
   imports: [BrowserModule, CurrencyModule],
-  providers: [],
-  bootstrap: [],
   entryComponents: [ConverterComponent]
 })
 export class AppModule {
-  constructor(injector: Injector) {
-    const el = createCustomElement(ConverterComponent, { injector });
-    customElements.define('angular-boss-currency-converter', el);
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap() {
+    const el = createCustomElement(ConverterComponent, {
+      injector: this.injector
+    });
+    customElements.define('external-currency-converter', el);
   }
 }
 ```
 
+---
+
+> Atención a la importación de zone.js
+
+Es necesaria para poder usar la detección de cambios en aplicaciones no angular
+
+> Atención a ngDoBootstrap
+
+Es necesario porque el proyecto ya no dispone de su propio componente de bootstrap
 
 ---
 
@@ -204,14 +221,27 @@ export class AppModule {
 
 Toca aplicar la magia de `@angular/elements` y utilidades como `ngx-build-plus` podemos compilarlo como un Web Component.
 
+### Agregar herramientas de ayuda
+
 `ng add ngx-build-plus --project external-currency`
+
+### Polyfills
+
+Si queremos garantizar la compatibilidad en todos los navegadores
 
 `ng g ngx-build-plus:wc-polyfill --project external-currency`
 
+> ojo que puede fallar la generación de los assets
+
+### Compilación
+
+Nombres legibles
+
+`"outputHashing": "none",`
+
+Generación
+
 `ng build --prod --single-bundle --project external-currency`
-
-
-``
 
 
 > Recap:
@@ -229,6 +259,46 @@ class: impact
 
 ## Copiar
 ## Importar
+
+---
+
+`apps\vanilla\index.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vanilla Currency</title>
+    <base href="/apps/vanilla/" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+    <link rel="icon"
+          type="image/x-icon"
+          href="favicon.ico" />
+  </head>
+  <body>
+    <h2>Convert money:</h2>
+    <external-currency-converter amount="15"></external-currency-converter>
+  </body>
+</html>
+```
+---
+## Copiar
+
+`dist\apps\external-currency`
+
+`apps\vanilla\`
+
+## Importar
+
+```html
+    <script src="main-es2015.js"
+            type="module"></script>
+    <script src="main-es5.js"
+            nomodule
+            defer></script>
+```
 
 ---
 
