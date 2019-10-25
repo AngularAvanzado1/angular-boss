@@ -42,7 +42,8 @@
     "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
     "build:client-and-server-bundles": "ng build --prod && ng run shop:server:production --bundleDependencies all",
     "compile:server": "webpack --config webpack.server.config.js --progress --colors",
-    "serve:ssr": "node dist/server"
+    "serve:ssr": "node dist/server",
+    "npx-build-plus:copy-assets": "node apps/external-currency/copy-wc-polyfill.js"
   },
   "private": true,
   "dependencies": {
@@ -67,6 +68,9 @@
     "@nguniversal/express-engine": "^8.1.1",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "@nrwl/schematics": "^8.7.0",
+    "@webcomponents/custom-elements": "^1.3.0",
+    "@webcomponents/webcomponentsjs": "^2.3.0",
+    "copy": "^0.3.2",
     "core-js": "^2.5.4",
     "document-register-element": "^1.7.2",
     "express": "^4.15.2",

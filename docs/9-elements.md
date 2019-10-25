@@ -168,6 +168,8 @@ export class AppModule {}
 
 ## Exponer los componentes
 
+Necesitamos un proyecto para exportar el componente.
+
 `add @angular/elements`
 
 `generate @nrwl/angular:application external-currency`
@@ -195,15 +197,19 @@ export class AppModule {
 }
 ```
 
+
 ---
 
 ## Compilación y despliegue
 
-
-
-Pero aplicando la magia de `@angular/elements` y algunas utilidades  podemos compilarlo como un Web Component en un sólo comando.
+Toca aplicar la magia de `@angular/elements` y utilidades como `ngx-build-plus` podemos compilarlo como un Web Component.
 
 `ng add ngx-build-plus --project currency-elements`
+
+`ng g ngx-build-plus:wc-polyfill --project external-currency`
+
+`ng build --prod --project external-currency`
+
 
 ``
 
