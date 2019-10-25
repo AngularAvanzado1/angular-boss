@@ -485,6 +485,33 @@
           }
         }
       }
+    },
+    "currency": {
+      "projectType": "library",
+      "root": "libs/currency",
+      "sourceRoot": "libs/currency/src",
+      "prefix": "angular-boss",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/currency/tsconfig.lib.json",
+              "libs/currency/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/currency/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/currency/jest.config.js",
+            "tsConfig": "libs/currency/tsconfig.spec.json",
+            "setupFile": "libs/currency/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
     }
   },
   "cli": {

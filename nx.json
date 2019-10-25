@@ -37,6 +37,9 @@
     },
     "rx-store": {
       "tags": []
+    },
+    "currency": {
+      "tags": []
     }
   }
 }

@@ -93,6 +93,104 @@ class: impact
 
 ---
 
+### Un componente común de Angular
+
+`libs\currency\src\lib\converter\converter.component.html`
+
+```html
+<form>
+  <label>Amount to convert: </label>
+  <input name="amount"
+         [(ngModel)]="amount"
+         type="number"
+         (change)="convert()" />
+  <label>Converted amount: </label>
+  <input name="convertedAmount"
+         [(ngModel)]="convertedAmount"
+         type="number"
+         readonly />
+</form>
+```
+
+---
+
+`libs\currency\src\lib\converter\converter.component.ts`
+
+```Typescript
+@Component({
+  selector: 'angular-boss-converter',
+  templateUrl: './converter.component.html',
+  styleUrls: ['./converter.component.css']
+})
+export class ConverterComponent implements OnInit {
+  @Input() factor = 1.1;
+  @Input() amount = 0;
+  @Output() converted = new EventEmitter<number>();
+  convertedAmount = 0;
+  constructor() {}
+  ngOnInit() {
+    this.convert();
+  }
+  convert() {
+    this.convertedAmount = this.amount * this.factor;
+    this.converted.next(this.convertedAmount);
+  }
+}
+```
+
+---
+
+## Exponer los componentes
+
+`add @angular/elements`
+
+`libs\currency\src\lib\currency.module.ts`
+
+```typescript
+import { CommonModule } from '@angular/common';
+import { Injector, NgModule } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
+import { FormsModule } from '@angular/forms';
+import { ConverterComponent } from './converter/converter.component';
+
+@NgModule({
+  imports: [CommonModule, FormsModule],
+  declarations: [ConverterComponent],
+  exports: [ConverterComponent],
+  entryComponents: [ConverterComponent]
+})
+export class CurrencyModule {
+  constructor(injector: Injector) {
+    const el = createCustomElement(ConverterComponent, { injector });
+    customElements.define('angular-boss-currency-converter', el);
+  }
+}
+```
+
+---
+
+## Compilación y despliegue
+
+### El componente sigue siendo Angular
+
+`apps\warehouse\src\app\app.component.html`
+
+```html
+<angular-boss-converter amount="100"
+                        factor="1.5"></angular-boss-converter>
+```
+
+Pero aplicando la magia de `@angular/elements` y algunas utilidades  podemos compilarlo como un Web Component en un sólo comando.
+
+---
+
+## Compilación y despliegue
+
+`ng add ngx-build-plus`
+
+``
+
+
 > Recap:
 
 # 2. Desarrollo y despliegue con Angular

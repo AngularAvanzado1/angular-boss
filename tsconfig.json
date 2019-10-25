@@ -20,7 +20,8 @@
       "@a-boss/ui": ["libs/shared/ui/src/index.ts"],
       "@a-boss/data": ["libs/shared/data/src/index.ts"],
       "@a-boss/products": ["libs/products/src/index.ts"],
-      "@angular-boss/rx-store": ["libs/rx-store/src/index.ts"]
+      "@angular-boss/rx-store": ["libs/rx-store/src/index.ts"],
+      "@angular-boss/currency": ["libs/currency/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
