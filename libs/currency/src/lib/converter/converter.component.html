@@ -1,0 +1,12 @@
+<form>
+  <label>Amount to convert: </label>
+  <input name="amount"
+         [(ngModel)]="amount"
+         type="number"
+         (change)="convert()" />
+  <label>Converted amount: </label>
+  <input name="convertedAmount"
+         [(ngModel)]="convertedAmount"
+         type="number"
+         readonly />
+</form>

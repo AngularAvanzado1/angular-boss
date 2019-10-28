@@ -37,6 +37,21 @@
     },
     "rx-store": {
       "tags": []
+    },
+    "currency": {
+      "tags": []
+    },
+    "external-currency-elements-e2e": {
+      "tags": []
+    },
+    "external-currency-elements": {
+      "tags": []
+    },
+    "external-currency-e2e": {
+      "tags": []
+    },
+    "external-currency": {
+      "tags": []
     }
   }
 }

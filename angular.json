@@ -485,6 +485,146 @@
           }
         }
       }
+    },
+    "currency": {
+      "projectType": "library",
+      "root": "libs/currency",
+      "sourceRoot": "libs/currency/src",
+      "prefix": "angular-boss",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/currency/tsconfig.lib.json",
+              "libs/currency/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/currency/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/currency/jest.config.js",
+            "tsConfig": "libs/currency/tsconfig.spec.json",
+            "setupFile": "libs/currency/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    },
+    "external-currency": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/external-currency",
+      "sourceRoot": "apps/external-currency/src",
+      "prefix": "angular-boss",
+      "architect": {
+        "build": {
+          "builder": "ngx-build-plus:browser",
+          "options": {
+            "outputPath": "dist/apps/external-currency",
+            "index": "apps/external-currency/src/index.html",
+            "main": "apps/external-currency/src/main.ts",
+            "polyfills": "apps/external-currency/src/polyfills.ts",
+            "tsConfig": "apps/external-currency/tsconfig.app.json",
+            "assets": [
+              "apps/external-currency/src/favicon.ico",
+              "apps/external-currency/src/assets"
+            ],
+            "styles": ["apps/external-currency/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/external-currency/src/environments/environment.ts",
+                  "with": "apps/external-currency/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "none",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "ngx-build-plus:dev-server",
+          "options": {
+            "browserTarget": "external-currency:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "external-currency:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "external-currency:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/external-currency/tsconfig.app.json",
+              "apps/external-currency/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/external-currency/**"]
+          }
+        },
+        "test": {
+          "builder": "ngx-build-plus:karma",
+          "options": {
+            "jestConfig": "apps/external-currency/jest.config.js",
+            "tsConfig": "apps/external-currency/tsconfig.spec.json",
+            "setupFile": "apps/external-currency/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "external-currency-e2e": {
+      "root": "apps/external-currency-e2e",
+      "sourceRoot": "apps/external-currency-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/external-currency-e2e/cypress.json",
+            "tsConfig": "apps/external-currency-e2e/tsconfig.e2e.json",
+            "devServerTarget": "external-currency:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "external-currency:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/external-currency-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/external-currency-e2e/**"]
+          }
+        }
+      }
     }
   },
   "cli": {
