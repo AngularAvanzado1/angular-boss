@@ -1,16 +1,4 @@
-title: 9-Elements
-class: animation-fade
-layout: true
-
-.bottom-bar[
-{{title}}
-]
-
----
-
-class: impact
-
-# {{title}}
+# 9-Elements
 
 ## Elements for Web Components
 
@@ -22,14 +10,7 @@ class: impact
 
 ---
 
-class: impact
-
 # 1. Componentes independientes del framework
-
-## Origen y potencial
-## Estándares y tecnología
-
----
 
 ## 1.1 Origen y potencial
 
@@ -47,7 +28,6 @@ Los **Web Components** son independientes de los _frameworks._
 
 - Mejoras funcionales en aplicaciones server side
 
----
 
 ## 1.2 Estándares y tecnología
 
@@ -58,40 +38,17 @@ Bajo el término Web Components se esconden diversas tecnologías
 - ~~HTML imports~~
 - **Custom elements.**
 
----
-
 El estándar:
 
 > Los **Custom Web Elements** son etiquetas HTML encapsuladas reutilizables para usar en páginas y aplicaciones web. Sólo requieren HTML y JavaScript.
 
---
 
 La tecnología:
 
 > Angular Elements empaqueta tus componentes como **Custom Web Elements**.
 
 
----
-
-
-
-> Recap:
-
-# 1. Componentes independientes del framework
-
-## Origen y potencial
-## Estándares y tecnología
-
----
-
-class: impact
-
 # 2. Desarrollo y despliegue con Angular
-
-## Exponer los componentes
-## Compilación y despliegue
-
----
 
 ### Un componente común de Angular
 
@@ -111,8 +68,6 @@ class: impact
          readonly />
 </form>
 ```
-
----
 
 `libs\currency\src\lib\converter\converter.component.ts`
 
@@ -138,8 +93,6 @@ export class ConverterComponent implements OnInit {
 }
 ```
 
----
-
 ### El componente sigue siendo Angular
 
 `apps\warehouse\src\app\app.module.ts`
@@ -155,8 +108,6 @@ import { CurrencyModule } from '@angular-boss/currency';
 export class AppModule {}
 ```
 
----
-
 `apps\warehouse\src\app\app.component.html`
 
 ```html
@@ -164,9 +115,7 @@ export class AppModule {}
                         factor="1.5"></angular-boss-converter>
 ```
 
----
-
-## Exponer los componentes
+## 2.1 Exponer los componentes
 
 Necesitamos un proyecto para exportar el componente.
 
@@ -176,8 +125,6 @@ Necesitamos un proyecto para exportar el componente.
 Incorporamos las herramientas de Angular Elements
 
 `add @angular/elements`
-
----
 
 Exportamos el componente y eliminamos todo lo demás
 
@@ -204,8 +151,6 @@ export class AppModule {
 }
 ```
 
----
-
 > Atención a la importación de zone.js
 
 Es necesaria para poder usar la detección de cambios en aplicaciones no angular
@@ -214,9 +159,8 @@ Es necesaria para poder usar la detección de cambios en aplicaciones no angular
 
 Es necesario porque el proyecto ya no dispone de su propio componente de bootstrap
 
----
 
-## Compilación y despliegue
+## 2.2 Compilación y despliegue
 
 Toca aplicar la magia de `@angular/elements` y utilidades como `ngx-build-plus` podemos compilarlo como un Web Component.
 
@@ -230,7 +174,7 @@ Si queremos garantizar la compatibilidad en todos los navegadores
 
 `ng g ngx-build-plus:wc-polyfill --project external-currency`
 
-> ojo que puede fallar la generación de los assets
+> ojo que algunas versiones se equivoca en la generación de los assets y hay que moverlos a mano
 
 ---
 
@@ -245,23 +189,7 @@ Generación
 `ng build --prod --single-bundle --project external-currency`
 
 
-> Recap:
-
-# 2. Desarrollo y despliegue con Angular
-
-## Exponer los componentes
-## Compilación y despliegue
-
----
-
-class: impact
-
 # 3. Consumo en HTML
-
-## Copiar
-## Importar
-
----
 
 `apps\vanilla\index.html`
 
@@ -284,14 +212,14 @@ class: impact
   </body>
 </html>
 ```
----
-## Copiar
+
+## 3.1 Copiar
 
 `dist\apps\external-currency`
 
 `apps\vanilla\`
 
-## Importar
+## 3.2 Importar
 
 ```html
     <script src="main-es2015.js"
@@ -301,15 +229,11 @@ class: impact
             defer></script>
 ```
 
----
+> una web HTML pura, mostrando un componente creado en Angular
 
-> Recap:
+> **Blog de apoyo:** [Elementos Angular para los Web Components](https://academia-binaria.com/elementos-Angular-para-los-Web-Components/)
 
-# 3. Consumo en HTML
-
-## Copiar
-## Importar
-
+> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
 ---
 
@@ -321,7 +245,5 @@ class: impact
 ## Academia Binaria
 
 
-> **Blog de apoyo:** [Detección del cambio en Angular](https://academia-binaria.com/deteccion-del-cambio-en-Angular/)
 
-> > By [Alberto Basalo](https://twitter.com/albertobasalo)
 
